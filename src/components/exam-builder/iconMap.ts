@@ -1,0 +1,82 @@
+import type { LucideIcon } from 'lucide-react';
+import {
+  Heart,
+  Brain,
+  Baby,
+  Syringe,
+  Activity,
+  Bone,
+  User,
+  Microscope,
+  Pill,
+  Stethoscope,
+  Thermometer,
+  ClipboardList,
+  Ear,
+  Eye,
+  Hand,
+  Apple,
+  HeartPulse,
+} from 'lucide-react';
+
+const map: Record<string, LucideIcon> = {
+  internal: Heart,
+  cardiology: Heart,
+  neurology: Brain,
+  pediatrics: Baby,
+  surgery: Syringe,
+  emergency: Activity,
+  orthopedics: Bone,
+  gynecology: User,
+  obstetrics: User,
+  pathology: Microscope,
+  pharmacology: Pill,
+  pulmonology: Stethoscope,
+  nephrology: Thermometer,
+  gastroenterology: ClipboardList,
+  endocrinology: Activity,
+  // Arabic keywords (wizard + public pages)
+  قلب: Heart,
+  أعصاب: Brain,
+  اعصاب: Brain,
+  مخ: Brain,
+  أطفال: Baby,
+  اطفال: Baby,
+  جراح: Syringe,
+  تخدير: Syringe,
+  مخدر: Syringe,
+  طوارئ: Activity,
+  عظام: Bone,
+  صيدل: Pill,
+  أدوية: Pill,
+  ادوية: Pill,
+  دواء: Pill,
+  باطن: Stethoscope,
+  باطني: Stethoscope,
+  هضم: ClipboardList,
+  غدد: Activity,
+  أنف: Ear,
+  انف: Ear,
+  أذن: Ear,
+  اذن: Ear,
+  حنجرة: Ear,
+  عيون: Eye,
+  بصر: Eye,
+  جلد: Hand,
+  نسا: User,
+  توليد: User,
+  مسالك: Thermometer,
+  أورام: Activity,
+  اورام: Activity,
+  تغذية: Apple,
+  تمريض: HeartPulse,
+  التمريض: HeartPulse,
+};
+
+export function getIconForName(name: string): LucideIcon {
+  const lower = name.toLowerCase();
+  for (const key of Object.keys(map)) {
+    if (lower.includes(key)) return map[key];
+  }
+  return ClipboardList;
+}
