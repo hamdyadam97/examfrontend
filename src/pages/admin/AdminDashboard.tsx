@@ -59,7 +59,7 @@ const recent = [
   { label: 'Exam “Cardiology Mock” completed', time: '15 min ago' },
   { label: 'Order #ORD-1024 paid', time: '1 hour ago' },
   { label: 'Question #4821 updated', time: '2 hours ago' },
-  { label: 'Certificate issued to Ahmed Hassan', time: '3 hours ago' },
+  { label: 'Exam “Surgery Final” published', time: '3 hours ago' },
 ];
 
 export function AdminDashboard() {
@@ -73,10 +73,10 @@ export function AdminDashboard() {
     { icon: UserCheck, label: t('admin.dashboardHome.activeStudents'), value: 8234, color: 'bg-emerald-100 text-emerald-600' },
     { icon: HelpCircle, label: t('admin.dashboardHome.totalQuestions'), value: 45230, color: 'bg-blue-100 text-blue-600' },
     { icon: ClipboardList, label: t('admin.dashboardHome.totalExams'), value: 1840, color: 'bg-purple-100 text-purple-600' },
-    { icon: BookOpen, label: t('admin.dashboardHome.totalCourses'), value: 96, color: 'bg-amber-100 text-amber-600' },
+    { icon: BookOpen, label: t('admin.dashboardHome.examAttempts'), value: 25600, color: 'bg-amber-100 text-amber-600' },
     { icon: CreditCard, label: t('admin.dashboardHome.activeSubscriptions'), value: 3450, color: 'bg-rose-100 text-rose-600' },
     { icon: Wallet, label: t('admin.dashboardHome.revenue'), value: 124500, suffix: '$', color: 'bg-teal-100 text-teal-600' },
-    { icon: Award, label: t('admin.dashboardHome.certificates'), value: 2180, color: 'bg-indigo-100 text-indigo-600' },
+    { icon: Award, label: t('admin.dashboardHome.passRate'), value: 72, suffix: '%', color: 'bg-indigo-100 text-indigo-600' },
   ];
 
   return (

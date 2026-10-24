@@ -41,9 +41,9 @@ export function HomePage() {
     { value: packages.length, label: t('statistics.packages', 'Exam Packages'), icon: Package, suffix: '+' },
     { value: totalQuestions, label: t('statistics.questions', 'Practice Questions'), icon: BookOpen, suffix: '+' },
     { value: totalMockExams, label: t('statistics.mockExams', 'Mock Exams'), icon: FileText, suffix: '+' },
-    { value: 120, label: t('statistics.instructors', 'Certified Instructors'), icon: Award, suffix: '+' },
+    { value: 25000, label: t('statistics.examAttempts', 'Exam Attempts'), icon: Award, suffix: '+' },
     { value: 96, label: t('statistics.successRate', 'Success Rate'), icon: TrendingUp, suffix: '%' },
-    { value: 8500, label: t('statistics.certificates', 'Certificates Issued'), icon: ScrollText, suffix: '+' },
+    { value: 8500, label: t('statistics.passedStudents', 'Students Passed'), icon: ScrollText, suffix: '+' },
   ];
 
   return (

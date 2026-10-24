@@ -11,7 +11,7 @@ import {
 import { subscription } from '@/store/packagesSlice';
 import type { AppDispatch, RootState } from '@/store';
 
-import { PackageOverview } from '@/components/exam-builder/PackageOverview';
+import { PackageOverview, NoSubscriptionNotice } from '@/components/exam-builder/PackageOverview';
 import { Stepper } from '@/components/exam-builder/Stepper';
 import { SelectionGrid } from '@/components/exam-builder/SelectionGrid';
 import { ExamModeSelector } from '@/components/exam-builder/ExamModeSelector';
@@ -133,11 +133,10 @@ export function ExamCreatePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSections, dispatch]);
 
-  const activeSubscription = subscriptions?.[0];
-  const packageTotal = activeSubscription?.package?.total_questions || 5000;
-  const packageUsed = activeSubscription?.package?.used_questions || 1240;
-  const packageName = activeSubscription?.package?.name || 'Elite Medical';
-  const packageExpiry = activeSubscription?.end_date || '2026-12-31';
+  const activeSubscription = subscriptions?.find((s) => s.is_active);
+  const packageTotal: number | null = activeSubscription?.package?.number_of_questions ?? null;
+  const packageUsed: number = activeSubscription?.questions_used ?? 0;
+  const packageRemaining = packageTotal ? Math.max(packageTotal - packageUsed, 0) : 0;
 
   const selectedTopicsTotal = useMemo(
     () => topics.filter((t) => selectedTopics.includes(t.id)).reduce((acc, t) => acc + (t.questions_count || 0), 0),
@@ -150,7 +149,7 @@ export function ExamCreatePage() {
 
   // The exam pool is the most specific selection: chosen topics, else chosen
   // sections, else all fetched sections, else the package balance.
-  const availableForSelection = selectedTopicsTotal || selectedSectionsTotal || totalQuestionsFromSections || packageTotal - packageUsed;
+  const availableForSelection = selectedTopicsTotal || selectedSectionsTotal || totalQuestionsFromSections || packageRemaining;
   const maxQuestions = Math.min(200, availableForSelection);
   const effectiveQuestionCount = Math.max(1, Math.min(questionCount, maxQuestions));
   const remainingAfter = Math.max(availableForSelection - effectiveQuestionCount, 0);
@@ -254,12 +253,16 @@ export function ExamCreatePage() {
           <p className="mt-2 text-slate-500 dark:text-slate-400">{t('examBuilder.subtitle')}</p>
         </div>
 
-        <PackageOverview
-          name={packageName}
-          total={packageTotal}
-          used={packageUsed}
-          expiry={packageExpiry}
-        />
+        {activeSubscription ? (
+          <PackageOverview
+            name={activeSubscription.package?.name || ''}
+            total={packageTotal}
+            used={packageUsed}
+            expiry={activeSubscription.end_date}
+          />
+        ) : (
+          <NoSubscriptionNotice />
+        )}
 
         <div className="rounded-3xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800 md:p-6">
           <Stepper steps={stepsLabels} current={step} onChange={setStep} />

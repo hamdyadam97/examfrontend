@@ -13,11 +13,12 @@ import { PackagesPage } from '@/pages/public/PackagesPage';
 import { PackagesCategoryPage } from '@/pages/public/PackagesCategoryPage';
 import { BlogsPage } from '@/pages/public/BlogsPage';
 import { BlogDetailPage } from '@/pages/public/BlogDetailPage';
-import { InstructorsPage } from '@/pages/public/InstructorsPage';
-import { CoursesPage } from '@/pages/public/CoursesPage';
 import { ExamsPage } from '@/pages/public/ExamsPage';
 import { ExamDetailPage } from '@/pages/public/ExamDetailPage';
-import { CertificatesPage } from '@/pages/public/CertificatesPage';
+import { ContactPage } from '@/pages/public/ContactPage';
+import { TestimonialsPage } from '@/pages/public/TestimonialsPage';
+import { LegalPage } from '@/pages/public/LegalPage';
+import { NotFoundPage } from '@/pages/public/NotFoundPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { ExamListPage } from '@/pages/dashboard/ExamListPage';
 import { ExamCreatePage } from '@/pages/dashboard/ExamCreatePage';
@@ -74,11 +75,13 @@ export default function App() {
           <Route path="/packages/category/:id" element={<PackagesCategoryPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogs/:id" element={<BlogDetailPage />} />
-          <Route path="/instructors" element={<InstructorsPage />} />
-          <Route path="/courses" element={<CoursesPage />} />
           <Route path="/exams" element={<ExamsPage />} />
           <Route path="/exams/:id" element={<ExamDetailPage />} />
-          <Route path="/certificates" element={<CertificatesPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/testimonials" element={<TestimonialsPage />} />
+          <Route path="/privacy" element={<LegalPage page="privacy" />} />
+          <Route path="/terms" element={<LegalPage page="terms" />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
 
         {/* Auth routes */}

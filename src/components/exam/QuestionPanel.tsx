@@ -113,7 +113,7 @@ export function QuestionPanel({
         <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
           {t(`examPlayer.questionType.${qType}`) || t('examPlayer.questionType.singleChoice')}
         </span>
-        {reviewMode && (
+        {reviewMode && typeof detail?.is_correct === 'boolean' && (
           <span className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${detail?.is_correct ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
             {detail?.is_correct ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
             {detail?.is_correct ? t('examPlayer.correct') : t('examPlayer.wrong')}

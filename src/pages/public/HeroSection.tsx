@@ -89,9 +89,9 @@ export function HeroSection() {
 
   const counters = [
     { value: 10000, label: t('hero.students', 'Students'), icon: Users },
-    { value: 500, label: t('hero.courses', 'Courses'), icon: BookOpen },
-    { value: 100, label: t('hero.instructors', 'Certified Instructors'), icon: Award },
-    { value: 20, label: t('hero.certifications', 'Professional Certifications'), icon: GraduationCap },
+    { value: 500, label: t('hero.exams', 'Mock Exams'), icon: BookOpen },
+    { value: 50000, label: t('hero.questions', 'Practice Questions'), icon: Award },
+    { value: 20, label: t('hero.specialties', 'Specialties'), icon: GraduationCap },
   ];
 
   return (
@@ -118,26 +118,26 @@ export function HeroSection() {
           >
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-semibold text-primary">
               <Award size={16} />
-              <span>{t('hero.badge', 'Accredited Medical Education')}</span>
+              <span>{t('hero.badge', 'Medical Exams Platform')}</span>
             </div>
 
             <h1 className="text-4xl font-extrabold leading-tight text-secondary sm:text-5xl lg:text-6xl">
-              {t('hero.title', 'Advance Your Medical Career with Accredited Training')}
+              {t('hero.title', 'Pass Your Medical Exams with Confidence')}
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
               {t(
                 'hero.description',
-                'Join thousands of healthcare professionals mastering in-demand skills through expert-led courses, hands-on training, and globally recognized certifications.'
+                'Practice with timed mock exams that simulate the real thing, a comprehensive question bank, and detailed reports that show exactly where to improve.'
               )}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
-                to="/packages"
+                to="/exams"
                 className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-xl"
               >
-                {t('hero.browseCourses', 'Browse Courses')}
+                {t('hero.browseExams', 'Browse Exams')}
                 <ArrowRight
                   size={18}
                   className="transition-transform duration-300 group-hover:translate-x-1"
@@ -203,7 +203,7 @@ export function HeroSection() {
                   <circle cx="150" cy="190" r="8" fill="#EF4444" />
                   <circle cx="250" cy="190" r="8" fill="#EF4444" />
 
-                  {/* Certificate */}
+                  {/* Answer sheet */}
                   <rect x="260" y="120" width="80" height="60" rx="6" fill="#FFFFFF" stroke="#002770" strokeWidth="2" />
                   <circle cx="300" cy="150" r="12" fill="#06BFB0" fillOpacity="0.2" />
                   <path d="M294 150l4 4 8-8" stroke="#06BFB0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />

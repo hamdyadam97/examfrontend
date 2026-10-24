@@ -5,19 +5,17 @@ const names: Record<string, string[]> = {
   categories: ['Heart Failure', 'Arrhythmia', 'Coronary Artery Disease', 'ECG', 'Hypertension', 'Pulmonology', 'Nephrology'],
   'sub-categories': ['Diagnosis', 'Treatment', 'Clinical Guidelines', 'Medications', 'Case Studies', 'Complications'],
   topics: ['Acute Heart Failure', 'Chronic Heart Failure', 'Beta Blockers', 'Diuretics', 'Implantable Devices'],
-  courses: ['Cardiology Mastery', 'Surgery Fundamentals', 'Pediatrics Essentials', 'Pharmacology Advanced'],
   exams: ['Cardiology Mock Exam', 'Surgery Final', 'Internal Medicine Practice', 'Pediatrics Assessment'],
   students: ['Ahmed Hassan', 'Sara Ali', 'Mohamed Salah', 'Fatima Zahra', 'Omar Khaled'],
-  instructors: ['Dr. Khalid Ibrahim', 'Dr. Layla Farouk', 'Dr. Youssef Nabil', 'Dr. Nour El-Din'],
+  authors: ['Dr. Khalid Ibrahim', 'Dr. Layla Farouk', 'Dr. Youssef Nabil', 'Dr. Nour El-Din'],
   subscriptions: ['Elite Medical', 'Pro Surgery', 'Basic Pediatrics', 'Premium Bundle'],
   orders: ['#ORD-1001', '#ORD-1002', '#ORD-1003', '#ORD-1004', '#ORD-1005'],
   payments: ['Visa ending 4242', 'Mastercard ending 8888', 'PayPal', 'Fawry'],
-  certificates: ['Internal Medicine Certificate', 'Surgery Certificate', 'Pediatrics Certificate'],
   offers: ['SUMMER30', 'WELCOME20', 'MEDPRO50', 'FLASH15'],
   blog: ['How to Pass Medical Exams', 'Top Study Strategies', 'New Question Bank Updates'],
   pages: ['About Us', 'Contact', 'Privacy Policy', 'Terms of Service'],
   testimonials: ['Great platform!', 'Helped me pass my exam', 'Excellent content'],
-  notifications: ['New Course Alert', 'Subscription Renewal', 'System Maintenance'],
+  notifications: ['New Exam Alert', 'Subscription Renewal', 'System Maintenance'],
   'support-tickets': ['Payment Issue', 'Cannot Access Exam', 'Question Error Report'],
   reports: ['Monthly Revenue', 'Student Performance', 'Question Usage'],
   analytics: ['Daily Active Users', 'Exam Completion Rate', 'Average Score'],
@@ -58,14 +56,6 @@ export function generateMockRows(entityId: string, count = 20) {
         base.email = 'student' + (i + 1) + '@example.com';
         base.exams = rand(0, 50);
         break;
-      case 'instructors':
-        base.specialty = pick(names.specialties);
-        base.courses = rand(1, 12);
-        break;
-      case 'courses':
-        base.instructor = pick(names.instructors);
-        base.students = rand(10, 500);
-        break;
       case 'exams':
         base.students = rand(0, 300);
         base.questions = rand(10, 200);
@@ -86,17 +76,12 @@ export function generateMockRows(entityId: string, count = 20) {
         base.amount = '$' + rand(50, 500);
         base.date = date(i);
         break;
-      case 'certificates':
-        base.student = pick(names.students);
-        base.course = pick(names.courses);
-        base.issueDate = date(i);
-        break;
       case 'offers':
         base.code = pick(names.offers);
         base.discount = rand(10, 60) + '%';
         break;
       case 'blog':
-        base.author = pick(names.instructors);
+        base.author = pick(names.authors);
         base.views = rand(100, 10000);
         break;
       case 'pages':
@@ -107,7 +92,7 @@ export function generateMockRows(entityId: string, count = 20) {
         base.rating = rand(1, 5);
         break;
       case 'notifications':
-        base.audience = pick(['All', 'Students', 'Instructors']);
+        base.audience = pick(['All', 'Students', 'Subscribers']);
         base.sent = rand(0, 5000);
         break;
       case 'support-tickets':

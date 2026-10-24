@@ -15,6 +15,7 @@ import { getProfileData } from '@/store/authSlice';
 import { getExams } from '@/store/examSlice';
 import { api } from '@/lib/api';
 import type { AppDispatch, RootState } from '@/store';
+import { emptyInsights, type StudentInsights } from '@/types/insights';
 
 import { WelcomeHero } from '@/components/dashboard/WelcomeHero';
 import { StatCard } from '@/components/dashboard/StatCard';
@@ -24,7 +25,6 @@ import { PerformanceCharts } from '@/components/dashboard/PerformanceCharts';
 import { TopicAnalysis } from '@/components/dashboard/TopicAnalysis';
 import { AiRecommendations } from '@/components/dashboard/AiRecommendations';
 import { SubscriptionCard } from '@/components/dashboard/SubscriptionCard';
-import { CertificatesList } from '@/components/dashboard/CertificatesList';
 import { Achievements } from '@/components/dashboard/Achievements';
 import { OffersSection } from '@/components/dashboard/OffersSection';
 import { NotificationsList } from '@/components/dashboard/NotificationsList';
@@ -41,12 +41,40 @@ interface Notification {
   created_at: string;
 }
 
+export interface DashboardStats {
+  categories_count: number;
+  active_subscriptions: number;
+  total_answered: number;
+  total_correct: number;
+  success_rate: number;
+  completed_exams: number;
+  in_progress_exams: number;
+  average_score: number;
+  best_score: number;
+  current_package: { name: string; end_date: string } | null;
+}
+
+const emptyStats: DashboardStats = {
+  categories_count: 0,
+  active_subscriptions: 0,
+  total_answered: 0,
+  total_correct: 0,
+  success_rate: 0,
+  completed_exams: 0,
+  in_progress_exams: 0,
+  average_score: 0,
+  best_score: 0,
+  current_package: null,
+};
+
 export function DashboardPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const exams = useSelector((state: RootState) => state.exam.exams);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [stats, setStats] = useState<DashboardStats>(emptyStats);
+  const [insights, setInsights] = useState<StudentInsights>(emptyInsights);
 
   useEffect(() => {
     dispatch(getProfileData());
@@ -54,25 +82,31 @@ export function DashboardPage() {
     api.get('/notifications')
       .then((res) => setNotifications(res.data?.data?.notifications || []))
       .catch(() => setNotifications([]));
+    api.get('/home')
+      .then((res) => setStats({ ...emptyStats, ...(res.data?.data || {}) }))
+      .catch(() => setStats(emptyStats));
+    api.get('/dashboard/insights')
+      .then((res) => setInsights({ ...emptyInsights, ...(res.data?.data || {}) }))
+      .catch(() => setInsights(emptyInsights));
   }, [dispatch]);
 
   const recentExams = useMemo(() => (Array.isArray(exams) ? exams.slice(0, 5) : []) as Exam[], [exams]);
   const fullName = `${String(user.first_name || '')} ${String(user.last_name || '')}`.trim() || t('common.user', 'Student');
 
   const statItems = [
-    { icon: Layers, label: t('dashboard.stats.remainingQuestions'), value: 1240, suffix: '', color: 'bg-primary/10 text-primary' },
-    { icon: CheckCircle2, label: t('dashboard.stats.completedExams'), value: 48, color: 'bg-emerald-100 text-emerald-600' },
-    { icon: BookOpen, label: t('dashboard.stats.averageScore'), value: 78, suffix: '%', color: 'bg-blue-100 text-blue-600' },
-    { icon: Trophy, label: t('dashboard.stats.bestScore'), value: 96, suffix: '%', color: 'bg-amber-100 text-amber-600' },
-    { icon: TrendingUp, label: t('dashboard.stats.successRate'), value: 82, suffix: '%', color: 'bg-purple-100 text-purple-600' },
-    { icon: Clock, label: t('dashboard.stats.studyHours'), value: 156, suffix: 'h', color: 'bg-rose-100 text-rose-600' },
-    { icon: Award, label: t('dashboard.stats.currentRank'), value: 42, prefix: '#', color: 'bg-teal-100 text-teal-600' },
-    { icon: CreditCard, label: t('dashboard.stats.earnedCertificates'), value: 3, color: 'bg-indigo-100 text-indigo-600' },
+    { icon: Layers, label: t('dashboard.stats.answeredQuestions'), value: stats.total_answered, color: 'bg-primary/10 text-primary' },
+    { icon: CheckCircle2, label: t('dashboard.stats.completedExams'), value: stats.completed_exams, color: 'bg-emerald-100 text-emerald-600' },
+    { icon: BookOpen, label: t('dashboard.stats.averageScore'), value: stats.average_score, suffix: '%', color: 'bg-blue-100 text-blue-600' },
+    { icon: Trophy, label: t('dashboard.stats.bestScore'), value: stats.best_score, suffix: '%', color: 'bg-amber-100 text-amber-600' },
+    { icon: TrendingUp, label: t('dashboard.stats.successRate'), value: stats.success_rate, suffix: '%', color: 'bg-purple-100 text-purple-600' },
+    { icon: Clock, label: t('dashboard.stats.inProgressExams'), value: stats.in_progress_exams, color: 'bg-rose-100 text-rose-600' },
+    { icon: Award, label: t('dashboard.stats.subscribedSpecialties'), value: stats.categories_count, color: 'bg-teal-100 text-teal-600' },
+    { icon: CreditCard, label: t('dashboard.stats.activeSubscriptions'), value: stats.active_subscriptions, color: 'bg-indigo-100 text-indigo-600' },
   ];
 
   return (
     <div className="space-y-8">
-      <WelcomeHero name={fullName} />
+      <WelcomeHero name={fullName} stats={stats} />
 
       <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {statItems.map((stat, i) => (
@@ -82,7 +116,6 @@ export function DashboardPage() {
             label={stat.label}
             value={stat.value}
             suffix={stat.suffix}
-            prefix={stat.prefix}
             color={stat.color}
             delay={i * 0.05}
           />
@@ -90,31 +123,30 @@ export function DashboardPage() {
       </section>
 
       <section>
-        <ContinueLearning />
+        <ContinueLearning insights={insights} />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
         <RecentExams exams={recentExams} />
-        <AiRecommendations />
+        <AiRecommendations insights={insights} />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <PerformanceCharts />
+        <PerformanceCharts insights={insights} />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <TopicAnalysis />
-        <SubscriptionCard />
+        <TopicAnalysis insights={insights} />
+        <SubscriptionCard subscription={insights.subscription} />
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        <Achievements />
-        <CertificatesList />
+      <section>
+        <Achievements insights={insights} />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
         <NotificationsList notifications={notifications} />
-        <OffersSection />
+        <OffersSection offers={insights.offers} />
         <SupportCenter />
       </section>
 

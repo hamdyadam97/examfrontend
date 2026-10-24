@@ -51,9 +51,7 @@ export function Header() {
     { label: t('header.nav.home', 'Home'), to: '/' },
     { label: t('header.nav.about', 'About Us'), to: '/about' },
     { label: t('common.exams', 'Exams'), to: '/exams' },
-    { label: t('header.nav.courses', 'Courses'), to: '/packages' },
-    { label: t('header.nav.certifications', 'Certifications'), to: '/certificates' },
-    { label: t('header.nav.instructors', 'Instructors'), to: '/instructors' },
+    { label: t('header.nav.packages', 'Packages'), to: '/packages' },
     { label: t('header.nav.blog', 'Blog'), to: '/blogs' },
     { label: t('header.nav.contact', 'Contact Us'), to: '/contact' },
   ];
@@ -174,7 +172,7 @@ export function Header() {
                 <input
                   type="text"
                   autoFocus
-                  placeholder={t('header.searchPlaceholder', 'Search courses, specialties...')}
+                  placeholder={t('header.searchPlaceholder', 'Search exams, specialties...')}
                   className="w-full bg-transparent text-sm text-secondary outline-none placeholder:text-slate-400"
                 />
                 <button

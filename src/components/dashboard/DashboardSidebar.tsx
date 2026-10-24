@@ -12,7 +12,6 @@ import {
   Heart,
   GraduationCap,
   BarChart3,
-  Award,
   CreditCard,
   Tag,
   Bell,
@@ -60,8 +59,6 @@ export function DashboardSidebar({ collapsed, setCollapsed, mobileOpen, setMobil
         items: [
           { to: '/user/dashboard?tab=grades', icon: GraduationCap, label: t('dashboard.sidebar.myGrades'), comingSoon: true },
           { to: '/user/dashboard?tab=analytics', icon: BarChart3, label: t('dashboard.sidebar.performanceAnalytics') },
-          { to: '/certificates', icon: Award, label: t('dashboard.sidebar.certificates') },
-          { to: '/courses', icon: BookOpen, label: t('dashboard.sidebar.courses') },
         ],
       },
       {

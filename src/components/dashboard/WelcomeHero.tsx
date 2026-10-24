@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { PlusCircle, Award, Flame, TrendingUp, Clock, Layers, Zap } from 'lucide-react';
+import { PlusCircle, Award, CheckCircle2, TrendingUp, Clock, Layers, Zap } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
+import type { DashboardStats } from '@/pages/dashboard/DashboardPage';
 
 interface Props {
   name: string;
+  stats: DashboardStats;
 }
 
-export function WelcomeHero({ name }: Props) {
+export function WelcomeHero({ name, stats }: Props) {
   const { t } = useTranslation();
+  const noPackage = t('dashboard.noActivePackage', 'No active package');
 
   const pills = [
-    { icon: Layers, label: t('dashboard.currentPackage'), value: 'Elite Medical' },
-    { icon: Clock, label: t('dashboard.subscriptionExpiry'), value: '2026-12-31' },
-    { icon: Flame, label: t('dashboard.learningStreak'), value: '12 days' },
-    { icon: Award, label: t('dashboard.overallLevel'), value: 'Advanced' },
+    { icon: Layers, label: t('dashboard.currentPackage'), value: stats.current_package?.name || noPackage },
+    { icon: Clock, label: t('dashboard.subscriptionExpiry'), value: stats.current_package?.end_date || '-' },
+    { icon: CheckCircle2, label: t('dashboard.stats.completedExams'), value: String(stats.completed_exams) },
+    { icon: Award, label: t('dashboard.stats.averageScore'), value: `${stats.average_score}%` },
   ];
 
   return (
@@ -51,10 +54,10 @@ export function WelcomeHero({ name }: Props) {
               {t('dashboard.createExam')}
             </Link>
             <Link
-              to="/courses"
+              to="/exams"
               className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
             >
-              {t('dashboard.browseCourses')}
+              {t('dashboard.browseExams')}
             </Link>
           </div>
 
@@ -81,25 +84,25 @@ export function WelcomeHero({ name }: Props) {
             <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-tr from-white/10 to-transparent blur-2xl" />
             <div className="relative space-y-4 rounded-[2rem] border border-white/10 bg-white/10 p-6 backdrop-blur-md">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-white/70">{t('dashboard.progressToCertification')}</span>
-                <span className="text-sm font-bold">78%</span>
+                <span className="text-sm font-medium text-white/70">{t('dashboard.examReadiness')}</span>
+                <span className="text-sm font-bold">{stats.success_rate}%</span>
               </div>
               <div className="h-3 w-full overflow-hidden rounded-full bg-white/10">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: '78%' }}
+                  animate={{ width: `${stats.success_rate}%` }}
                   transition={{ duration: 1.2, delay: 0.3 }}
                   className="h-full rounded-full bg-gradient-to-r from-primary to-teal-300"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4 pt-2">
                 <div className="rounded-2xl bg-white/10 p-4 text-center">
-                  <p className="text-2xl font-extrabold"><AnimatedCounter value={1240} /></p>
-                  <p className="text-xs text-white/60">{t('dashboard.remainingQuestions')}</p>
+                  <p className="text-2xl font-extrabold"><AnimatedCounter value={stats.total_answered} /></p>
+                  <p className="text-xs text-white/60">{t('dashboard.stats.answeredQuestions')}</p>
                 </div>
                 <div className="rounded-2xl bg-white/10 p-4 text-center">
-                  <p className="text-2xl font-extrabold"><AnimatedCounter value={3760} /></p>
-                  <p className="text-xs text-white/60">{t('dashboard.questionsUsed')}</p>
+                  <p className="text-2xl font-extrabold"><AnimatedCounter value={stats.total_correct} /></p>
+                  <p className="text-xs text-white/60">{t('dashboard.correctAnswers', 'Correct Answers')}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between rounded-2xl bg-white/10 p-4">
@@ -107,12 +110,9 @@ export function WelcomeHero({ name }: Props) {
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-400/20 text-yellow-300">
                     <TrendingUp size={20} />
                   </div>
-                  <div>
-                    <p className="text-sm font-bold">{t('dashboard.currentRank')}</p>
-                    <p className="text-xs text-white/60">Top 5% globally</p>
-                  </div>
+                  <p className="text-sm font-bold">{t('dashboard.stats.bestScore')}</p>
                 </div>
-                <span className="text-xl font-extrabold">#42</span>
+                <span className="text-xl font-extrabold">{stats.best_score}%</span>
               </div>
             </div>
           </div>

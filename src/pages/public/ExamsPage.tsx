@@ -19,7 +19,6 @@ import {
   GraduationCap,
   ChevronDown,
   ChevronUp,
-  Award,
   TrendingUp,
   PlayCircle,
   CheckCircle,
@@ -28,6 +27,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import { useStartExam } from '@/hooks/useStartExam';
 import { toast } from 'sonner';
 import { clsx, type ClassValue } from 'clsx';
 
@@ -38,12 +38,6 @@ interface Category {
   exams_count?: number;
 }
 
-interface RelatedCourse {
-  id: number;
-  name: string;
-  logo?: string;
-}
-
 interface Exam {
   id: number;
   title: string;
@@ -52,7 +46,6 @@ interface Exam {
   duration_minutes?: number;
   score?: number;
   attempts_allowed?: number;
-  certificate_available?: boolean;
   difficulty_level?: number;
   difficulty_label?: string;
   is_featured?: boolean;
@@ -62,7 +55,6 @@ interface Exam {
   category?: Category;
   sub_category?: Category;
   sub_sub_category?: Category;
-  related_course?: RelatedCourse | null;
   created_at?: string;
 }
 
@@ -85,7 +77,6 @@ interface Stats {
   total_exams: number;
   total_questions: number;
   total_attempts: number;
-  certificates_issued: number;
 }
 
 function cn(...inputs: ClassValue[]) {
@@ -223,13 +214,13 @@ function ExamMeta({ exam }: { exam: Exam }) {
         <span className='inline-flex items-center gap-1' title={t('exams.passingScore')}><Target size={12} /> {exam.score}%</span>
       )}
       <span className='inline-flex items-center gap-1' title={t('exams.attempts')}><Zap size={12} /> {exam.attempts_allowed ?? 1}</span>
-      {exam.certificate_available && <span className='inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400'><Award size={12} /> {t('exams.certificate')}</span>}
     </div>
   );
 }
 
 function ExamCard({ exam, status }: { exam: Exam; status?: 'upcoming' | 'completed' }) {
   const { t } = useTranslation();
+  const { startExam, startingId } = useStartExam();
 
   const actionLabel = status === 'completed' ? t('exams.reviewExam') : status === 'upcoming' ? t('exams.continueExam') : t('exams.startExam');
 
@@ -278,17 +269,13 @@ function ExamCard({ exam, status }: { exam: Exam; status?: 'upcoming' | 'complet
         </Link>
         <p className='mb-3 line-clamp-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300'>{exam.description}</p>
         <ExamMeta exam={exam} />
-        {exam.related_course && (
-          <div className='mb-3 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400'>
-            <BookOpen size={12} />
-            <span>{exam.related_course.name}</span>
-          </div>
-        )}
         <div className='mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800'>
           <button
-            onClick={() => toast.info(t('exams.startExam') + ' — coming soon')}
-            className='inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-secondary transition hover:bg-primary/90'
+            onClick={() => startExam(exam.id)}
+            disabled={startingId === exam.id}
+            className='inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-secondary transition hover:bg-primary/90 disabled:opacity-60'
           >
+            {startingId === exam.id && <Loader2 size={14} className='animate-spin' />}
             {actionLabel}
           </button>
           <Link to={`/exams/${exam.id}`} className='text-xs font-semibold text-primary hover:underline'>
@@ -302,6 +289,7 @@ function ExamCard({ exam, status }: { exam: Exam; status?: 'upcoming' | 'complet
 
 function FeaturedExamCard({ exam }: { exam: Exam }) {
   const { t } = useTranslation();
+  const { startExam, startingId } = useStartExam();
   return (
     <motion.div
       whileHover={{ y: -6 }}
@@ -325,9 +313,11 @@ function FeaturedExamCard({ exam }: { exam: Exam }) {
         <ExamMeta exam={exam} />
         <div className='mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800'>
           <button
-            onClick={() => toast.info(t('exams.startExam') + ' — coming soon')}
-            className='inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-secondary transition hover:bg-primary/90'
+            onClick={() => startExam(exam.id)}
+            disabled={startingId === exam.id}
+            className='inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-secondary transition hover:bg-primary/90 disabled:opacity-60'
           >
+            {startingId === exam.id && <Loader2 size={14} className='animate-spin' />}
             {t('exams.startExam')}
           </button>
         </div>
@@ -343,12 +333,11 @@ function StatsSection({ stats }: { stats?: Stats }) {
     { key: 'totalExams', icon: BookOpen, value: stats.total_exams },
     { key: 'totalQuestions', icon: Target, value: stats.total_questions },
     { key: 'totalAttempts', icon: TrendingUp, value: stats.total_attempts },
-    { key: 'certificatesIssued', icon: Award, value: stats.certificates_issued },
   ];
   return (
     <section className='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
       <div className='rounded-3xl bg-gradient-to-br from-secondary to-slate-900 p-8 shadow-xl sm:p-12'>
-        <div className='grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4'>
+        <div className='grid gap-8 text-center sm:grid-cols-3'>
           {items.map(({ key, icon: Icon, value }) => (
             <div key={key} className='flex flex-col items-center'>
               <div className='mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-primary backdrop-blur-sm'>
@@ -450,7 +439,6 @@ export function ExamsPage() {
   const [difficulty, setDifficulty] = useState('all');
   const [duration, setDuration] = useState('all');
   const [status, setStatus] = useState<'all' | 'active' | 'upcoming' | 'completed'>('all');
-  const [course, setCourse] = useState('all');
   const [sort, setSort] = useState<'newest' | 'mostPopular' | 'hardest' | 'easiest'>('newest');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
@@ -478,11 +466,6 @@ export function ExamsPage() {
   const upcomingIds = useMemo(() => new Set(upcoming.map((e) => e.id)), [upcoming]);
   const completedIds = useMemo(() => new Set(completed.map((e) => e.id)), [completed]);
 
-  const courses = useMemo(
-    () => Array.from(new Set(exams.map((e) => e.related_course?.name).filter(Boolean) as string[])),
-    [exams]
-  );
-
   const filtered = useMemo(() => {
     let list = [...exams];
     const q = search.trim().toLowerCase();
@@ -491,12 +474,10 @@ export function ExamsPage() {
         (e) =>
           e.title.toLowerCase().includes(q) ||
           (e.description && e.description.toLowerCase().includes(q)) ||
-          (e.category?.name && e.category.name.toLowerCase().includes(q)) ||
-          (e.related_course?.name && e.related_course.name.toLowerCase().includes(q))
+          (e.category?.name && e.category.name.toLowerCase().includes(q))
       );
     }
     if (category !== 'all') list = list.filter((e) => e.category?.name === category);
-    if (course !== 'all') list = list.filter((e) => e.related_course?.name === course);
     if (difficulty !== 'all') {
       const map: Record<string, number> = { beginner: 1, intermediate: 2, advanced: 3 };
       list = list.filter((e) => e.difficulty_level === map[difficulty]);
@@ -516,7 +497,7 @@ export function ExamsPage() {
     if (sort === 'easiest') list.sort((a, b) => (a.difficulty_level ?? 0) - (b.difficulty_level ?? 0));
     if (sort === 'newest') list.sort((a, b) => +new Date(b.created_at || 0) - +new Date(a.created_at || 0));
     return list;
-  }, [exams, search, category, course, difficulty, duration, status, sort, upcomingIds, completedIds]);
+  }, [exams, search, category, difficulty, duration, status, sort, upcomingIds, completedIds]);
 
   const toggleFaq = (id: number) => {
     setOpenFaqs((prev) => {
@@ -578,7 +559,7 @@ export function ExamsPage() {
                 {filtersOpen ? t('common.close') : t('common.open', 'Open')}
               </button>
             </div>
-            <div className={cn('grid gap-3 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8', !filtersOpen && 'hidden lg:grid')}>
+            <div className={cn('grid gap-3 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7', !filtersOpen && 'hidden lg:grid')}>
               <div className='relative lg:col-span-2'>
                 <Search className='absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400' />
                 <input
@@ -592,10 +573,6 @@ export function ExamsPage() {
               <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-primary focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white'>
                 <option value='all'>{t('exams.allCategories')}</option>
                 {categories.map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
-              </select>
-              <select value={course} onChange={(e) => setCourse(e.target.value)} className='w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-primary focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white'>
-                <option value='all'>{t('exams.allCourses')}</option>
-                {courses.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
               <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className='w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-primary focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white'>
                 <option value='all'>{t('exams.allDifficulties')}</option>

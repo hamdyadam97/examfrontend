@@ -242,7 +242,7 @@ function ValuesSection() {
   const { t } = useTranslation();
 
   const values = [
-    { icon: Award, titleKey: 'about.values.quality.title', titleFallback: 'Quality', descKey: 'about.values.quality.description', descFallback: 'We uphold the highest standards in every course, question, and exam we create.' },
+    { icon: Award, titleKey: 'about.values.quality.title', titleFallback: 'Quality', descKey: 'about.values.quality.description', descFallback: 'We uphold the highest standards in every question and exam we create.' },
     { icon: Lightbulb, titleKey: 'about.values.innovation.title', titleFallback: 'Innovation', descKey: 'about.values.innovation.description', descFallback: 'We continuously adopt modern technology to improve learning outcomes.' },
     { icon: ShieldCheck, titleKey: 'about.values.trust.title', titleFallback: 'Trust', descKey: 'about.values.trust.description', descFallback: 'Transparency and integrity guide every interaction with our learners.' },
     { icon: Users, titleKey: 'about.values.professionalism.title', titleFallback: 'Professionalism', descKey: 'about.values.professionalism.description', descFallback: 'Our team of medical experts ensures clinically accurate, reliable content.' },
@@ -291,7 +291,7 @@ function WhyChooseUsSection() {
   const features = [
     { icon: BookOpen, titleKey: 'about.why.feature1.title', titleFallback: 'Expert-Curated Content', descKey: 'about.why.feature1.description', descFallback: 'All materials are reviewed by certified medical professionals and educators.' },
     { icon: MonitorPlay, titleKey: 'about.why.feature2.title', titleFallback: 'Interactive Learning', descKey: 'about.why.feature2.description', descFallback: 'Engaging mock exams, analytics, and personalized study paths.' },
-    { icon: BadgeCheck, titleKey: 'about.why.feature3.title', titleFallback: 'Accredited Programs', descKey: 'about.why.feature3.description', descFallback: 'Courses and packages aligned with recognized medical standards.' },
+    { icon: BadgeCheck, titleKey: 'about.why.feature3.title', titleFallback: 'Real Exam Simulation', descKey: 'about.why.feature3.description', descFallback: 'Timed exams aligned with recognized medical exam standards.' },
     { icon: Headphones, titleKey: 'about.why.feature4.title', titleFallback: 'Dedicated Support', descKey: 'about.why.feature4.description', descFallback: 'Our support team is ready to help you throughout your learning journey.' },
   ];
 
@@ -335,8 +335,8 @@ function StatsSection() {
 
   const stats = [
     { value: 12000, suffix: '+', labelKey: 'about.stats.clients', labelFallback: 'Happy Clients' },
-    { value: 500, suffix: '+', labelKey: 'about.stats.courses', labelFallback: 'Courses' },
-    { value: 8500, suffix: '+', labelKey: 'about.stats.certificates', labelFallback: 'Certificates' },
+    { value: 500, suffix: '+', labelKey: 'about.stats.exams', labelFallback: 'Mock Exams' },
+    { value: 50000, suffix: '+', labelKey: 'about.stats.questions', labelFallback: 'Practice Questions' },
     { value: 10, suffix: '+', labelKey: 'about.stats.experience', labelFallback: 'Years of Experience' },
     { value: 45, suffix: '+', labelKey: 'about.stats.team', labelFallback: 'Team Members' },
   ];

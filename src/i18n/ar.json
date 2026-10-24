@@ -85,7 +85,8 @@
     "wrong": "خطأ",
     "overview": "نظرة عامة",
     "result": "النتيجة",
-    "noQuestions": "لا توجد أسئلة للمعايير المختارة."
+    "noQuestions": "لا توجد أسئلة للمعايير المختارة.",
+    "exam": "امتحان"
   },
   "packages": {
     "subtitle": "اختر باقة متميزة وابدأ التحضير لامتحاناتك الطبية.",
@@ -111,23 +112,20 @@
     "nav": {
       "home": "الرئيسية",
       "about": "من نحن",
-      "courses": "الدورات",
-      "certifications": "الشهادات",
-      "instructors": "المحاضرون",
       "blog": "المدونة",
-      "contact": "تواصل معنا"
+      "contact": "تواصل معنا",
+      "packages": "الباقات"
     },
     "enrollNow": "سجل الآن",
     "search": "بحث",
-    "searchPlaceholder": "ابحث في الدورات والتخصصات...",
+    "searchPlaceholder": "ابحث في الامتحانات والتخصصات...",
     "menu": "فتح القائمة"
   },
   "dashboard": {
     "welcomeBack": "مرحباً بعودتك",
     "hello": "أهلاً",
-    "heroText": "مركز القيادة الشخصي لاختباراتك الطبية. تابع تقدمك، عزّز نقاط ضعفك، واسرع نحو الشهادة.",
+    "heroText": "مركز القيادة الشخصي لاختباراتك الطبية. تابع تقدمك، عزّز نقاط ضعفك، واستعد لاجتياز امتحانك.",
     "createExam": "إنشاء امتحان جديد",
-    "browseCourses": "تصفح الدورات",
     "currentPackage": "الباقة الحالية",
     "remainingQuestions": "الأسئلة المتبقية",
     "questionsUsed": "الأسئلة المستخدمة",
@@ -135,7 +133,6 @@
     "learningStreak": "سلسلة التعلم",
     "overallLevel": "المستوى العام",
     "currentRank": "الترتيب الحالي",
-    "progressToCertification": "التقدم نحو الشهادة",
     "stats": {
       "remainingQuestions": "الأسئلة المتبقية",
       "completedExams": "الامتحانات المكتملة",
@@ -144,14 +141,21 @@
       "successRate": "معدل النجاح",
       "studyHours": "ساعات الدراسة",
       "currentRank": "الترتيب الحالي",
-      "earnedCertificates": "الشهادات المحرزة"
+      "answeredQuestions": "الأسئلة المُجابة",
+      "inProgressExams": "امتحانات قيد التنفيذ",
+      "subscribedSpecialties": "التخصصات المشترك بها",
+      "activeSubscriptions": "الاشتراكات الفعّالة"
     },
     "continueLearning": {
       "title": "واصل التعلم",
       "lastExam": "استكمال آخر امتحان",
-      "lastCourse": "استكمال آخر دورة",
       "practice": "استئناف جلسة التمرين",
-      "continue": "متابعة"
+      "continue": "متابعة",
+      "browseExams": "ابدأ امتحاناً جديداً",
+      "noExamInProgress": "لا يوجد امتحان قيد التنفيذ",
+      "noExamInProgressDesc": "أنشئ امتحاناً مخصصاً من بنك أسئلتك.",
+      "browseExamsDesc": "اختر امتحاناً جاهزاً لتبدأه",
+      "practiceDesc": "قوِّ نقاط ضعفك"
     },
     "recentExams": {
       "title": "أحدث الامتحانات",
@@ -163,33 +167,36 @@
       "questions": "الأسئلة",
       "pass": "ناجح",
       "fail": "راسب",
-      "viewResult": "عرض النتيجة"
+      "viewResult": "عرض النتيجة",
+      "inProgress": "قيد التنفيذ",
+      "answered": "تمت الإجابة على {{answered}}/{{total}}"
     },
     "performance": {
       "title": "تحليلات الأداء",
-      "monthlyProgress": "التقدم الشهري",
-      "averageScores": "متوسط الدرجات",
-      "successRate": "معدل النجاح",
-      "timeSpent": "وقت الدراسة",
-      "improvementTrend": "اتجاه التحسن",
-      "dailyActivity": "النشاط اليومي",
-      "weeklyProgress": "التقدم الأسبوعي"
+      "dailyActivity": "آخر 7 أيام",
+      "scoreProgress": "تطور الدرجات",
+      "bySpecialty": "الأسئلة حسب التخصص",
+      "correct": "صحيحة",
+      "wrong": "خاطئة",
+      "empty": "لا توجد بيانات كافية بعد. ادخل امتحاناً لتظهر تحليلاتك."
     },
     "strengthWeakness": {
       "title": "تحليل القوة والضعف",
       "strongTopics": "المواضيع القوية",
       "weakTopics": "المواضيع الضعيفة",
-      "recommendedTopics": "المواضيع المقترحة",
-      "masteredSubjects": "المواد المتقنة",
-      "needsImprovement": "يحتاج تحسين"
+      "recommendedTopics": "مواضيع لم تتدرب عليها",
+      "needsImprovement": "يحتاج تحسين",
+      "empty": "لا يوجد شيء بعد",
+      "note": "مبني على إجاباتك. يتم تقييم الموضوع بعد الإجابة على 3 أسئلة على الأقل منه."
     },
     "aiRecommendations": {
-      "title": "توصيات الذكاء الاصطناعي",
+      "title": "مقترح لك",
       "recommendedExam": "امتحان مقترح",
-      "recommendedCourse": "دورة مقترحة",
-      "recommendedSpecialty": "تخصص مقترح",
-      "practiceQuestions": "أسئلة يجب التمرن عليها",
-      "reviewTopics": "مواضيع يجب مراجعتها"
+      "reviewTopicDesc": "نسبة إجاباتك الصحيحة هنا {{accuracy}}%. تدرّب على هذا الموضوع.",
+      "wrongTitle": "راجع {{count}} سؤال أخطأت فيه",
+      "wrongDesc": "حوّل أخطاءك إلى درجات",
+      "newTopicDesc": "موضوع لم تتدرب عليه بعد",
+      "empty": "ادخل أول امتحان وسنقترح عليك ما تتدرب عليه بعد ذلك."
     },
     "subscription": {
       "title": "الاشتراك",
@@ -198,38 +205,21 @@
       "renew": "تجديد",
       "upgrade": "ترقية الباقة"
     },
-    "certificates": {
-      "title": "الشهادات",
-      "issueDate": "تاريخ الإصدار",
-      "view": "عرض الشهادة",
-      "download": "تحميل PDF"
-    },
     "achievements": {
       "title": "الإنجازات",
-      "points": "النقاط",
-      "xp": "نقاط الخبرة",
-      "badges": "الشارات",
-      "achievements": "الإنجازات",
-      "currentLeague": "الدوري الحالي",
-      "monthlyRanking": "التصنيف الشهري",
-      "completion": "نسبة الإنجاز"
+      "currentStreak": "أيام متتالية",
+      "passedExams": "امتحانات ناجحة",
+      "perfectScores": "درجات كاملة",
+      "activeDays": "أيام نشاط",
+      "topicsPracticed": "مواضيع تدربت عليها"
     },
     "offers": {
-      "title": "العروض والخصومات",
-      "newPackages": "باقات جديدة",
-      "seasonalDiscounts": "خصومات موسمية",
-      "limitedTime": "عروض محدودة",
-      "newCourses": "دورات جديدة",
-      "featuredExams": "امتحانات مميزة"
+      "title": "باقات مقترحة لك",
+      "discount": "خصم {{percent}}%",
+      "empty": "أنت مشترك في كل الباقات"
     },
     "notifications": {
       "title": "الإشعارات",
-      "upcomingExams": "امتحانات قادمة",
-      "subscriptionExpiry": "انتهاء الاشتراك",
-      "questionBankUpdates": "تحديثات بنك الأسئلة",
-      "courseAnnouncements": "إعلانات الدورات",
-      "offers": "عروض خاصة",
-      "certificatesReady": "الشهادات جاهزة",
       "empty": "لا توجد إشعارات جديدة."
     },
     "support": {
@@ -253,17 +243,17 @@
       "title": "الاقتراحات",
       "newFeature": "اقتراح ميزة جديدة",
       "newQuestion": "اقتراح أسئلة جديدة",
-      "newCourse": "اقتراح دورة جديدة",
       "generalFeedback": "ملاحظات عامة",
       "submit": "إرسال الاقتراح",
-      "success": "شكراً لاقتراحك."
+      "success": "شكراً لاقتراحك.",
+      "newExam": "اقتراح امتحان جديد"
     },
     "footer": {
       "createExam": "إنشاء امتحان",
       "continueLastExam": "استكمال آخر امتحان",
-      "browseCourses": "تصفح الدورات",
       "performanceReport": "تقرير الأداء",
-      "subscriptionDetails": "تفاصيل الاشتراك"
+      "subscriptionDetails": "تفاصيل الاشتراك",
+      "browseExams": "تصفح الامتحانات"
     },
     "sidebar": {
       "dashboard": "لوحة التحكم",
@@ -275,8 +265,6 @@
       "favoriteQuestions": "الأسئلة المفضلة",
       "myGrades": "درجاتي",
       "performanceAnalytics": "تحليلات الأداء",
-      "certificates": "الشهادات",
-      "courses": "الدورات",
       "subscription": "الاشتراك",
       "offers": "العروض والخصومات",
       "notifications": "الإشعارات",
@@ -292,24 +280,28 @@
       "account": "الحساب"
     },
     "header": {
-      "searchPlaceholder": "ابحث في الامتحانات والدورات والأسئلة...",
+      "searchPlaceholder": "ابحث في الامتحانات والأسئلة...",
       "notifications": "الإشعارات",
       "messages": "الرسائل",
       "darkMode": "الوضع الداكن",
       "lightMode": "الوضع الفاتح"
     },
-    "progress": "التقدم"
+    "progress": "التقدم",
+    "browseExams": "تصفح الامتحانات",
+    "examReadiness": "الجاهزية للامتحان",
+    "noActivePackage": "لا توجد باقة فعّالة",
+    "correctAnswers": "إجابات صحيحة"
   },
   "hero": {
-    "badge": "تعليم طبي معتمد",
-    "title": "طوّر مسيرتك المهنية الطبية من خلال تدريب معتمد",
-    "description": "انضم إلى آلاف المهنيين الصحيين الذين يتقنون المهارات المطلوبة من خلال دورات يقودها خبراء، وتدريب عملي، وشهادات معترف بها عالمياً.",
-    "browseCourses": "تصفح الدورات",
+    "badge": "منصة الامتحانات الطبية",
+    "title": "اجتز امتحاناتك الطبية بثقة",
+    "description": "تدرّب على امتحانات تجريبية بتوقيت حقيقي تحاكي الامتحان الفعلي، مع بنك أسئلة شامل وتقارير مفصلة توضح لك أين تحتاج للتحسن.",
     "contactUs": "تواصل معنا",
     "students": "طالب",
-    "courses": "دورة",
-    "instructors": "محاضر معتمد",
-    "certifications": "شهادة مهنية"
+    "browseExams": "تصفح الامتحانات",
+    "exams": "امتحان تجريبي",
+    "questions": "سؤال تدريبي",
+    "specialties": "تخصص"
   },
   "packageCard": {
     "medical": "طبي",
@@ -340,15 +332,15 @@
   "statistics": {
     "badge": "تأثيرنا",
     "title": "يثق بنا المهنيون الصحيون",
-    "subtitle": "انضم إلى آلاف المهنيين الطبيين الذين يطورون مسيرتهم من خلال تدريبنا المعتمد وباقات تحضير الامتحانات.",
+    "subtitle": "انضم إلى آلاف المهنيين الطبيين الذين يستعدون لامتحاناتهم من خلال امتحاناتنا التجريبية وباقات الامتحانات.",
     "totalStudents": "إجمالي الطلاب",
     "specialties": "التخصصات الطبية",
     "packages": "باقات الامتحانات",
     "questions": "أسئلة تدريبية",
     "mockExams": "امتحانات تجريبية",
-    "instructors": "محاضرون معتمدون",
     "successRate": "معدل النجاح",
-    "certificates": "شهادات صادرة"
+    "examAttempts": "محاولة امتحان",
+    "passedStudents": "طالب ناجح"
   },
   "howItWorks": {
     "badge": "خطوات بسيطة",
@@ -406,7 +398,7 @@
   "about": {
     "hero": {
       "title": "من نحن",
-      "subtitle": "نُمكّن المهنيين الصحيين من خلال التعليم الطبي المعتمد، والتحضير للامتحانات، وموارد التعلم مدى الحياة.",
+      "subtitle": "نساعد المهنيين الصحيين على اجتياز امتحاناتهم من خلال امتحانات تجريبية واقعية وبنوك أسئلة شاملة.",
       "cta": "تواصل معنا"
     },
     "story": {
@@ -421,7 +413,7 @@
     },
     "mission": {
       "title": "رسالتنا",
-      "description": "توفير تعليم طبي عالي الجودة ومعتمد ومتاح، يساعد المهنيين الصحيين على التألق في امتحاناتهم ومسيرتهم المهنية."
+      "description": "توفير تحضير عالي الجودة ومتاح للامتحانات، يساعد المهنيين الصحيين على اجتياز امتحاناتهم."
     },
     "vision": {
       "title": "رؤيتنا",
@@ -433,7 +425,7 @@
       "subtitle": "المبادئ التي تحدد ثقافتنا وتدفع عملنا كل يوم.",
       "quality": {
         "title": "الجودة",
-        "description": "نلتزم بأعلى المعايير في كل دورة وسؤال وامتحان نقدمه."
+        "description": "نلتزم بأعلى المعايير في كل سؤال وامتحان نقدمه."
       },
       "innovation": {
         "title": "الابتكار",
@@ -462,15 +454,15 @@
       "subtitle": "اكتشف المزايا التي تجعلنا الخيار المفضل للمهنيين الصحيين.",
       "feature1": {
         "title": "محتوى من خبراء",
-        "description": "جميع المواد تُراجع من قبل متخصصين طبيين ومربين معتمدين."
+        "description": "جميع الأسئلة تُراجع من قبل متخصصين طبيين ذوي خبرة."
       },
       "feature2": {
         "title": "تعلم تفاعلي",
         "description": "امتحانات تجريبية جذابة، تحليلات، ومسارات دراسية مخصصة."
       },
       "feature3": {
-        "title": "برامج معتمدة",
-        "description": "دورات وباقات تتوافق مع المعايير الطبية المعترف بها."
+        "title": "محاكاة الامتحان الحقيقي",
+        "description": "امتحانات بتوقيت حقيقي متوافقة مع معايير الامتحانات الطبية المعترف بها."
       },
       "feature4": {
         "title": "دعم مخصص",
@@ -479,10 +471,10 @@
     },
     "stats": {
       "clients": "عملاء سعداء",
-      "courses": "دورة",
-      "certificates": "شهادة",
       "experience": "سنوات خبرة",
-      "team": "عضو فريق"
+      "team": "عضو فريق",
+      "exams": "امتحان تجريبي",
+      "questions": "سؤال تدريبي"
     },
     "team": {
       "badge": "فريقنا",
@@ -525,341 +517,6 @@
       "badge": "آراء العملاء",
       "title": "ماذا يقول طلابنا"
     },
-    "blog": {
-      "hero": {
-        "title": "المدونة",
-        "subtitle": "رؤى ونصائح وتحديثات للمهنيين الصحيين ومحبي التعلم المستمر."
-      },
-      "searchPlaceholder": "ابحث في المقالات...",
-      "allCategories": "كل التصنيفات",
-      "sortLatest": "الأحدث",
-      "sortPopular": "الأكثر شهرة",
-      "sortOldest": "الأقدم",
-      "readMore": "اقرأ المزيد",
-      "minutes": "دقيقة قراءة",
-      "categoriesTitle": "تصفح حسب التصنيف",
-      "latestTitle": "أحدث المقالات",
-      "popularTitle": "الأكثر قراءة",
-      "tagsTitle": "الوسوم الشائعة",
-      "newsletterTitle": "اشترك في مدونتنا",
-      "newsletterSubtitle": "احصل على أحدث المقالات والتحديثات على بريدك الإلكتروني.",
-      "emailPlaceholder": "أدخل بريدك الإلكتروني",
-      "subscribe": "اشتراك",
-      "subscribeSuccess": "تم الاشتراك في تحديثات المدونة!",
-      "noResults": "لم يتم العثور على مقالات.",
-      "cta": {
-        "title": "جاهز لتطوير مسيرتك الطبية؟",
-        "subtitle": "استكشف باقاتنا وابدأ التعلم مع محتوى منظّم من خبراء اليوم.",
-        "explore": "استكشف الباقات",
-        "contact": "تواصل معنا"
-      }
-    },
-    "blogPost": {
-      "backToBlogs": "العودة إلى المدونة",
-      "breadcrumbHome": "الرئيسية",
-      "breadcrumbBlogs": "المدونة",
-      "publishedOn": "نُشر بتاريخ",
-      "updatedOn": "تم التحديث بتاريخ",
-      "readTime": "دقيقة قراءة",
-      "views": "مشاهدة",
-      "share": "مشاركة",
-      "shareFacebook": "مشاركة على فيسبوك",
-      "shareX": "مشاركة على إكس",
-      "shareLinkedin": "مشاركة على لينكدإن",
-      "shareWhatsapp": "مشاركة على واتساب",
-      "copyLink": "نسخ الرابط",
-      "copied": "تم النسخ!",
-      "toc": "المحتويات",
-      "tocEmpty": "لا توجد عناوين.",
-      "authorTitle": "عن الكاتب",
-      "relatedTitle": "مقالات ذات صلة",
-      "commentsTitle": "التعليقات",
-      "commentsCount": "{{count}} تعليق",
-      "noComments": "لا توجد تعليقات بعد. كن أول من يشاركنا رأيه.",
-      "commentName": "الاسم",
-      "commentEmail": "البريد الإلكتروني",
-      "commentMessage": "تعليقك",
-      "commentSubmit": "نشر التعليق",
-      "commentSuccess": "تم إرسال تعليقك وهو بانتظار الموافقة.",
-      "commentError": "تعذر إرسال التعليق. يرجى المحاولة لاحقاً.",
-      "newsletterTitle": "ابقَ على اطلاع",
-      "newsletterSubtitle": "اشترك ليصلك أحدث المقالات والتحديثات.",
-      "newsletterPlaceholder": "أدخل بريدك الإلكتروني",
-      "newsletterButton": "اشتراك",
-      "newsletterSuccess": "شكراً لاشتراكك!",
-      "previousArticle": "المقال السابق",
-      "nextArticle": "المقال التالي",
-      "ctaTitle": "جاهز لتطوير مسيرتك المهنية؟",
-      "ctaSubtitle": "استكشف باقاتنا المهنية وابدأ رحلة التعلم اليوم.",
-      "ctaButton": "استكشف الباقات",
-      "ctaContact": "تواصل معنا",
-      "notFound": "المقال غير موجود.",
-      "darkMode": "الوضع الداكن",
-      "lightMode": "الوضع الفاتح"
-    },
-    "instructors": {
-      "heroTitle": "مدربونا",
-      "heroSubtitle": "تعلم من خبراء بارزين يسعون لتحقيق نجاحك المهني.",
-      "breadcrumbHome": "الرئيسية",
-      "breadcrumbInstructors": "المدربون",
-      "searchPlaceholder": "ابحث عن مدرب...",
-      "specialization": "التخصص",
-      "allSpecializations": "كل التخصصات",
-      "category": "التصنيف",
-      "allCategories": "كل التصنيفات",
-      "experience": "مستوى الخبرة",
-      "allExperience": "كل المستويات",
-      "beginner": "مبتدئ (1-5 سنوات)",
-      "intermediate": "متوسط (6-10 سنوات)",
-      "expert": "خبير (أكثر من 10 سنوات)",
-      "sortBy": "ترتيب حسب",
-      "mostPopular": "الأكثر شهرة",
-      "highestRated": "الأعلى تقييماً",
-      "newest": "الأحدث",
-      "featuredTitle": "مدربون بارزون",
-      "allTitle": "كل المدربين",
-      "yearsExp": "سنوات خبرة",
-      "students": "طالب",
-      "courses": "دورة",
-      "viewProfile": "عرض الملف الشخصي",
-      "stats": {
-        "totalInstructors": "إجمالي المدربين",
-        "totalStudents": "إجمالي الطلاب",
-        "totalCourses": "إجمالي الدورات",
-        "certificatesIssued": "الشهادات الصادرة",
-        "yearsExperience": "سنوات الخبرة"
-      },
-      "becomeTitle": "كن مدرباً",
-      "becomeSubtitle": "شارك خبراتك مع آلاف المتعلمين ووسّع تأثيرك.",
-      "applyNow": "قدّم الآن",
-      "faqTitle": "الأسئلة الشائعة",
-      "testimonialsTitle": "آراء الطلاب",
-      "ctaTitle": "جاهز لتبدأ التعلم؟",
-      "ctaSubtitle": "استكشف دوراتنا وتعلم من أفضل المدربين في المجال.",
-      "ctaExplore": "استكشف الدورات",
-      "ctaContact": "تواصل معنا",
-      "noResults": "لم يتم العثور على مدربين."
-    },
-    "courses": {
-      "heroTitle": "الدورات",
-      "heroSubtitle": "استكشف دورات احترافية بقيادة خبراء مصممة لتطوير مسيرتك ومهاراتك.",
-      "breadcrumbHome": "الرئيسية",
-      "breadcrumbCourses": "الدورات",
-      "searchPlaceholder": "ابحث في الدورات...",
-      "category": "التصنيف",
-      "allCategories": "كل التصنيفات",
-      "instructor": "المدرب",
-      "allInstructors": "كل المدربين",
-      "price": "السعر",
-      "allPrices": "كل الأسعار",
-      "free": "مجاني",
-      "paid": "مدفوع",
-      "language": "اللغة",
-      "allLanguages": "كل اللغات",
-      "difficulty": "المستوى",
-      "allDifficulties": "كل المستويات",
-      "beginner": "مبتدئ",
-      "intermediate": "متوسط",
-      "advanced": "متقدم",
-      "duration": "المدة",
-      "allDurations": "أي مدة",
-      "short": "قصيرة (< 3 ساعات)",
-      "medium": "متوسطة (3-6 ساعات)",
-      "long": "طويلة (> 6 ساعات)",
-      "sortBy": "ترتيب حسب",
-      "newest": "الأحدث",
-      "mostPopular": "الأكثر شهرة",
-      "highestRated": "الأعلى تقييماً",
-      "featuredTitle": "دورات مميزة",
-      "allTitle": "كل الدورات",
-      "lessons": "درس",
-      "students": "طالب",
-      "durationMin": "دقيقة",
-      "enroll": "سجّل الآن",
-      "wishlist": "المفضلة",
-      "stats": {
-        "totalCourses": "إجمالي الدورات",
-        "totalStudents": "إجمالي الطلاب",
-        "totalInstructors": "إجمالي المدربين",
-        "certificatesIssued": "الشهادات الصادرة"
-      },
-      "categoriesTitle": "تصفح التصنيفات",
-      "faqTitle": "الأسئلة الشائعة",
-      "testimonialsTitle": "آراء الطلاب",
-      "newsletterTitle": "اشترك في نشرتنا البريدية",
-      "newsletterSubtitle": "احصل على أحدث الدورات والتحديثات على بريدك.",
-      "newsletterPlaceholder": "أدخل بريدك الإلكتروني",
-      "newsletterButton": "اشتراك",
-      "newsletterSuccess": "شكراً لاشتراكك!",
-      "ctaTitle": "جاهز لتبدأ التعلم؟",
-      "ctaSubtitle": "انضم إلى آلاف المتعلمين واكشف إمكانياتك اليوم.",
-      "ctaExplore": "استكشف الدورات",
-      "ctaContact": "تواصل معنا",
-      "noResults": "لم يتم العثور على دورات."
-    },
-    "exams": {
-      "heroTitle": "الامتحانات",
-      "heroSubtitle": "استعد مع امتحانات تجريبية واقعية، تابع تقدمك، واحصل على شهادات.",
-      "breadcrumbHome": "الرئيسية",
-      "breadcrumbExams": "الامتحانات",
-      "searchPlaceholder": "ابحث في الامتحانات...",
-      "category": "التصنيف",
-      "allCategories": "كل التصنيفات",
-      "course": "الدورة",
-      "allCourses": "كل الدورات",
-      "difficulty": "المستوى",
-      "allDifficulties": "كل المستويات",
-      "beginner": "مبتدئ",
-      "intermediate": "متوسط",
-      "advanced": "متقدم",
-      "duration": "المدة",
-      "allDurations": "أي مدة",
-      "short": "قصيرة (< 30 د)",
-      "medium": "متوسطة (30-90 د)",
-      "long": "طويلة (> 90 د)",
-      "status": "الحالة",
-      "allStatuses": "كل الحالات",
-      "active": "نشطة",
-      "upcoming": "قادمة",
-      "completed": "مكتملة",
-      "sortBy": "ترتيب حسب",
-      "newest": "الأحدث",
-      "mostPopular": "الأكثر شهرة",
-      "hardest": "الأصعب",
-      "easiest": "الأسهل",
-      "featuredTitle": "امتحانات مميزة",
-      "allTitle": "كل الامتحانات",
-      "upcomingTitle": "امتحانات قادمة",
-      "completedTitle": "امتحانات مكتملة",
-      "examsCount": "امتحان",
-      "questions": "سؤال",
-      "attempts": "محاولات",
-      "minutes": "دقيقة",
-      "passingScore": "درجة النجاح",
-      "certificate": "شهادة",
-      "startExam": "ابدأ الامتحان",
-      "continueExam": "استمر",
-      "reviewExam": "مراجعة",
-      "stats": {
-        "totalExams": "إجمالي الامتحانات",
-        "totalQuestions": "أسئلة تدريبية",
-        "totalAttempts": "محاولات الامتحان",
-        "certificatesIssued": "الشهادات الصادرة"
-      },
-      "categoriesTitle": "تصفح التصنيفات",
-      "faqTitle": "الأسئلة الشائعة",
-      "testimonialsTitle": "آراء الطلاب",
-      "newsletterTitle": "اشترك في تحديثات الامتحانات",
-      "newsletterSubtitle": "احصل على أحدث الامتحانات التجريبية ونصائح التحضير على بريدك.",
-      "newsletterPlaceholder": "أدخل بريدك الإلكتروني",
-      "newsletterButton": "اشتراك",
-      "newsletterSuccess": "شكراً لاشتراكك!",
-      "ctaTitle": "جاهز لاختبار معرفتك؟",
-      "ctaSubtitle": "انضم إلى آلاف المهنيين الصحيين الذين يستعدون مع امتحاناتنا التجريبية المعتمدة.",
-      "ctaExplore": "استكشف الامتحانات",
-      "ctaContact": "تواصل معنا",
-      "noResults": "لم يتم العثور على امتحانات."
-    },
-    "examDetail": {
-      "breadcrumbHome": "الرئيسية",
-      "breadcrumbExams": "الامتحانات",
-      "backToExams": "العودة إلى الامتحانات",
-      "lastUpdated": "آخر تحديث",
-      "duration": "المدة",
-      "questions": "الأسئلة",
-      "passingScore": "درجة النجاح",
-      "attemptsAllowed": "المحاولات المسموحة",
-      "certificateAvailable": "الشهادة متاحة",
-      "language": "اللغة",
-      "examType": "نوع الامتحان",
-      "startExam": "ابدأ الامتحان",
-      "overviewTitle": "نظرة عامة",
-      "whatYoullBeTestedOn": "ما سيتم اختبارك فيه",
-      "skillsCovered": "المهارات المشمولة",
-      "instructions": "تعليمات الامتحان",
-      "requirements": "المتطلبات",
-      "rulesAndPolicies": "القواعد والسياسات",
-      "featuresTitle": "مميزات الامتحان",
-      "feature_instant_result": "نتيجة فورية",
-      "feature_auto_save": "حفظ تلقائي",
-      "feature_timer": "مؤقت",
-      "feature_random_questions": "أسئلة عشوائية",
-      "feature_progress_tracking": "تتبع التقدم",
-      "instructorTitle": "المدرب",
-      "relatedCoursesTitle": "دورات ذات صلة",
-      "relatedExamsTitle": "امتحانات ذات صلة",
-      "faqTitle": "الأسئلة الشائعة",
-      "ctaTitle": "جاهز لبدء الامتحان؟",
-      "ctaSubtitle": "اختبر معرفتك واحصل على شهادتك.",
-      "notFound": "الامتحان غير موجود."
-    },
-    "certificates": {
-      "heroTitle": "الشهادات",
-      "heroSubtitle": "احصل على شهادات معتمدة في المجال تثبت مهاراتك وتسرع نموك المهني.",
-      "breadcrumbHome": "الرئيسية",
-      "verifyTitle": "التحقق من شهادة",
-      "certIdLabel": "رقم الشهادة",
-      "certIdPlaceholder": "أدخل رقم الشهادة",
-      "studentNameLabel": "اسم الطالب (اختياري)",
-      "studentNamePlaceholder": "أدخل اسم الطالب",
-      "verifyButton": "تحقق من الشهادة",
-      "clearButton": "مسح",
-      "verifySuccess": "تم التحقق من الشهادة بنجاح",
-      "verifyNotFound": "لم يتم العثور على شهادة موثقة بهذه البيانات.",
-      "certIdRequired": "يرجى إدخال رقم الشهادة.",
-      "loadError": "تعذر تحميل الشهادات.",
-      "featured": "مميزة",
-      "featuredTitle": "شهادات مميزة",
-      "allTitle": "كل الشهادات",
-      "searchPlaceholder": "ابحث في الشهادات...",
-      "relatedCourse": "الدورة",
-      "instructor": "المدرب",
-      "issuingOrganization": "الجهة المصدرة",
-      "issueDate": "تاريخ الإصدار",
-      "expiryDate": "تاريخ الانتهاء",
-      "certificateId": "رقم الشهادة",
-      "verified": "موثقة",
-      "notVerified": "غير موثقة",
-      "viewDetails": "عرض التفاصيل",
-      "viewCertificate": "عرض الشهادة",
-      "downloadPdf": "تحميل PDF",
-      "pdfNotAvailable": "ملف PDF غير متوفر",
-      "title": "العنوان",
-      "studentName": "الطالب",
-      "noResults": "لم يتم العثور على شهادات.",
-      "benefitsTitle": "فوائد الشهادات",
-      "benefitsSubtitle": "اكتشف كيف يمكن لهذه الشهادات أن تطور مسيرتك المهنية.",
-      "benefit1Title": "الاعتراف المهني",
-      "benefit1Desc": "تميز أمام أصحاب العمل بشهادات مدعومة من منصة تعليمية موثوقة.",
-      "benefit2Title": "نمو مهني",
-      "benefit2Desc": "افتح أبواب فرص جديدة ودور أكبر في مجالك.",
-      "benefit3Title": "مهارات موثقة",
-      "benefit3Desc": "أثبت خبرتك من خلال شهادات مرتبطة بتقييمات حقيقية.",
-      "benefit4Title": "شهادات قابلة للمشاركة",
-      "benefit4Desc": "شارك إنجازاتك بسهولة على لينكدإن وسيرتك الذاتية وملفك.",
-      "benefit5Title": "إنجاز مدى الحياة",
-      "benefit5Desc": "تبقى شهاداتك متاحة كسجل دائم لرحلتك التعليمية.",
-      "benefit6Title": "تحقق رقمي",
-      "benefit6Desc": "يمكن لأصحاب العمل التحقق فوراً من صحة شهادتك عبر الإنترنت.",
-      "statCertificates": "الشهادات المصدرة",
-      "statStudents": "الطلاب المعتمدين",
-      "statPartners": "المنظمات الشريكة",
-      "statPrograms": "البرامج المتاحة",
-      "howItWorksTitle": "كيف تعمل",
-      "howItWorksSubtitle": "طريقك نحو شهادة معتمدة في أربع خطوات بسيطة.",
-      "step1Title": "أكمل الدورة",
-      "step1Desc": "أنهِ جميع الدروس والاختبارات والأنشطة العملية في البرنامج الذي اخترته.",
-      "step2Title": "اجتز الامتحان النهائي",
-      "step2Desc": "أظهر معرفتك من خلال اجتياز التقييم النهائي الشامل.",
-      "step3Title": "استلم شهادتك",
-      "step3Desc": "احصل على شهادتك الرقمية برقم فريد وسجل تحقق.",
-      "step4Title": "حمّل أو شارك",
-      "step4Desc": "حمّل شهادتك بصيغة PDF أو شاركها مباشرة على الشبكات المهنية.",
-      "faqTitle": "الأسئلة الشائعة",
-      "ctaTitle": "ابدأ بكسب شهادتك اليوم",
-      "ctaSubtitle": "سجّل في دورة، اجتز الامتحان، وانضم إلى آلاف المحترفين المعتمدين.",
-      "ctaButton": "تصفح الدورات"
-    },
     "cta": {
       "title": "جاهز لكتابة قصة نجاحك؟",
       "subtitle": "انضم إلى مجتمع متنامٍ من المهنيين الصحيين وخطوة التالية في مسيرتك المهنية.",
@@ -870,8 +527,8 @@
   "cta": {
     "badge": "انضم إلى آلاف المهنيين الصحيين",
     "title": "ابدأ رحلة نجاحك الطبي اليوم",
-    "description": "وصول إلى باقات تحضير امتحانات عالية الجودة، أسئلة تدريبية، امتحانات تجريبية، وموارد تعليمية معتمدة مصممة للمهنيين الصحيين.",
-    "trust1": "محتوى معتمد",
+    "description": "وصول إلى باقات الامتحانات، أسئلة تدريبية، وامتحانات تجريبية بتوقيت حقيقي مصممة للمهنيين الصحيين.",
+    "trust1": "أسئلة مراجعة من خبراء",
     "trust2": "وصول 24/7",
     "trust3": "بقيادة خبراء",
     "explorePackages": "استكشف الباقات",
@@ -881,8 +538,8 @@
     "successRate": "معدل النجاح"
   },
   "footer": {
-    "tagline": "نُمكّن المتخصصين في الرعاية الصحية من خلال تعليم طبي معتمد.",
-    "description": "توفر RootsExams تدريباً طبياً عالي الجودة، وامتحانات تجريبية، ودورات معتمدة لمساعدة المهنيين الصحيين على تطوير مسيرتهم.",
+    "tagline": "منصة الامتحانات للمتخصصين في الرعاية الصحية.",
+    "description": "توفر RootsExams امتحانات تجريبية بتوقيت حقيقي، وبنوك أسئلة شاملة، وتقارير أداء مفصلة لمساعدة المهنيين الصحيين على اجتياز امتحاناتهم.",
     "quickLinks": "روابط سريعة",
     "categoriesTitle": "التصنيفات",
     "contact": "تواصل معنا",
@@ -891,19 +548,16 @@
     "links": {
       "home": "الرئيسية",
       "about": "من نحن",
-      "courses": "الدورات",
-      "certifications": "الشهادات",
-      "instructors": "المحاضرون",
       "blog": "المدونة",
-      "contact": "تواصل معنا"
+      "contact": "تواصل معنا",
+      "exams": "الامتحانات",
+      "packages": "الباقات"
     },
     "categories": {
-      "medical": "الدورات الطبية",
-      "nursing": "دورات التمريض",
-      "pharmacy": "دورات الصيدلة",
-      "dentistry": "دورات طب الأسنان",
-      "online": "التدريب الإلكتروني",
-      "workshops": "ورش العمل"
+      "medical": "الامتحانات الطبية",
+      "nursing": "امتحانات التمريض",
+      "pharmacy": "امتحانات الصيدلة",
+      "dentistry": "امتحانات طب الأسنان"
     },
     "social": {
       "facebook": "فيسبوك",
@@ -914,7 +568,7 @@
     },
     "newsletter": {
       "title": "اشترك في نشرتنا البريدية",
-      "subtitle": "احصل على أحدث الدورات الطبية، نصائح الامتحانات، والتحديثات على بريدك.",
+      "subtitle": "احصل على أحدث الامتحانات ونصائح الاختبار والتحديثات على بريدك.",
       "placeholder": "أدخل بريدك الإلكتروني",
       "button": "اشتراك",
       "success": "شكراً لاشتراكك!",
@@ -1000,7 +654,10 @@
       "savedQuestion": "تم حفظ السؤال",
       "unsavedQuestion": "تم إلغاء حفظ السؤال",
       "reviewLaterAdded": "تمت الإضافة للمراجعة",
-      "reviewLaterRemoved": "تمت الإزالة من المراجعة"
+      "reviewLaterRemoved": "تمت الإزالة من المراجعة",
+      "timeWarning": "باقي {{minutes}} دقيقة!",
+      "timeUp": "انتهى الوقت وتم تسليم امتحانك.",
+      "alreadyFinished": "تم تسليم هذا الامتحان بالفعل."
     },
     "fullscreen": "ملء الشاشة",
     "exitFullscreen": "إخراج من ملء الشاشة",
@@ -1026,7 +683,6 @@
     "aiRecommendations": "توصيات الذكاء الاصطناعي",
     "reviewIncorrect": "مراجعة الإجابات الخاطئة",
     "downloadPdf": "تحميل تقرير PDF",
-    "downloadCertificate": "تحميل الشهادة",
     "shareResult": "مشاركة النتيجة",
     "backToExams": "العودة للامتحانات",
     "retakeExam": "إعادة الامتحان",
@@ -1142,12 +798,17 @@
       "reviewWrong": "مراجعة الأسئلة الخاطئة",
       "reviewSaved": "مراجعة الأسئلة المحفوظة",
       "reviewFavorites": "مراجعة المفضلة",
-      "browseCourses": "تصفح الدورات",
-      "performanceReport": "تقرير الأداء"
+      "performanceReport": "تقرير الأداء",
+      "browseExams": "تصفح الامتحانات"
     },
     "alerts": {
       "selectCategory": "يرجى اختيار تصنيف واحد على الأقل.",
       "examCreated": "تم إنشاء الامتحان بنجاح!"
+    },
+    "noSubscription": {
+      "title": "ليس لديك اشتراك فعّال",
+      "subtitle": "اشترك في باقة لفتح بنك الأسئلة الخاص بها والبدء في إنشاء الامتحانات.",
+      "cta": "عرض الباقات"
     }
   },
   "admin": {
@@ -1160,15 +821,12 @@
       "categories": "التصنيفات",
       "subCategories": "التصنيفات الفرعية",
       "topics": "المواضيع",
-      "courses": "الدورات",
       "exams": "الامتحانات",
       "examTemplates": "قوالب الامتحانات",
       "students": "الطلاب",
-      "instructors": "المحاضرون",
       "subscriptions": "الاشتراكات",
       "orders": "الطلبات",
       "payments": "المدفوعات",
-      "certificates": "الشهادات",
       "offers": "العروض والكوبونات",
       "blog": "المدونة",
       "pages": "الصفحات",
@@ -1235,10 +893,8 @@
       "activeStudents": "الطلاب النشطون",
       "totalQuestions": "إجمالي الأسئلة",
       "totalExams": "إجمالي الامتحانات",
-      "totalCourses": "إجمالي الدورات",
       "activeSubscriptions": "الاشتراكات النشطة",
       "revenue": "الإيرادات",
-      "certificates": "الشهادات",
       "recentActivity": "النشاط الأخير",
       "latestStudents": "أحدث الطلاب",
       "latestExams": "أحدث الامتحانات",
@@ -1247,7 +903,8 @@
       "questionUsage": "استخدام الأسئلة",
       "passRate": "معدل النجاح",
       "systemHealth": "صحة النظام",
-      "viewAll": "عرض الكل"
+      "viewAll": "عرض الكل",
+      "examAttempts": "محاولات الامتحانات"
     },
     "entity": {
       "create": "إنشاء {{entity}}",
@@ -1311,6 +968,244 @@
       "pending": "معلق",
       "completed": "مكتمل",
       "email": "البريد الإلكتروني"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "المدونة",
+      "subtitle": "رؤى ونصائح وتحديثات للمهنيين الصحيين ومحبي التعلم المستمر."
+    },
+    "searchPlaceholder": "ابحث في المقالات...",
+    "allCategories": "كل التصنيفات",
+    "sortLatest": "الأحدث",
+    "sortPopular": "الأكثر شهرة",
+    "sortOldest": "الأقدم",
+    "readMore": "اقرأ المزيد",
+    "minutes": "دقيقة قراءة",
+    "categoriesTitle": "تصفح حسب التصنيف",
+    "latestTitle": "أحدث المقالات",
+    "popularTitle": "الأكثر قراءة",
+    "tagsTitle": "الوسوم الشائعة",
+    "newsletterTitle": "اشترك في مدونتنا",
+    "newsletterSubtitle": "احصل على أحدث المقالات والتحديثات على بريدك الإلكتروني.",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "subscribe": "اشتراك",
+    "subscribeSuccess": "تم الاشتراك في تحديثات المدونة!",
+    "noResults": "لم يتم العثور على مقالات.",
+    "cta": {
+      "title": "جاهز لتطوير مسيرتك الطبية؟",
+      "subtitle": "استكشف باقاتنا وابدأ التعلم مع محتوى منظّم من خبراء اليوم.",
+      "explore": "استكشف الباقات",
+      "contact": "تواصل معنا"
+    },
+    "anonymous": "مجهول"
+  },
+  "blogPost": {
+    "backToBlogs": "العودة إلى المدونة",
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbBlogs": "المدونة",
+    "publishedOn": "نُشر بتاريخ",
+    "updatedOn": "تم التحديث بتاريخ",
+    "readTime": "دقيقة قراءة",
+    "views": "مشاهدة",
+    "share": "مشاركة",
+    "shareFacebook": "مشاركة على فيسبوك",
+    "shareX": "مشاركة على إكس",
+    "shareLinkedin": "مشاركة على لينكدإن",
+    "shareWhatsapp": "مشاركة على واتساب",
+    "copyLink": "نسخ الرابط",
+    "copied": "تم النسخ!",
+    "toc": "المحتويات",
+    "tocEmpty": "لا توجد عناوين.",
+    "authorTitle": "عن الكاتب",
+    "relatedTitle": "مقالات ذات صلة",
+    "commentsTitle": "التعليقات",
+    "commentsCount": "{{count}} تعليق",
+    "noComments": "لا توجد تعليقات بعد. كن أول من يشاركنا رأيه.",
+    "commentName": "الاسم",
+    "commentEmail": "البريد الإلكتروني",
+    "commentMessage": "تعليقك",
+    "commentSubmit": "نشر التعليق",
+    "commentSuccess": "تم إرسال تعليقك وهو بانتظار الموافقة.",
+    "commentError": "تعذر إرسال التعليق. يرجى المحاولة لاحقاً.",
+    "newsletterTitle": "ابقَ على اطلاع",
+    "newsletterSubtitle": "اشترك ليصلك أحدث المقالات والتحديثات.",
+    "newsletterPlaceholder": "أدخل بريدك الإلكتروني",
+    "newsletterButton": "اشتراك",
+    "newsletterSuccess": "شكراً لاشتراكك!",
+    "previousArticle": "المقال السابق",
+    "nextArticle": "المقال التالي",
+    "ctaTitle": "جاهز لتطوير مسيرتك المهنية؟",
+    "ctaSubtitle": "استكشف باقاتنا المهنية وابدأ رحلة التعلم اليوم.",
+    "ctaButton": "استكشف الباقات",
+    "ctaContact": "تواصل معنا",
+    "notFound": "المقال غير موجود.",
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح"
+  },
+  "exams": {
+    "heroTitle": "الامتحانات",
+    "heroSubtitle": "استعد مع امتحانات تجريبية واقعية وتابع تقدمك.",
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbExams": "الامتحانات",
+    "searchPlaceholder": "ابحث في الامتحانات...",
+    "category": "التصنيف",
+    "allCategories": "كل التصنيفات",
+    "difficulty": "المستوى",
+    "allDifficulties": "كل المستويات",
+    "beginner": "مبتدئ",
+    "intermediate": "متوسط",
+    "advanced": "متقدم",
+    "duration": "المدة",
+    "allDurations": "أي مدة",
+    "short": "قصيرة (< 30 د)",
+    "medium": "متوسطة (30-90 د)",
+    "long": "طويلة (> 90 د)",
+    "status": "الحالة",
+    "allStatuses": "كل الحالات",
+    "active": "نشطة",
+    "upcoming": "قادمة",
+    "completed": "مكتملة",
+    "sortBy": "ترتيب حسب",
+    "newest": "الأحدث",
+    "mostPopular": "الأكثر شهرة",
+    "hardest": "الأصعب",
+    "easiest": "الأسهل",
+    "featuredTitle": "امتحانات مميزة",
+    "allTitle": "كل الامتحانات",
+    "upcomingTitle": "امتحانات قادمة",
+    "completedTitle": "امتحانات مكتملة",
+    "examsCount": "امتحان",
+    "questions": "سؤال",
+    "attempts": "محاولات",
+    "minutes": "دقيقة",
+    "passingScore": "درجة النجاح",
+    "startExam": "ابدأ الامتحان",
+    "continueExam": "استمر",
+    "reviewExam": "مراجعة",
+    "stats": {
+      "totalExams": "إجمالي الامتحانات",
+      "totalQuestions": "أسئلة تدريبية",
+      "totalAttempts": "محاولات الامتحان"
+    },
+    "categoriesTitle": "تصفح التصنيفات",
+    "faqTitle": "الأسئلة الشائعة",
+    "testimonialsTitle": "آراء الطلاب",
+    "newsletterTitle": "اشترك في تحديثات الامتحانات",
+    "newsletterSubtitle": "احصل على أحدث الامتحانات التجريبية ونصائح التحضير على بريدك.",
+    "newsletterPlaceholder": "أدخل بريدك الإلكتروني",
+    "newsletterButton": "اشتراك",
+    "newsletterSuccess": "شكراً لاشتراكك!",
+    "ctaTitle": "جاهز لاختبار معرفتك؟",
+    "ctaSubtitle": "انضم إلى آلاف المهنيين الصحيين الذين يستعدون مع امتحاناتنا التجريبية.",
+    "ctaExplore": "استكشف الامتحانات",
+    "ctaContact": "تواصل معنا",
+    "noResults": "لم يتم العثور على امتحانات.",
+    "loginToStart": "سجّل الدخول لبدء الامتحان",
+    "subscriptionRequired": "اشترك في باقة هذا التخصص عشان تقدر تدخل الامتحان",
+    "attemptsExhausted": "استخدمت كل المحاولات المتاحة لهذا الامتحان",
+    "examEmpty": "هذا الامتحان لا يحتوي على أسئلة بعد",
+    "startFailed": "تعذر بدء الامتحان. حاول مرة أخرى."
+  },
+  "examDetail": {
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbExams": "الامتحانات",
+    "backToExams": "العودة إلى الامتحانات",
+    "lastUpdated": "آخر تحديث",
+    "duration": "المدة",
+    "questions": "الأسئلة",
+    "passingScore": "درجة النجاح",
+    "attemptsAllowed": "المحاولات المسموحة",
+    "language": "اللغة",
+    "examType": "نوع الامتحان",
+    "startExam": "ابدأ الامتحان",
+    "overviewTitle": "نظرة عامة",
+    "whatYoullBeTestedOn": "ما سيتم اختبارك فيه",
+    "skillsCovered": "المهارات المشمولة",
+    "instructions": "تعليمات الامتحان",
+    "requirements": "المتطلبات",
+    "rulesAndPolicies": "القواعد والسياسات",
+    "featuresTitle": "مميزات الامتحان",
+    "feature_instant_result": "نتيجة فورية",
+    "feature_auto_save": "حفظ تلقائي",
+    "feature_timer": "مؤقت",
+    "feature_random_questions": "أسئلة عشوائية",
+    "feature_progress_tracking": "تتبع التقدم",
+    "relatedExamsTitle": "امتحانات ذات صلة",
+    "faqTitle": "الأسئلة الشائعة",
+    "ctaTitle": "جاهز لبدء الامتحان؟",
+    "ctaSubtitle": "اختبر معرفتك واعرف مستواك.",
+    "notFound": "الامتحان غير موجود."
+  },
+  "contactPage": {
+    "title": "تواصل معنا",
+    "subtitle": "عندك سؤال عن الامتحانات أو الباقات أو اشتراكك؟ ابعت لنا رسالة.",
+    "name": "الاسم الكامل",
+    "mobile": "رقم الموبايل",
+    "email": "البريد الإلكتروني",
+    "message": "الرسالة",
+    "send": "إرسال الرسالة",
+    "success": "تم إرسال رسالتك، وهنرد عليك في أقرب وقت.",
+    "error": "تعذر إرسال رسالتك. راجع البيانات وحاول مرة أخرى."
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "subtitle": "الصفحة اللي بتدور عليها مش موجودة أو اتنقلت.",
+    "home": "العودة للرئيسية",
+    "exams": "تصفح الامتحانات"
+  },
+  "legal": {
+    "lastUpdated": "آخر تحديث: أكتوبر 2026",
+    "questions": "عندك أسئلة عن هذه الصفحة؟",
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "sections": [
+        {
+          "heading": "المعلومات التي نجمعها",
+          "body": "عند إنشاء حساب نجمع اسمك ورقم موبايلك وبريدك الإلكتروني. وعند استخدام المنصة نحفظ محاولات امتحاناتك وإجاباتك ونتائجك لنعرض لك تقدمك وتقاريرك."
+        },
+        {
+          "heading": "كيف نستخدم معلوماتك",
+          "body": "نستخدم معلوماتك لتشغيل حسابك، وتقديم الامتحانات، وحساب نتائجك، وإدارة اشتراكاتك ومدفوعاتك، والتواصل معك بخصوص حسابك أو طلبات الدعم."
+        },
+        {
+          "heading": "المدفوعات",
+          "body": "تتم معالجة الدفع بالبطاقات عن طريق مزوّد خدمة الدفع. لا نحتفظ برقم بطاقتك الكامل على خوادمنا."
+        },
+        {
+          "heading": "مشاركة المعلومات",
+          "body": "لا نبيع معلوماتك الشخصية. نشاركها فقط مع مزودي الخدمات الذين يساعدوننا في تشغيل المنصة (مثل معالجة الدفع)، أو عندما يطلب القانون ذلك."
+        },
+        {
+          "heading": "حقوقك",
+          "body": "يمكنك عرض بيانات ملفك الشخصي وتعديلها من إعدادات حسابك، ويمكنك التواصل معنا لطلب حذف حسابك وبياناتك."
+        }
+      ]
+    },
+    "terms": {
+      "title": "الشروط والأحكام",
+      "sections": [
+        {
+          "heading": "حسابك",
+          "body": "أنت مسؤول عن الحفاظ على سرية بيانات الدخول الخاصة بك. الحساب لشخص واحد ولا يجوز مشاركته."
+        },
+        {
+          "heading": "الاشتراكات",
+          "body": "تمنحك الباقة حق الوصول إلى امتحانات وبنك أسئلة تخصصها طوال مدة الاشتراك. ينتهي الوصول بانتهاء الاشتراك ما لم تقم بتجديده."
+        },
+        {
+          "heading": "الدفع والاسترداد",
+          "body": "تظهر الأسعار قبل الدفع. يخضع استرداد المبالغ للسياسة المعروضة وقت الشراء."
+        },
+        {
+          "heading": "الاستخدام المسموح",
+          "body": "محتوى الامتحانات مخصص لتحضيرك الشخصي. لا يُسمح بنسخ الأسئلة أو نشرها أو إعادة توزيعها."
+        },
+        {
+          "heading": "التعديلات",
+          "body": "قد نقوم بتحديث هذه الشروط، وسننشر النسخة المحدثة على هذه الصفحة."
+        }
+      ]
     }
   }
 }

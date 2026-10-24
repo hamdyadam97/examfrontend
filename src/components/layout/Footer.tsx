@@ -73,20 +73,17 @@ export function Footer() {
   const quickLinks = [
     { to: '/', label: t('footer.links.home', 'Home') },
     { to: '/about', label: t('footer.links.about', 'About Us') },
-    { to: '/courses', label: t('footer.links.courses', 'Courses') },
-    { to: '/certifications', label: t('footer.links.certifications', 'Certifications') },
-    { to: '/instructors', label: t('footer.links.instructors', 'Instructors') },
+    { to: '/exams', label: t('footer.links.exams', 'Exams') },
+    { to: '/packages', label: t('footer.links.packages', 'Packages') },
     { to: '/blogs', label: t('footer.links.blog', 'Blog') },
     { to: '/contact', label: t('footer.links.contact', 'Contact Us') },
   ];
 
   const categories = [
-    { to: '/packages', label: t('footer.categories.medical', 'Medical Courses') },
-    { to: '/packages', label: t('footer.categories.nursing', 'Nursing Courses') },
-    { to: '/packages', label: t('footer.categories.pharmacy', 'Pharmacy Courses') },
-    { to: '/packages', label: t('footer.categories.dentistry', 'Dentistry Courses') },
-    { to: '/packages', label: t('footer.categories.online', 'Online Training') },
-    { to: '/packages', label: t('footer.categories.workshops', 'Workshops') },
+    { to: '/exams', label: t('footer.categories.medical', 'Medical Exams') },
+    { to: '/exams', label: t('footer.categories.nursing', 'Nursing Exams') },
+    { to: '/exams', label: t('footer.categories.pharmacy', 'Pharmacy Exams') },
+    { to: '/exams', label: t('footer.categories.dentistry', 'Dentistry Exams') },
   ];
 
   return (
@@ -111,12 +108,12 @@ export function Footer() {
               <span className="text-2xl font-extrabold text-secondary">{t('common.appName')}</span>
             </Link>
             <p className="mt-5 max-w-sm text-sm font-medium leading-relaxed text-primary">
-              {t('footer.tagline', 'Empowering healthcare professionals through accredited medical education.')}
+              {t('footer.tagline', 'The exam platform for healthcare professionals.')}
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-600">
               {t(
                 'footer.description',
-                'RootsExams provides high-quality medical training, mock exams, and accredited courses to help healthcare professionals advance their careers.'
+                'RootsExams provides timed mock exams, comprehensive question banks, and detailed performance reports to help healthcare professionals pass their exams.'
               )}
             </p>
           </div>
@@ -234,7 +231,7 @@ export function Footer() {
                 <p className="mt-2 text-sm text-white/80">
                   {t(
                     'footer.newsletter.subtitle',
-                    'Get the latest medical courses, exam tips, and updates delivered to your inbox.'
+                    'Get new exams, exam tips, and updates delivered to your inbox.'
                   )}
                 </p>
               </div>

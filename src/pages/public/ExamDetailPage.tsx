@@ -10,7 +10,6 @@ import {
   BookOpen,
   Target,
   Zap,
-  Award,
   Globe,
   FileText,
   CheckCircle2,
@@ -21,12 +20,11 @@ import {
   Moon,
   Loader2,
   GraduationCap,
-  Users,
-  Star,
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import { useStartExam } from '@/hooks/useStartExam';
 import { toast } from 'sonner';
 import { clsx, type ClassValue } from 'clsx';
 
@@ -34,32 +32,6 @@ interface Category {
   id: number;
   name: string;
   icon?: string;
-}
-
-interface Instructor {
-  id: number;
-  name: string;
-  title?: string;
-  image?: string;
-  specialization?: string;
-  bio?: string;
-  years_of_experience?: number;
-  students_count?: number;
-  courses_count?: number;
-  rate?: number | string;
-}
-
-interface RelatedCourse {
-  id: number;
-  name: string;
-  description?: string;
-  logo?: string;
-  price?: number | string;
-  original_price?: number | string;
-  category?: Category;
-  instructor?: Instructor;
-  rating?: number | string;
-  students_count?: number;
 }
 
 interface RelatedExam {
@@ -86,7 +58,6 @@ interface ExamDetail {
   duration_minutes?: number;
   score?: number;
   attempts_allowed?: number;
-  certificate_available?: boolean;
   difficulty_level?: number;
   difficulty_label?: string;
   language?: string;
@@ -100,9 +71,7 @@ interface ExamDetail {
   features?: ExamFeature[];
   category?: Category;
   sub_category?: Category;
-  instructor?: Instructor;
   questions_count?: number;
-  related_courses?: RelatedCourse[];
   related_exams?: RelatedExam[];
   created_at?: string;
   updated_at?: string;
@@ -199,36 +168,6 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: Faq; isOpen: boolean; onToggl
   );
 }
 
-function RelatedCourseCard({ course }: { course: RelatedCourse }) {
-  const { t } = useTranslation();
-  const price = Number(course.price ?? 0);
-  const original = Number(course.original_price ?? 0);
-  return (
-    <motion.div whileHover={{ y: -4 }} className='flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900/60'>
-      <div className='relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800'>
-        <img src={course.logo || '/placeholder-course.jpg'} alt={course.name} className='h-full w-full object-cover' loading='lazy' />
-      </div>
-      <div className='flex flex-1 flex-col p-4'>
-        <span className='mb-1 text-xs text-slate-500 dark:text-slate-400'>{course.category?.name}</span>
-        <h4 className='mb-2 text-sm font-bold text-slate-900 dark:text-white line-clamp-2'>{course.name}</h4>
-        <div className='mb-3 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400'>
-          {course.instructor && <span className='inline-flex items-center gap-1'><Users size={12} /> {course.instructor.name}</span>}
-          {course.rating && <span className='inline-flex items-center gap-1'><Star size={12} className='text-amber-400' /> {Number(course.rating).toFixed(1)}</span>}
-        </div>
-        <div className='mt-auto flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800'>
-          <div className='flex flex-col'>
-            {original > price && <span className='text-xs text-slate-400 line-through'>{original.toFixed(2)}</span>}
-            <span className='text-sm font-extrabold text-secondary dark:text-white'>{price.toFixed(2)}</span>
-          </div>
-          <Link to='/packages' className='rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-secondary transition hover:bg-primary/90'>
-            {t('courses.enroll')}
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 function RelatedExamCard({ exam }: { exam: RelatedExam }) {
   return (
     <motion.div whileHover={{ y: -4 }} className='flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900/60'>
@@ -261,6 +200,7 @@ export function ExamDetailPage() {
   const [exam, setExam] = useState<ExamDetail | null>(null);
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
+  const { startExam, startingId } = useStartExam();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -308,7 +248,6 @@ export function ExamDetailPage() {
   }
 
   const features = exam.features || [];
-  const relatedCourses = exam.related_courses || [];
   const relatedExams = exam.related_exams || [];
 
   return (
@@ -365,16 +304,6 @@ export function ExamDetailPage() {
                   <FileText size={14} /> {exam.exam_type_label}
                 </span>
               )}
-              {exam.instructor && (
-                <span className='inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 backdrop-blur-sm'>
-                  <Users size={14} /> {exam.instructor.name}
-                </span>
-              )}
-              {relatedCourses[0] && (
-                <span className='inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 backdrop-blur-sm'>
-                  <BookOpen size={14} /> {relatedCourses[0].name}
-                </span>
-              )}
             </motion.div>
           </div>
 
@@ -410,35 +339,6 @@ export function ExamDetailPage() {
                 </section>
               )}
 
-              {/* Instructor */}
-              {exam.instructor && (
-                <section className='mb-10'>
-                  <SectionTitle title={t('examDetail.instructorTitle')} />
-                  <div className='rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/60'>
-                    <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
-                      {exam.instructor.image ? (
-                        <img src={exam.instructor.image} alt={exam.instructor.name} className='h-20 w-20 rounded-2xl object-cover' loading='lazy' />
-                      ) : (
-                        <div className='flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-2xl font-bold text-primary'>
-                          {exam.instructor.name.charAt(0)}
-                        </div>
-                      )}
-                      <div className='flex-1'>
-                        <h3 className='text-lg font-bold text-slate-900 dark:text-white'>{exam.instructor.name}</h3>
-                        <p className='text-sm text-slate-500 dark:text-slate-400'>{exam.instructor.title || exam.instructor.specialization}</p>
-                        <div className='mt-2 flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400'>
-                          {exam.instructor.years_of_experience ? <span>{exam.instructor.years_of_experience} {t('instructors.yearsExp')}</span> : null}
-                          {exam.instructor.students_count ? <span>{exam.instructor.students_count} {t('instructors.students')}</span> : null}
-                          {exam.instructor.courses_count ? <span>{exam.instructor.courses_count} {t('instructors.courses')}</span> : null}
-                          {exam.instructor.rate ? <span className='inline-flex items-center gap-1'><Star size={12} className='text-amber-400' /> {Number(exam.instructor.rate).toFixed(1)}</span> : null}
-                        </div>
-                      </div>
-                    </div>
-                    {exam.instructor.bio && <p className='mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300'>{exam.instructor.bio}</p>}
-                  </div>
-                </section>
-              )}
-
               {/* FAQ */}
               {faqs.length > 0 && (
                 <section className='mb-10'>
@@ -462,38 +362,22 @@ export function ExamDetailPage() {
                     <InfoItem icon={BookOpen} label={t('examDetail.questions')} value={exam.questions_count ?? 0} />
                     <InfoItem icon={Target} label={t('examDetail.passingScore')} value={`${exam.score ?? 0}%`} />
                     <InfoItem icon={Zap} label={t('examDetail.attemptsAllowed')} value={exam.attempts_allowed ?? 1} />
-                    <InfoItem
-                      icon={Award}
-                      label={t('examDetail.certificateAvailable')}
-                      value={exam.certificate_available ? t('common.yes', 'Yes') : t('common.no', 'No')}
-                    />
                     <InfoItem icon={Globe} label={t('examDetail.language')} value={exam.language || '-'} />
                     <InfoItem icon={FileText} label={t('examDetail.examType')} value={exam.exam_type_label || exam.exam_type || '-'} />
                     <InfoItem icon={ShieldCheck} label={t('examDetail.lastUpdated')} value={formatDate(exam.updated_at || exam.created_at, i18n.language)} />
                   </div>
                   <button
-                    onClick={() => toast.info(t('examDetail.startExam') + ' — coming soon')}
-                    className='mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-base font-bold text-secondary transition hover:bg-primary/90'
+                    onClick={() => startExam(exam.id)}
+                    disabled={startingId === exam.id}
+                    className='mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-base font-bold text-secondary transition hover:bg-primary/90 disabled:opacity-60'
                   >
-                    <PlayCircle size={20} /> {t('examDetail.startExam')}
+                    {startingId === exam.id ? <Loader2 size={20} className='animate-spin' /> : <PlayCircle size={20} />} {t('examDetail.startExam')}
                   </button>
                 </div>
               </div>
             </aside>
           </div>
         </section>
-
-        {/* Related courses */}
-        {relatedCourses.length > 0 && (
-          <section className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-            <SectionTitle title={t('examDetail.relatedCoursesTitle')} />
-            <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {relatedCourses.map((course) => (
-                <RelatedCourseCard key={course.id} course={course} />
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* Related exams */}
         {relatedExams.length > 0 && (
@@ -522,10 +406,11 @@ export function ExamDetailPage() {
               <h2 className='mb-3 text-2xl font-bold sm:text-4xl'>{t('examDetail.ctaTitle')}</h2>
               <p className='mx-auto mb-8 max-w-2xl text-slate-200'>{t('examDetail.ctaSubtitle')}</p>
               <button
-                onClick={() => toast.info(t('examDetail.startExam') + ' — coming soon')}
-                className='inline-flex items-center gap-2 rounded-xl bg-primary px-10 py-4 text-lg font-bold text-secondary transition hover:bg-primary/90'
+                onClick={() => startExam(exam.id)}
+                disabled={startingId === exam.id}
+                className='inline-flex items-center gap-2 rounded-xl bg-primary px-10 py-4 text-lg font-bold text-secondary transition hover:bg-primary/90 disabled:opacity-60'
               >
-                <PlayCircle size={22} /> {t('examDetail.startExam')}
+                {startingId === exam.id ? <Loader2 size={22} className='animate-spin' /> : <PlayCircle size={22} />} {t('examDetail.startExam')}
               </button>
             </div>
           </div>

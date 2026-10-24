@@ -9,7 +9,6 @@ import {
   TrendingUp,
   AlertCircle,
   Download,
-  Award,
   Share2,
   RotateCcw,
   ArrowLeft,
@@ -124,14 +123,6 @@ export function ResultsView({ exam, examReport, examId }: Props) {
               >
                 <Download size={18} /> {t('examResult.downloadPdf')}
               </button>
-              {passed && (
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-white/20 px-5 py-2.5 text-sm font-bold backdrop-blur-sm transition hover:bg-white/30"
-                >
-                  <Award size={18} /> {t('examResult.downloadCertificate')}
-                </button>
-              )}
               <button
                 type="button"
                 onClick={handleShare}

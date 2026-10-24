@@ -6,12 +6,14 @@ interface Props {
   examTitle: string;
   stageText?: string;
   timerText: string;
+  /** Highlights the timer when little time is left. */
+  timerUrgent?: boolean;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
   onExit: () => void;
 }
 
-export function ExamHeader({ examTitle, stageText, timerText, isFullscreen, onToggleFullscreen, onExit }: Props) {
+export function ExamHeader({ examTitle, stageText, timerText, timerUrgent, isFullscreen, onToggleFullscreen, onExit }: Props) {
   const { t } = useTranslation();
   const { isDark, toggle } = useDarkMode();
 
@@ -23,7 +25,14 @@ export function ExamHeader({ examTitle, stageText, timerText, isFullscreen, onTo
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="rounded-xl bg-slate-100 px-3 py-1.5 text-sm font-bold text-secondary dark:bg-slate-800 dark:text-white">
+        <div
+          role="timer"
+          className={`rounded-xl px-3 py-1.5 text-sm font-bold tabular-nums ${
+            timerUrgent
+              ? 'animate-pulse bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-300'
+              : 'bg-slate-100 text-secondary dark:bg-slate-800 dark:text-white'
+          }`}
+        >
           {timerText}
         </div>
         <button

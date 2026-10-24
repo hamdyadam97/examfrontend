@@ -20,7 +20,7 @@ export function Suggestions() {
           {[
             { key: 'newFeature', value: 'newFeature' },
             { key: 'newQuestion', value: 'newQuestion' },
-            { key: 'newCourse', value: 'newCourse' },
+            { key: 'newExam', value: 'newExam' },
             { key: 'generalFeedback', value: 'generalFeedback' },
           ].map((opt) => (
             <label

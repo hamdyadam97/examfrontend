@@ -9,8 +9,9 @@ interface Props {
   total: number;
   answered: number;
   remaining: number;
-  correct: number;
-  wrong: number;
+  /** Omitted in exam mode, where grading stays hidden until the exam is submitted. */
+  correct?: number;
+  wrong?: number;
   saved: number;
   flagged: number;
   review: number;
@@ -55,7 +56,7 @@ export function ExamSummary({
     { icon: Bookmark, label: t('examPlayer.summary.saved'), value: saved, color: 'text-amber-500' },
     { icon: Flag, label: t('examPlayer.summary.flagged'), value: flagged, color: 'text-orange-500' },
     { icon: Eye, label: t('examPlayer.summary.reviewLater'), value: review, color: 'text-purple-500' },
-  ];
+  ].filter((row) => row.value !== undefined);
 
   return (
     <div className="flex h-full flex-col">

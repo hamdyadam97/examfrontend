@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Calendar, Clock, BookOpen, Tag, Award, Bell } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { SectionCard } from './SectionCard';
 
 interface Notification {
@@ -14,26 +14,10 @@ interface Props {
   notifications: Notification[];
 }
 
-const iconMap: Record<string, any> = {
-  upcomingExams: Calendar,
-  subscriptionExpiry: Clock,
-  questionBankUpdates: BookOpen,
-  courseAnnouncements: BookOpen,
-  offers: Tag,
-  certificatesReady: Award,
-};
-
 export function NotificationsList({ notifications }: Props) {
   const { t } = useTranslation();
 
-  const sample = notifications.length
-    ? notifications.slice(0, 4)
-    : [
-        { id: 1, key: 'upcomingExams', title: t('dashboard.notifications.upcomingExams'), desc: 'Surgery exam in 2 days', is_read: false },
-        { id: 2, key: 'subscriptionExpiry', title: t('dashboard.notifications.subscriptionExpiry'), desc: 'Your Elite plan expires in 10 days', is_read: false },
-        { id: 3, key: 'questionBankUpdates', title: t('dashboard.notifications.questionBankUpdates'), desc: '500 new Internal Medicine questions added', is_read: true },
-        { id: 4, key: 'offers', title: t('dashboard.notifications.offers'), desc: 'Get 30% off premium packages this week', is_read: true },
-      ];
+  const sample = notifications.slice(0, 4);
 
   return (
     <SectionCard title={t('dashboard.notifications.title')} className="lg:col-span-1">
@@ -44,8 +28,7 @@ export function NotificationsList({ notifications }: Props) {
         </div>
       ) : (
         <div className="space-y-3">
-          {sample.map((note: any) => {
-            const Icon = iconMap[note.key] || Bell;
+          {sample.map((note) => {
             return (
               <div
                 key={note.id}
@@ -56,11 +39,11 @@ export function NotificationsList({ notifications }: Props) {
                 }`}
               >
                 <div className="mt-0.5 text-primary">
-                  <Icon size={18} />
+                  <Bell size={18} />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-secondary dark:text-white">{note.title}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{note.description || note.desc}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{note.description}</p>
                 </div>
               </div>
             );

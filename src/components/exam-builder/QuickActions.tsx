@@ -7,7 +7,7 @@ const actions = [
   { key: 'reviewWrong', icon: XCircle, to: '/user/dashboard?tab=wrong', color: 'bg-rose-100 text-rose-600' },
   { key: 'reviewSaved', icon: Bookmark, to: '/user/dashboard?tab=saved', color: 'bg-amber-100 text-amber-600' },
   { key: 'reviewFavorites', icon: Heart, to: '/user/dashboard?tab=favorite', color: 'bg-pink-100 text-pink-600' },
-  { key: 'browseCourses', icon: BookOpen, to: '/courses', color: 'bg-blue-100 text-blue-600' },
+  { key: 'browseExams', icon: BookOpen, to: '/exams', color: 'bg-blue-100 text-blue-600' },
   { key: 'performanceReport', icon: BarChart2, to: '/user/dashboard?tab=analytics', color: 'bg-purple-100 text-purple-600' },
 ];
 

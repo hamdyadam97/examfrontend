@@ -85,7 +85,8 @@
     "wrong": "Wrong",
     "overview": "Overview",
     "result": "Result",
-    "noQuestions": "No questions found for selected criteria."
+    "noQuestions": "No questions found for selected criteria.",
+    "exam": "Exam"
   },
   "settings": {
     "profile": "Profile",
@@ -97,23 +98,20 @@
     "nav": {
       "home": "Home",
       "about": "About Us",
-      "courses": "Courses",
-      "certifications": "Certifications",
-      "instructors": "Instructors",
       "blog": "Blog",
-      "contact": "Contact Us"
+      "contact": "Contact Us",
+      "packages": "Packages"
     },
     "enrollNow": "Enroll Now",
     "search": "Search",
-    "searchPlaceholder": "Search courses, specialties...",
+    "searchPlaceholder": "Search exams, specialties...",
     "menu": "Open menu"
   },
   "dashboard": {
     "welcomeBack": "Welcome back",
     "hello": "Hello",
-    "heroText": "Your personalized medical exam command center. Track progress, sharpen weak areas, and accelerate toward certification.",
+    "heroText": "Your personalized medical exam command center. Track progress, sharpen weak areas, and get ready to pass your exam.",
     "createExam": "Create New Exam",
-    "browseCourses": "Browse Courses",
     "currentPackage": "Current Package",
     "remainingQuestions": "Remaining Questions",
     "questionsUsed": "Questions Used",
@@ -121,7 +119,6 @@
     "learningStreak": "Learning Streak",
     "overallLevel": "Overall Level",
     "currentRank": "Current Rank",
-    "progressToCertification": "Progress to Certification",
     "stats": {
       "remainingQuestions": "Remaining Questions",
       "completedExams": "Completed Exams",
@@ -130,14 +127,21 @@
       "successRate": "Success Rate",
       "studyHours": "Study Hours",
       "currentRank": "Current Rank",
-      "earnedCertificates": "Earned Certificates"
+      "answeredQuestions": "Answered Questions",
+      "inProgressExams": "Exams In Progress",
+      "subscribedSpecialties": "Subscribed Specialties",
+      "activeSubscriptions": "Active Subscriptions"
     },
     "continueLearning": {
       "title": "Continue Learning",
       "lastExam": "Continue Last Exam",
-      "lastCourse": "Continue Last Course",
       "practice": "Resume Practice Session",
-      "continue": "Continue"
+      "continue": "Continue",
+      "browseExams": "Start a New Exam",
+      "noExamInProgress": "No exam in progress",
+      "noExamInProgressDesc": "Build a custom exam from your question bank.",
+      "browseExamsDesc": "Find a ready-made exam to take",
+      "practiceDesc": "Strengthen your weak areas"
     },
     "recentExams": {
       "title": "Recent Exams",
@@ -149,33 +153,36 @@
       "questions": "Questions",
       "pass": "Pass",
       "fail": "Fail",
-      "viewResult": "View Result"
+      "viewResult": "View Result",
+      "inProgress": "In progress",
+      "answered": "{{answered}}/{{total}} answered"
     },
     "performance": {
       "title": "Performance Analytics",
-      "monthlyProgress": "Monthly Progress",
-      "averageScores": "Average Scores",
-      "successRate": "Success Rate",
-      "timeSpent": "Time Spent Studying",
-      "improvementTrend": "Improvement Trend",
-      "dailyActivity": "Daily Activity",
-      "weeklyProgress": "Weekly Progress"
+      "dailyActivity": "Last 7 Days",
+      "scoreProgress": "Score Progress",
+      "bySpecialty": "Questions by Specialty",
+      "correct": "Correct",
+      "wrong": "Wrong",
+      "empty": "Not enough data yet. Take an exam to see your analytics."
     },
     "strengthWeakness": {
       "title": "Strength & Weakness Analysis",
       "strongTopics": "Strong Topics",
       "weakTopics": "Weak Topics",
-      "recommendedTopics": "Recommended Topics",
-      "masteredSubjects": "Mastered Subjects",
-      "needsImprovement": "Needs Improvement"
+      "recommendedTopics": "Not Practiced Yet",
+      "needsImprovement": "Needs Improvement",
+      "empty": "Nothing here yet",
+      "note": "Based on your answers. A topic is rated after at least 3 answered questions."
     },
     "aiRecommendations": {
-      "title": "AI Recommendations",
-      "recommendedExam": "Recommended Exam",
-      "recommendedCourse": "Recommended Course",
-      "recommendedSpecialty": "Recommended Specialty",
-      "practiceQuestions": "Questions You Should Practice",
-      "reviewTopics": "Topics You Should Review"
+      "title": "Recommended for You",
+      "recommendedExam": "Recommended exam",
+      "reviewTopicDesc": "Your accuracy here is {{accuracy}}%. Practice this topic.",
+      "wrongTitle": "Review {{count}} wrong questions",
+      "wrongDesc": "Turn your mistakes into points",
+      "newTopicDesc": "A topic you have not practiced yet",
+      "empty": "Take your first exam and we will suggest what to practice next."
     },
     "subscription": {
       "title": "Subscription",
@@ -184,38 +191,21 @@
       "renew": "Renew",
       "upgrade": "Upgrade Package"
     },
-    "certificates": {
-      "title": "Certificates",
-      "issueDate": "Issue Date",
-      "view": "View Certificate",
-      "download": "Download PDF"
-    },
     "achievements": {
       "title": "Achievements",
-      "points": "Points",
-      "xp": "XP",
-      "badges": "Badges",
-      "achievements": "Achievements",
-      "currentLeague": "Current League",
-      "monthlyRanking": "Monthly Ranking",
-      "completion": "Completion"
+      "currentStreak": "Day Streak",
+      "passedExams": "Exams Passed",
+      "perfectScores": "Perfect Scores",
+      "activeDays": "Active Days",
+      "topicsPracticed": "Topics Practiced"
     },
     "offers": {
-      "title": "Offers & Discounts",
-      "newPackages": "New Packages",
-      "seasonalDiscounts": "Seasonal Discounts",
-      "limitedTime": "Limited-Time Offers",
-      "newCourses": "New Courses",
-      "featuredExams": "Featured Exams"
+      "title": "Packages for You",
+      "discount": "{{percent}}% off",
+      "empty": "You are subscribed to every package"
     },
     "notifications": {
       "title": "Notifications",
-      "upcomingExams": "Upcoming Exams",
-      "subscriptionExpiry": "Subscription Expiry",
-      "questionBankUpdates": "New Question Bank Updates",
-      "courseAnnouncements": "Course Announcements",
-      "offers": "Special Offers",
-      "certificatesReady": "Certificates Ready",
       "empty": "No new notifications."
     },
     "support": {
@@ -239,17 +229,17 @@
       "title": "Suggestions",
       "newFeature": "Suggest a New Feature",
       "newQuestion": "Suggest New Questions",
-      "newCourse": "Suggest a New Course",
       "generalFeedback": "General Feedback",
       "submit": "Send Suggestion",
-      "success": "Thank you for your suggestion."
+      "success": "Thank you for your suggestion.",
+      "newExam": "Suggest a New Exam"
     },
     "footer": {
       "createExam": "Create Exam",
       "continueLastExam": "Continue Last Exam",
-      "browseCourses": "Browse Courses",
       "performanceReport": "Performance Report",
-      "subscriptionDetails": "Subscription Details"
+      "subscriptionDetails": "Subscription Details",
+      "browseExams": "Browse Exams"
     },
     "sidebar": {
       "dashboard": "Dashboard",
@@ -261,8 +251,6 @@
       "favoriteQuestions": "Favorite Questions",
       "myGrades": "My Grades",
       "performanceAnalytics": "Performance Analytics",
-      "certificates": "Certificates",
-      "courses": "Courses",
       "subscription": "Subscription",
       "offers": "Offers & Discounts",
       "notifications": "Notifications",
@@ -278,24 +266,28 @@
       "account": "Account"
     },
     "header": {
-      "searchPlaceholder": "Search exams, courses, questions...",
+      "searchPlaceholder": "Search exams, questions...",
       "notifications": "Notifications",
       "messages": "Messages",
       "darkMode": "Dark Mode",
       "lightMode": "Light Mode"
     },
-    "progress": "Progress"
+    "progress": "Progress",
+    "browseExams": "Browse Exams",
+    "examReadiness": "Exam Readiness",
+    "noActivePackage": "No active package",
+    "correctAnswers": "Correct Answers"
   },
   "hero": {
-    "badge": "Accredited Medical Education",
-    "title": "Advance Your Medical Career with Accredited Training",
-    "description": "Join thousands of healthcare professionals mastering in-demand skills through expert-led courses, hands-on training, and globally recognized certifications.",
-    "browseCourses": "Browse Courses",
+    "badge": "Medical Exams Platform",
+    "title": "Pass Your Medical Exams with Confidence",
+    "description": "Practice with timed mock exams that simulate the real thing, a comprehensive question bank, and detailed reports that show exactly where to improve.",
     "contactUs": "Contact Us",
     "students": "Students",
-    "courses": "Courses",
-    "instructors": "Certified Instructors",
-    "certifications": "Professional Certifications"
+    "browseExams": "Browse Exams",
+    "exams": "Mock Exams",
+    "questions": "Practice Questions",
+    "specialties": "Specialties"
   },
   "packageCard": {
     "medical": "Medical",
@@ -340,15 +332,15 @@
   "statistics": {
     "badge": "Our Impact",
     "title": "Trusted by Healthcare Professionals",
-    "subtitle": "Join thousands of medical professionals advancing their careers through our accredited training and exam preparation packages.",
+    "subtitle": "Join thousands of medical professionals preparing for their exams with our mock exams and exam packages.",
     "totalStudents": "Total Students",
     "specialties": "Medical Specialties",
     "packages": "Exam Packages",
     "questions": "Practice Questions",
     "mockExams": "Mock Exams",
-    "instructors": "Certified Instructors",
     "successRate": "Success Rate",
-    "certificates": "Certificates Issued"
+    "examAttempts": "Exam Attempts",
+    "passedStudents": "Students Passed"
   },
   "howItWorks": {
     "badge": "Simple Process",
@@ -406,7 +398,7 @@
   "about": {
     "hero": {
       "title": "About Us",
-      "subtitle": "We empower healthcare professionals with accredited medical education, exam preparation, and lifelong learning resources.",
+      "subtitle": "We help healthcare professionals pass their exams with realistic mock exams and comprehensive question banks.",
       "cta": "Contact Us"
     },
     "story": {
@@ -421,7 +413,7 @@
     },
     "mission": {
       "title": "Our Mission",
-      "description": "To provide accessible, accredited, and high-quality medical education that helps healthcare professionals excel in their exams and careers."
+      "description": "To provide accessible, high-quality exam preparation that helps healthcare professionals pass their exams."
     },
     "vision": {
       "title": "Our Vision",
@@ -433,7 +425,7 @@
       "subtitle": "The principles that define our culture and drive our work every day.",
       "quality": {
         "title": "Quality",
-        "description": "We uphold the highest standards in every course, question, and exam we create."
+        "description": "We uphold the highest standards in every question and exam we create."
       },
       "innovation": {
         "title": "Innovation",
@@ -462,15 +454,15 @@
       "subtitle": "Discover the advantages that make us the preferred choice for medical professionals.",
       "feature1": {
         "title": "Expert-Curated Content",
-        "description": "All materials are reviewed by certified medical professionals and educators."
+        "description": "All questions are reviewed by experienced medical professionals."
       },
       "feature2": {
         "title": "Interactive Learning",
         "description": "Engaging mock exams, analytics, and personalized study paths."
       },
       "feature3": {
-        "title": "Accredited Programs",
-        "description": "Courses and packages aligned with recognized medical standards."
+        "title": "Real Exam Simulation",
+        "description": "Timed exams aligned with recognized medical exam standards."
       },
       "feature4": {
         "title": "Dedicated Support",
@@ -479,10 +471,10 @@
     },
     "stats": {
       "clients": "Happy Clients",
-      "courses": "Courses",
-      "certificates": "Certificates",
       "experience": "Years of Experience",
-      "team": "Team Members"
+      "team": "Team Members",
+      "exams": "Mock Exams",
+      "questions": "Practice Questions"
     },
     "team": {
       "badge": "Our People",
@@ -525,341 +517,6 @@
       "badge": "Testimonials",
       "title": "What Our Students Say"
     },
-    "blog": {
-      "hero": {
-        "title": "Our Blog",
-        "subtitle": "Insights, tips, and updates for healthcare professionals and lifelong learners."
-      },
-      "searchPlaceholder": "Search articles...",
-      "allCategories": "All Categories",
-      "sortLatest": "Latest",
-      "sortPopular": "Popular",
-      "sortOldest": "Oldest",
-      "readMore": "Read More",
-      "minutes": "min read",
-      "categoriesTitle": "Browse by Category",
-      "latestTitle": "Latest Articles",
-      "popularTitle": "Popular Articles",
-      "tagsTitle": "Popular Tags",
-      "newsletterTitle": "Subscribe to Our Blog",
-      "newsletterSubtitle": "Get the latest articles and updates delivered to your inbox.",
-      "emailPlaceholder": "Enter your email",
-      "subscribe": "Subscribe",
-      "subscribeSuccess": "Subscribed to blog updates!",
-      "noResults": "No articles found.",
-      "cta": {
-        "title": "Ready to Advance Your Medical Career?",
-        "subtitle": "Explore our exam packages and start learning with expert-curated content today.",
-        "explore": "Explore Packages",
-        "contact": "Contact Us"
-      }
-    },
-    "blogPost": {
-      "backToBlogs": "Back to Blogs",
-      "breadcrumbHome": "Home",
-      "breadcrumbBlogs": "Blogs",
-      "publishedOn": "Published on",
-      "updatedOn": "Updated on",
-      "readTime": "min read",
-      "views": "views",
-      "share": "Share",
-      "shareFacebook": "Share on Facebook",
-      "shareX": "Share on X",
-      "shareLinkedin": "Share on LinkedIn",
-      "shareWhatsapp": "Share on WhatsApp",
-      "copyLink": "Copy link",
-      "copied": "Copied!",
-      "toc": "Table of Contents",
-      "tocEmpty": "No headings found.",
-      "authorTitle": "About the author",
-      "relatedTitle": "Related Articles",
-      "commentsTitle": "Comments",
-      "commentsCount": "{{count}} comments",
-      "noComments": "No comments yet. Be the first to share your thoughts.",
-      "commentName": "Name",
-      "commentEmail": "Email",
-      "commentMessage": "Your comment",
-      "commentSubmit": "Post Comment",
-      "commentSuccess": "Your comment has been submitted and is awaiting approval.",
-      "commentError": "Could not submit comment. Please try again.",
-      "newsletterTitle": "Stay in the loop",
-      "newsletterSubtitle": "Subscribe to receive the latest articles and updates.",
-      "newsletterPlaceholder": "Enter your email",
-      "newsletterButton": "Subscribe",
-      "newsletterSuccess": "Thanks for subscribing!",
-      "previousArticle": "Previous Article",
-      "nextArticle": "Next Article",
-      "ctaTitle": "Ready to advance your career?",
-      "ctaSubtitle": "Explore our professional exam packages and start learning today.",
-      "ctaButton": "Explore Packages",
-      "ctaContact": "Contact Us",
-      "notFound": "Article not found.",
-      "darkMode": "Dark mode",
-      "lightMode": "Light mode"
-    },
-    "instructors": {
-      "heroTitle": "Our Instructors",
-      "heroSubtitle": "Learn from industry-leading experts dedicated to your professional success.",
-      "breadcrumbHome": "Home",
-      "breadcrumbInstructors": "Instructors",
-      "searchPlaceholder": "Search instructors...",
-      "specialization": "Specialization",
-      "allSpecializations": "All Specializations",
-      "category": "Category",
-      "allCategories": "All Categories",
-      "experience": "Experience Level",
-      "allExperience": "All Levels",
-      "beginner": "Beginner (1-5 years)",
-      "intermediate": "Intermediate (6-10 years)",
-      "expert": "Expert (10+ years)",
-      "sortBy": "Sort by",
-      "mostPopular": "Most Popular",
-      "highestRated": "Highest Rated",
-      "newest": "Newest",
-      "featuredTitle": "Featured Instructors",
-      "allTitle": "All Instructors",
-      "yearsExp": "years exp.",
-      "students": "students",
-      "courses": "courses",
-      "viewProfile": "View Profile",
-      "stats": {
-        "totalInstructors": "Total Instructors",
-        "totalStudents": "Total Students",
-        "totalCourses": "Total Courses",
-        "certificatesIssued": "Certificates Issued",
-        "yearsExperience": "Years of Experience"
-      },
-      "becomeTitle": "Become an Instructor",
-      "becomeSubtitle": "Share your expertise with thousands of learners and grow your impact.",
-      "applyNow": "Apply Now",
-      "faqTitle": "Frequently Asked Questions",
-      "testimonialsTitle": "What Students Say",
-      "ctaTitle": "Ready to Start Learning?",
-      "ctaSubtitle": "Explore our courses and learn from the best instructors in the industry.",
-      "ctaExplore": "Explore Courses",
-      "ctaContact": "Contact Us",
-      "noResults": "No instructors found."
-    },
-    "courses": {
-      "heroTitle": "Courses",
-      "heroSubtitle": "Explore expert-led courses designed to advance your career and skills.",
-      "breadcrumbHome": "Home",
-      "breadcrumbCourses": "Courses",
-      "searchPlaceholder": "Search courses...",
-      "category": "Category",
-      "allCategories": "All Categories",
-      "instructor": "Instructor",
-      "allInstructors": "All Instructors",
-      "price": "Price",
-      "allPrices": "All Prices",
-      "free": "Free",
-      "paid": "Paid",
-      "language": "Language",
-      "allLanguages": "All Languages",
-      "difficulty": "Difficulty",
-      "allDifficulties": "All Levels",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "advanced": "Advanced",
-      "duration": "Duration",
-      "allDurations": "Any Duration",
-      "short": "Short (< 3h)",
-      "medium": "Medium (3-6h)",
-      "long": "Long (> 6h)",
-      "sortBy": "Sort by",
-      "newest": "Newest",
-      "mostPopular": "Most Popular",
-      "highestRated": "Highest Rated",
-      "featuredTitle": "Featured Courses",
-      "allTitle": "All Courses",
-      "lessons": "lessons",
-      "students": "students",
-      "durationMin": "min",
-      "enroll": "Enroll Now",
-      "wishlist": "Wishlist",
-      "stats": {
-        "totalCourses": "Total Courses",
-        "totalStudents": "Total Students",
-        "totalInstructors": "Total Instructors",
-        "certificatesIssued": "Certificates Issued"
-      },
-      "categoriesTitle": "Browse Categories",
-      "faqTitle": "Frequently Asked Questions",
-      "testimonialsTitle": "What Students Say",
-      "newsletterTitle": "Subscribe to Our Newsletter",
-      "newsletterSubtitle": "Get the latest courses and updates delivered to your inbox.",
-      "newsletterPlaceholder": "Enter your email",
-      "newsletterButton": "Subscribe",
-      "newsletterSuccess": "Thanks for subscribing!",
-      "ctaTitle": "Ready to Start Learning?",
-      "ctaSubtitle": "Join thousands of learners and unlock your potential today.",
-      "ctaExplore": "Explore Courses",
-      "ctaContact": "Contact Us",
-      "noResults": "No courses found."
-    },
-    "exams": {
-      "heroTitle": "Exams",
-      "heroSubtitle": "Prepare with realistic mock exams, track your progress, and earn certificates.",
-      "breadcrumbHome": "Home",
-      "breadcrumbExams": "Exams",
-      "searchPlaceholder": "Search exams...",
-      "category": "Category",
-      "allCategories": "All Categories",
-      "course": "Course",
-      "allCourses": "All Courses",
-      "difficulty": "Difficulty",
-      "allDifficulties": "All Levels",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "advanced": "Advanced",
-      "duration": "Duration",
-      "allDurations": "Any Duration",
-      "short": "Short (< 30 min)",
-      "medium": "Medium (30-90 min)",
-      "long": "Long (> 90 min)",
-      "status": "Status",
-      "allStatuses": "All Statuses",
-      "active": "Active",
-      "upcoming": "Upcoming",
-      "completed": "Completed",
-      "sortBy": "Sort by",
-      "newest": "Newest",
-      "mostPopular": "Most Popular",
-      "hardest": "Hardest",
-      "easiest": "Easiest",
-      "featuredTitle": "Featured Exams",
-      "allTitle": "All Exams",
-      "upcomingTitle": "Upcoming Exams",
-      "completedTitle": "Completed Exams",
-      "examsCount": "exams",
-      "questions": "questions",
-      "attempts": "attempts",
-      "minutes": "min",
-      "passingScore": "Passing score",
-      "certificate": "Certificate",
-      "startExam": "Start Exam",
-      "continueExam": "Continue",
-      "reviewExam": "Review",
-      "stats": {
-        "totalExams": "Total Exams",
-        "totalQuestions": "Practice Questions",
-        "totalAttempts": "Exam Attempts",
-        "certificatesIssued": "Certificates Issued"
-      },
-      "categoriesTitle": "Browse Categories",
-      "faqTitle": "Frequently Asked Questions",
-      "testimonialsTitle": "What Students Say",
-      "newsletterTitle": "Subscribe to Exam Updates",
-      "newsletterSubtitle": "Get the latest mock exams and preparation tips delivered to your inbox.",
-      "newsletterPlaceholder": "Enter your email",
-      "newsletterButton": "Subscribe",
-      "newsletterSuccess": "Thanks for subscribing!",
-      "ctaTitle": "Ready to Test Your Knowledge?",
-      "ctaSubtitle": "Join thousands of healthcare professionals preparing with our accredited mock exams.",
-      "ctaExplore": "Explore Exams",
-      "ctaContact": "Contact Us",
-      "noResults": "No exams found."
-    },
-    "examDetail": {
-      "breadcrumbHome": "Home",
-      "breadcrumbExams": "Exams",
-      "backToExams": "Back to Exams",
-      "lastUpdated": "Last updated",
-      "duration": "Duration",
-      "questions": "Questions",
-      "passingScore": "Passing score",
-      "attemptsAllowed": "Attempts allowed",
-      "certificateAvailable": "Certificate available",
-      "language": "Language",
-      "examType": "Exam type",
-      "startExam": "Start Exam",
-      "overviewTitle": "Exam Overview",
-      "whatYoullBeTestedOn": "What You'll Be Tested On",
-      "skillsCovered": "Skills Covered",
-      "instructions": "Exam Instructions",
-      "requirements": "Requirements",
-      "rulesAndPolicies": "Rules & Policies",
-      "featuresTitle": "Exam Features",
-      "feature_instant_result": "Instant result",
-      "feature_auto_save": "Auto save",
-      "feature_timer": "Timer",
-      "feature_random_questions": "Random questions",
-      "feature_progress_tracking": "Progress tracking",
-      "instructorTitle": "Instructor",
-      "relatedCoursesTitle": "Related Courses",
-      "relatedExamsTitle": "Related Exams",
-      "faqTitle": "Frequently Asked Questions",
-      "ctaTitle": "Ready to start the exam?",
-      "ctaSubtitle": "Test your knowledge and earn your certificate.",
-      "notFound": "Exam not found."
-    },
-    "certificates": {
-      "heroTitle": "Certificates",
-      "heroSubtitle": "Earn industry-recognized certificates that validate your skills and accelerate your professional growth.",
-      "breadcrumbHome": "Home",
-      "verifyTitle": "Verify a Certificate",
-      "certIdLabel": "Certificate ID",
-      "certIdPlaceholder": "Enter certificate ID",
-      "studentNameLabel": "Student Name (Optional)",
-      "studentNamePlaceholder": "Enter student name",
-      "verifyButton": "Verify Certificate",
-      "clearButton": "Clear",
-      "verifySuccess": "Certificate verified successfully",
-      "verifyNotFound": "No verified certificate found with the provided details.",
-      "certIdRequired": "Please enter a certificate ID.",
-      "loadError": "Could not load certificates.",
-      "featured": "Featured",
-      "featuredTitle": "Featured Certificates",
-      "allTitle": "All Certificates",
-      "searchPlaceholder": "Search certificates...",
-      "relatedCourse": "Course",
-      "instructor": "Instructor",
-      "issuingOrganization": "Issuing Organization",
-      "issueDate": "Issue Date",
-      "expiryDate": "Expiry Date",
-      "certificateId": "Certificate ID",
-      "verified": "Verified",
-      "notVerified": "Not Verified",
-      "viewDetails": "View Details",
-      "viewCertificate": "View Certificate",
-      "downloadPdf": "Download PDF",
-      "pdfNotAvailable": "PDF not available",
-      "title": "Title",
-      "studentName": "Student",
-      "noResults": "No certificates found.",
-      "benefitsTitle": "Certificate Benefits",
-      "benefitsSubtitle": "Discover how our credentials can advance your career.",
-      "benefit1Title": "Professional Recognition",
-      "benefit1Desc": "Stand out to employers with credentials backed by a trusted education platform.",
-      "benefit2Title": "Career Growth",
-      "benefit2Desc": "Open doors to new opportunities and higher roles in your field.",
-      "benefit3Title": "Verified Skills",
-      "benefit3Desc": "Prove your expertise with certificates tied to real assessments.",
-      "benefit4Title": "Shareable Credentials",
-      "benefit4Desc": "Easily share your achievements on LinkedIn, CVs, and portfolios.",
-      "benefit5Title": "Lifetime Achievement",
-      "benefit5Desc": "Your certificates remain accessible as a permanent record of your learning.",
-      "benefit6Title": "Digital Verification",
-      "benefit6Desc": "Employers can instantly verify the authenticity of your certificate online.",
-      "statCertificates": "Certificates Issued",
-      "statStudents": "Certified Students",
-      "statPartners": "Partner Organizations",
-      "statPrograms": "Available Programs",
-      "howItWorksTitle": "How It Works",
-      "howItWorksSubtitle": "Your path to a recognized credential in four simple steps.",
-      "step1Title": "Complete the Course",
-      "step1Desc": "Finish all lessons, quizzes, and practical activities in your chosen program.",
-      "step2Title": "Pass the Final Exam",
-      "step2Desc": "Demonstrate your knowledge by passing the comprehensive final assessment.",
-      "step3Title": "Receive Your Certificate",
-      "step3Desc": "Get your digital certificate with a unique ID and verification record.",
-      "step4Title": "Download or Share",
-      "step4Desc": "Download your PDF certificate or share it directly on professional networks.",
-      "faqTitle": "Frequently Asked Questions",
-      "ctaTitle": "Start Earning Your Certificate Today",
-      "ctaSubtitle": "Enroll in a course, pass the exam, and join thousands of certified professionals.",
-      "ctaButton": "Browse Courses"
-    },
     "cta": {
       "title": "Ready to Start Your Success Story?",
       "subtitle": "Join a growing community of healthcare professionals and take the next step in your career.",
@@ -870,8 +527,8 @@
   "cta": {
     "badge": "Join Thousands of Healthcare Professionals",
     "title": "Start Your Medical Success Journey Today",
-    "description": "Access high-quality exam preparation packages, practice questions, mock exams, and accredited learning resources designed for healthcare professionals.",
-    "trust1": "Accredited Content",
+    "description": "Access exam packages, practice questions, and timed mock exams designed for healthcare professionals.",
+    "trust1": "Expert-Reviewed Questions",
     "trust2": "24/7 Access",
     "trust3": "Expert-Led",
     "explorePackages": "Explore Packages",
@@ -881,8 +538,8 @@
     "successRate": "Success Rate"
   },
   "footer": {
-    "tagline": "Empowering healthcare professionals through accredited medical education.",
-    "description": "RootsExams provides high-quality medical training, mock exams, and accredited courses to help healthcare professionals advance their careers.",
+    "tagline": "The exam platform for healthcare professionals.",
+    "description": "RootsExams provides timed mock exams, comprehensive question banks, and detailed performance reports to help healthcare professionals pass their exams.",
     "quickLinks": "Quick Links",
     "categoriesTitle": "Categories",
     "contact": "Contact Us",
@@ -891,19 +548,16 @@
     "links": {
       "home": "Home",
       "about": "About Us",
-      "courses": "Courses",
-      "certifications": "Certifications",
-      "instructors": "Instructors",
       "blog": "Blog",
-      "contact": "Contact Us"
+      "contact": "Contact Us",
+      "exams": "Exams",
+      "packages": "Packages"
     },
     "categories": {
-      "medical": "Medical Courses",
-      "nursing": "Nursing Courses",
-      "pharmacy": "Pharmacy Courses",
-      "dentistry": "Dentistry Courses",
-      "online": "Online Training",
-      "workshops": "Workshops"
+      "medical": "Medical Exams",
+      "nursing": "Nursing Exams",
+      "pharmacy": "Pharmacy Exams",
+      "dentistry": "Dentistry Exams"
     },
     "social": {
       "facebook": "Facebook",
@@ -914,7 +568,7 @@
     },
     "newsletter": {
       "title": "Subscribe to our newsletter",
-      "subtitle": "Get the latest medical courses, exam tips, and updates delivered to your inbox.",
+      "subtitle": "Get new exams, exam tips, and updates delivered to your inbox.",
       "placeholder": "Enter your email",
       "button": "Subscribe",
       "success": "Thank you for subscribing!",
@@ -1000,7 +654,10 @@
       "savedQuestion": "Question saved",
       "unsavedQuestion": "Question unsaved",
       "reviewLaterAdded": "Marked for review",
-      "reviewLaterRemoved": "Review mark removed"
+      "reviewLaterRemoved": "Review mark removed",
+      "timeWarning": "{{minutes}} minute(s) left!",
+      "timeUp": "Time is up. Your exam has been submitted.",
+      "alreadyFinished": "This exam has already been submitted."
     },
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen",
@@ -1026,7 +683,6 @@
     "aiRecommendations": "AI Learning Recommendations",
     "reviewIncorrect": "Review Incorrect Answers",
     "downloadPdf": "Download PDF Report",
-    "downloadCertificate": "Download Certificate",
     "shareResult": "Share Result",
     "backToExams": "Back to Exams",
     "retakeExam": "Retake Exam",
@@ -1142,12 +798,17 @@
       "reviewWrong": "Review Wrong Questions",
       "reviewSaved": "Review Saved Questions",
       "reviewFavorites": "Review Favorite Questions",
-      "browseCourses": "Browse Courses",
-      "performanceReport": "Performance Report"
+      "performanceReport": "Performance Report",
+      "browseExams": "Browse Exams"
     },
     "alerts": {
       "selectCategory": "Please select at least one category.",
       "examCreated": "Exam created successfully!"
+    },
+    "noSubscription": {
+      "title": "You have no active subscription",
+      "subtitle": "Subscribe to a package to unlock its question bank and start building exams.",
+      "cta": "View Packages"
     }
   },
   "admin": {
@@ -1160,15 +821,12 @@
       "categories": "Categories",
       "subCategories": "Sub Categories",
       "topics": "Topics",
-      "courses": "Courses",
       "exams": "Exams",
       "examTemplates": "Exam Templates",
       "students": "Students",
-      "instructors": "Instructors",
       "subscriptions": "Subscriptions",
       "orders": "Orders",
       "payments": "Payments",
-      "certificates": "Certificates",
       "offers": "Offers & Coupons",
       "blog": "Blog",
       "pages": "Pages",
@@ -1235,10 +893,8 @@
       "activeStudents": "Active Students",
       "totalQuestions": "Total Questions",
       "totalExams": "Total Exams",
-      "totalCourses": "Total Courses",
       "activeSubscriptions": "Active Subscriptions",
       "revenue": "Revenue",
-      "certificates": "Certificates",
       "recentActivity": "Recent Activity",
       "latestStudents": "Latest Students",
       "latestExams": "Latest Exams",
@@ -1247,7 +903,8 @@
       "questionUsage": "Question Usage",
       "passRate": "Pass Rate",
       "systemHealth": "System Health",
-      "viewAll": "View all"
+      "viewAll": "View all",
+      "examAttempts": "Exam Attempts"
     },
     "entity": {
       "create": "Create {{entity}}",
@@ -1311,6 +968,244 @@
       "pending": "Pending",
       "completed": "Completed",
       "email": "Email"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Our Blog",
+      "subtitle": "Insights, tips, and updates for healthcare professionals and lifelong learners."
+    },
+    "searchPlaceholder": "Search articles...",
+    "allCategories": "All Categories",
+    "sortLatest": "Latest",
+    "sortPopular": "Popular",
+    "sortOldest": "Oldest",
+    "readMore": "Read More",
+    "minutes": "min read",
+    "categoriesTitle": "Browse by Category",
+    "latestTitle": "Latest Articles",
+    "popularTitle": "Popular Articles",
+    "tagsTitle": "Popular Tags",
+    "newsletterTitle": "Subscribe to Our Blog",
+    "newsletterSubtitle": "Get the latest articles and updates delivered to your inbox.",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "subscribeSuccess": "Subscribed to blog updates!",
+    "noResults": "No articles found.",
+    "cta": {
+      "title": "Ready to Advance Your Medical Career?",
+      "subtitle": "Explore our exam packages and start learning with expert-curated content today.",
+      "explore": "Explore Packages",
+      "contact": "Contact Us"
+    },
+    "anonymous": "Anonymous"
+  },
+  "blogPost": {
+    "backToBlogs": "Back to Blogs",
+    "breadcrumbHome": "Home",
+    "breadcrumbBlogs": "Blogs",
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "readTime": "min read",
+    "views": "views",
+    "share": "Share",
+    "shareFacebook": "Share on Facebook",
+    "shareX": "Share on X",
+    "shareLinkedin": "Share on LinkedIn",
+    "shareWhatsapp": "Share on WhatsApp",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "toc": "Table of Contents",
+    "tocEmpty": "No headings found.",
+    "authorTitle": "About the author",
+    "relatedTitle": "Related Articles",
+    "commentsTitle": "Comments",
+    "commentsCount": "{{count}} comments",
+    "noComments": "No comments yet. Be the first to share your thoughts.",
+    "commentName": "Name",
+    "commentEmail": "Email",
+    "commentMessage": "Your comment",
+    "commentSubmit": "Post Comment",
+    "commentSuccess": "Your comment has been submitted and is awaiting approval.",
+    "commentError": "Could not submit comment. Please try again.",
+    "newsletterTitle": "Stay in the loop",
+    "newsletterSubtitle": "Subscribe to receive the latest articles and updates.",
+    "newsletterPlaceholder": "Enter your email",
+    "newsletterButton": "Subscribe",
+    "newsletterSuccess": "Thanks for subscribing!",
+    "previousArticle": "Previous Article",
+    "nextArticle": "Next Article",
+    "ctaTitle": "Ready to advance your career?",
+    "ctaSubtitle": "Explore our professional exam packages and start learning today.",
+    "ctaButton": "Explore Packages",
+    "ctaContact": "Contact Us",
+    "notFound": "Article not found.",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "exams": {
+    "heroTitle": "Exams",
+    "heroSubtitle": "Prepare with realistic mock exams and track your progress.",
+    "breadcrumbHome": "Home",
+    "breadcrumbExams": "Exams",
+    "searchPlaceholder": "Search exams...",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "difficulty": "Difficulty",
+    "allDifficulties": "All Levels",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "duration": "Duration",
+    "allDurations": "Any Duration",
+    "short": "Short (< 30 min)",
+    "medium": "Medium (30-90 min)",
+    "long": "Long (> 90 min)",
+    "status": "Status",
+    "allStatuses": "All Statuses",
+    "active": "Active",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "sortBy": "Sort by",
+    "newest": "Newest",
+    "mostPopular": "Most Popular",
+    "hardest": "Hardest",
+    "easiest": "Easiest",
+    "featuredTitle": "Featured Exams",
+    "allTitle": "All Exams",
+    "upcomingTitle": "Upcoming Exams",
+    "completedTitle": "Completed Exams",
+    "examsCount": "exams",
+    "questions": "questions",
+    "attempts": "attempts",
+    "minutes": "min",
+    "passingScore": "Passing score",
+    "startExam": "Start Exam",
+    "continueExam": "Continue",
+    "reviewExam": "Review",
+    "stats": {
+      "totalExams": "Total Exams",
+      "totalQuestions": "Practice Questions",
+      "totalAttempts": "Exam Attempts"
+    },
+    "categoriesTitle": "Browse Categories",
+    "faqTitle": "Frequently Asked Questions",
+    "testimonialsTitle": "What Students Say",
+    "newsletterTitle": "Subscribe to Exam Updates",
+    "newsletterSubtitle": "Get the latest mock exams and preparation tips delivered to your inbox.",
+    "newsletterPlaceholder": "Enter your email",
+    "newsletterButton": "Subscribe",
+    "newsletterSuccess": "Thanks for subscribing!",
+    "ctaTitle": "Ready to Test Your Knowledge?",
+    "ctaSubtitle": "Join thousands of healthcare professionals preparing with our mock exams.",
+    "ctaExplore": "Explore Exams",
+    "ctaContact": "Contact Us",
+    "noResults": "No exams found.",
+    "loginToStart": "Log in to start the exam",
+    "subscriptionRequired": "Subscribe to a package for this specialty to take this exam",
+    "attemptsExhausted": "You have used all attempts for this exam",
+    "examEmpty": "This exam has no questions yet",
+    "startFailed": "Could not start the exam. Please try again."
+  },
+  "examDetail": {
+    "breadcrumbHome": "Home",
+    "breadcrumbExams": "Exams",
+    "backToExams": "Back to Exams",
+    "lastUpdated": "Last updated",
+    "duration": "Duration",
+    "questions": "Questions",
+    "passingScore": "Passing score",
+    "attemptsAllowed": "Attempts allowed",
+    "language": "Language",
+    "examType": "Exam type",
+    "startExam": "Start Exam",
+    "overviewTitle": "Exam Overview",
+    "whatYoullBeTestedOn": "What You'll Be Tested On",
+    "skillsCovered": "Skills Covered",
+    "instructions": "Exam Instructions",
+    "requirements": "Requirements",
+    "rulesAndPolicies": "Rules & Policies",
+    "featuresTitle": "Exam Features",
+    "feature_instant_result": "Instant result",
+    "feature_auto_save": "Auto save",
+    "feature_timer": "Timer",
+    "feature_random_questions": "Random questions",
+    "feature_progress_tracking": "Progress tracking",
+    "relatedExamsTitle": "Related Exams",
+    "faqTitle": "Frequently Asked Questions",
+    "ctaTitle": "Ready to start the exam?",
+    "ctaSubtitle": "Test your knowledge and see where you stand.",
+    "notFound": "Exam not found."
+  },
+  "contactPage": {
+    "title": "Contact Us",
+    "subtitle": "Have a question about exams, packages, or your subscription? Send us a message.",
+    "name": "Full Name",
+    "mobile": "Mobile Number",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Your message has been sent. We will get back to you soon.",
+    "error": "Could not send your message. Please check the fields and try again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you are looking for does not exist or has been moved.",
+    "home": "Back to Home",
+    "exams": "Browse Exams"
+  },
+  "legal": {
+    "lastUpdated": "Last updated: October 2026",
+    "questions": "Questions about this page?",
+    "privacy": {
+      "title": "Privacy Policy",
+      "sections": [
+        {
+          "heading": "Information we collect",
+          "body": "When you create an account we collect your name, mobile number and email. When you use the platform we store your exam attempts, answers and results so we can show your progress and reports."
+        },
+        {
+          "heading": "How we use your information",
+          "body": "We use your information to run your account, deliver exams, calculate your results, manage your subscriptions and payments, and contact you about your account or support requests."
+        },
+        {
+          "heading": "Payments",
+          "body": "Card payments are processed by our payment provider. We do not store your full card number on our servers."
+        },
+        {
+          "heading": "Sharing",
+          "body": "We do not sell your personal information. We share it only with service providers that help us operate the platform (such as payment processing), or when required by law."
+        },
+        {
+          "heading": "Your rights",
+          "body": "You can view and update your profile information from your account settings, and you can contact us to request deletion of your account and data."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "sections": [
+        {
+          "heading": "Your account",
+          "body": "You are responsible for keeping your login details private. An account is for one person and may not be shared."
+        },
+        {
+          "heading": "Subscriptions",
+          "body": "A package gives you access to the exams and question bank of its specialty for the subscription period. Access ends when the subscription expires unless you renew it."
+        },
+        {
+          "heading": "Payments and refunds",
+          "body": "Prices are shown before you pay. Refunds follow the policy shown at the time of purchase."
+        },
+        {
+          "heading": "Acceptable use",
+          "body": "Exam content is for your personal preparation. Copying, publishing or redistributing questions is not allowed."
+        },
+        {
+          "heading": "Changes",
+          "body": "We may update these terms. We will publish the updated version on this page."
+        }
+      ]
     }
   }
 }

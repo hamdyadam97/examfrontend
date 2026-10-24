@@ -33,6 +33,11 @@ interface QuestionData {
   question_type?: string;
 }
 
+/** Client-clock deadline for a countdown the server reported in seconds. */
+function deadlineFromNow(seconds: number) {
+  return Date.now() + seconds * 1000;
+}
+
 export function ExamShowPage() {
   const { id } = useParams<{ id: string }>();
   const examId = Number(id);
@@ -54,7 +59,12 @@ export function ExamShowPage() {
   const [showFinish, setShowFinish] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  // Deadline in client time, derived from the server's remaining_seconds so clock skew does not matter.
+  const [deadlineMs, setDeadlineMs] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   const autoSaveRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const closingRef = useRef(false);
+  const warnedRef = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     loadExam();
@@ -62,9 +72,22 @@ export function ExamShowPage() {
   }, [examId]);
 
   useEffect(() => {
-    const timer = setInterval(() => setElapsedSeconds((s) => s + 1), 1000);
+    const timer = setInterval(() => {
+      setElapsedSeconds((s) => s + 1);
+      setNow(Date.now());
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const remainingSeconds = deadlineMs === null ? null : Math.max(0, Math.ceil((deadlineMs - now) / 1000));
+
+  /** Leave the player for the result page once the server no longer accepts answers. */
+  const closeExam = (message: string) => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    toast.info(message);
+    navigate(`/user/exam/${examId}/result`, { replace: true });
+  };
 
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -94,6 +117,12 @@ export function ExamShowPage() {
     try {
       const res = await api.get(`/exams/get-questions?exam_id=${examId}`);
       const d = res.data?.data;
+      if (d?.exam?.status === 'completed') {
+        closeExam(t('examPlayer.alerts.alreadyFinished'));
+        return;
+      }
+      const remaining = d?.exam?.remaining_seconds;
+      setDeadlineMs(typeof remaining === 'number' ? deadlineFromNow(remaining) : null);
       setData(d);
       const map: Record<number, Detail> = {};
       d.details?.forEach((det: any) => {
@@ -113,7 +142,7 @@ export function ExamShowPage() {
   const loadQuestion = async (qid: number) => {
     if (questions[qid]) return;
     try {
-      const res = await api.get(`/exams/${qid}/get-question`);
+      const res = await api.get(`/exams/${qid}/get-question?exam_id=${examId}`);
       setQuestions((prev) => ({ ...prev, [qid]: res.data?.data?.question }));
     } catch {
       toast.error('Failed to load question');
@@ -138,26 +167,69 @@ export function ExamShowPage() {
     [data, detailsMap]
   );
 
+  /** Save an answer (null clears it). The server grades it and, in tutor mode only, returns the correct answer. */
   const persistAnswer = async (qid: number, selected: number[]) => {
-    const question = questions[qid];
-    if (!question || !selected.length) return;
-    const answerId = selected[0];
-    const correctId = Number(question.correct_answer_id);
-    const isCorrect = answerId === correctId;
+    if (!questions[qid]) return;
+    const answerId = selected[0] ?? null;
     try {
-      await dispatch(
+      const res = await dispatch(
         saveExamSingle({
           examId,
-          obj: { question_id: qid, answer_id: answerId, is_correct: isCorrect, is_marked: flagged.has(qid) },
+          obj: { question_id: qid, answer_id: answerId, is_marked: flagged.has(qid) },
         })
       ).unwrap();
+      const saved = res?.data ?? {};
       setDetailsMap((prev) => ({
         ...prev,
-        [qid]: { ...prev[qid], answer_id: answerId, is_correct: isCorrect },
+        [qid]: { ...prev[qid], answer_id: answerId, is_correct: saved.is_correct ?? null },
       }));
-    } catch {
-      // silent fail; autosave will retry
+      if (saved.correct_answer_id !== undefined) {
+        setQuestions((prev) => ({
+          ...prev,
+          [qid]: { ...prev[qid], correct_answer_id: saved.correct_answer_id, notes: saved.notes },
+        }));
+      }
+    } catch (err) {
+      const errors = (err as { errors?: Record<string, unknown> })?.errors;
+      if (errors?.TimeUp) closeExam(t('examPlayer.alerts.timeUp'));
+      else if (errors?.ExamFinished) closeExam(t('examPlayer.alerts.alreadyFinished'));
+      // Anything else is transient; autosave will retry.
     }
+  };
+
+  const handleTimeUp = async () => {
+    if (closingRef.current) return;
+    const qid = data?.questions?.[currentIndex];
+    const selected = qid ? selectedAnswers[qid] : undefined;
+    if (qid && selected?.length) await persistAnswer(qid, selected);
+    try {
+      await dispatch(finishExam(examId)).unwrap();
+    } catch {
+      // The server finishes timed-out exams on its own; the result page reads its state.
+    }
+    closeExam(t('examPlayer.alerts.timeUp'));
+  };
+
+  useEffect(() => {
+    if (remainingSeconds === null) return;
+    if (remainingSeconds === 0) {
+      handleTimeUp();
+      return;
+    }
+    for (const mark of [300, 60]) {
+      if (remainingSeconds <= mark && !warnedRef.current.has(mark)) {
+        warnedRef.current.add(mark);
+        toast.warning(t('examPlayer.alerts.timeWarning', { minutes: mark / 60 }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remainingSeconds]);
+
+  const formatClock = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h > 0 ? `${h}:` : ''}${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   };
 
   const handleSingleAnswer = async (answerId: number) => {
@@ -180,9 +252,9 @@ export function ExamShowPage() {
     await persistAnswer(currentQid, [answerId]);
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
     setSelectedAnswers((prev) => ({ ...prev, [currentQid]: [] }));
-    setDetailsMap((prev) => ({ ...prev, [currentQid]: { ...prev[currentQid], answer_id: null, is_correct: null } }));
+    await persistAnswer(currentQid, []);
     toast.info(t('examPlayer.alerts.answerCleared'));
   };
 
@@ -221,10 +293,13 @@ export function ExamShowPage() {
   const handleFinish = () => setShowFinish(true);
 
   const handleConfirmFinish = async () => {
+    if (closingRef.current) return;
+    closingRef.current = true;
     try {
       await dispatch(finishExam(examId)).unwrap();
-      navigate(`/user/exam/${examId}/result`);
+      navigate(`/user/exam/${examId}/result`, { replace: true });
     } catch (err: any) {
+      closingRef.current = false;
       toast.error(((err?.statusCode || err?.code) && err?.message) || 'Failed to finish exam');
     }
   };
@@ -281,7 +356,12 @@ export function ExamShowPage() {
       <ExamHeader
         examTitle={data.exam?.title}
         stageText={stageText}
-        timerText={`${t('examPlayer.timer')}: ${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`}
+        timerText={
+          remainingSeconds !== null
+            ? `${t('examPlayer.summary.remainingTime')}: ${formatClock(remainingSeconds)}`
+            : `${t('examPlayer.timer')}: ${formatClock(elapsedSeconds)}`
+        }
+        timerUrgent={remainingSeconds !== null && remainingSeconds <= 300}
         isFullscreen={isFullscreen}
         onToggleFullscreen={toggleFullscreen}
         onExit={() => navigate('/user/exam')}
@@ -339,12 +419,16 @@ export function ExamShowPage() {
             total={data.questions.length}
             answered={answeredCount}
             remaining={unanswered}
-            correct={correctCount}
-            wrong={wrongCount}
+            correct={reviewMode ? correctCount : undefined}
+            wrong={reviewMode ? wrongCount : undefined}
             saved={saved.size}
             flagged={flagged.size}
             review={review.size}
-            elapsedSeconds={elapsedSeconds}
+            elapsedSeconds={
+              remainingSeconds !== null && data.exam?.duration
+                ? Math.max(0, data.exam.duration * 60 - remainingSeconds)
+                : elapsedSeconds
+            }
             totalSeconds={data.exam?.duration ? data.exam.duration * 60 : undefined}
           />
         </aside>
