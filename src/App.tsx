@@ -72,6 +72,7 @@ export default function App() {
         {/* Public routes */}
         <Route element={<MainLayoutWrapper />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/packages/category/:id" element={<PackagesCategoryPage />} />
@@ -87,7 +88,6 @@ export default function App() {
         </Route>
 
         {/* Auth routes */}
-        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
         <Route path="/verify-otp" element={<PublicRoute><VerifyOtpPage /></PublicRoute>} />
         <Route path="/forget" element={<PublicRoute><ForgetPage /></PublicRoute>} />

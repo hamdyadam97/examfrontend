@@ -59,9 +59,11 @@ interface CountryCodeSelectProps {
   value: string;
   onChange: (dialCode: string, countryCode: string) => void;
   className?: string;
+  /** 'lg' matches the 56px inputs of the login page. */
+  size?: 'md' | 'lg';
 }
 
-export function CountryCodeSelect({ value, onChange, className }: CountryCodeSelectProps) {
+export function CountryCodeSelect({ value, onChange, className, size = 'md' }: CountryCodeSelectProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef<HTMLDivElement>(null);
@@ -97,7 +99,9 @@ export function CountryCodeSelect({ value, onChange, className }: CountryCodeSel
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex h-10 items-center gap-1.5 rounded-lg border bg-white px-2.5 text-sm font-medium hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700"
+        className={`flex items-center gap-1.5 border bg-white text-sm font-medium hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 ${
+          size === 'lg' ? 'h-14 rounded-2xl border-slate-200 px-3.5 dark:border-slate-700' : 'h-10 rounded-lg px-2.5'
+        }`}
       >
         <CountryFlag code={selected.code} className="h-auto w-5 rounded-sm" />
         <span className="text-slate-700 dark:text-slate-300">{selected.dial}</span>

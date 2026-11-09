@@ -65,7 +65,22 @@
     "sessionExpired": "Your session has expired. Please log in again",
     "loginSuccess": "Logged in successfully",
     "otpSent": "A verification code has been sent to your phone",
-    "noAccount": "Don't have an account?"
+    "noAccount": "Don't have an account?",
+    "loginSubtitle": "Sign in to your account to start practicing",
+    "mobilePlaceholder": "Mobile number",
+    "signIn": "Sign in",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "joinNow": "Join now and enjoy all the platform features",
+    "createNewAccount": "Create a new account",
+    "page": {
+      "welcome": "Welcome to",
+      "badge": "The leading medical exams platform",
+      "secure": "A safe and trusted environment",
+      "reports": "Detailed reports on your performance",
+      "support": "Technical support around the clock",
+      "tagline": "Together toward a better professional future"
+    }
   },
   "exam": {
     "create": "Create Exam",
@@ -1154,7 +1169,7 @@
         },
         "dcpd": {
           "name": "DCPD",
-          "desc": "Question bank and mock exams"
+          "desc": "Dubai Council for Dentistry"
         }
       }
     },
