@@ -42,7 +42,7 @@ export function PopularExams({ categories }: Props) {
         id: key,
         name: t(`home.popular.fallback.${key}.name`),
         description: t(`home.popular.fallback.${key}.desc`),
-        to: '/exams',
+        to: '/user/exam/create',
       }));
 
   return (
@@ -50,7 +50,7 @@ export function PopularExams({ categories }: Props) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title={t('home.popular.title', 'Most requested exams')}
-          link={{ to: '/exams', label: t('home.popular.viewAll', 'View all exams') }}
+          link={{ to: '/packages', label: t('home.popular.viewAll', 'View all packages') }}
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((category, idx) => {

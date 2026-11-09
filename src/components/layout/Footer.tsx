@@ -40,7 +40,6 @@ export function Footer() {
 
   const quickLinks = [
     { to: '/', label: t('header.nav.home', 'Home') },
-    { to: '/exams', label: t('common.exams', 'Exams') },
     { to: '/packages', label: t('header.nav.packages', 'Packages') },
     { to: '/blogs', label: t('header.nav.news', 'News') },
     { to: '/about', label: t('header.nav.about', 'About Us') },

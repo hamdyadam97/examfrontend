@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Brain, FileText, XCircle, Compass, ArrowRight, Sparkles } from 'lucide-react';
+import { Brain, XCircle, Compass, ArrowRight, Sparkles } from 'lucide-react';
 import { SectionCard } from './SectionCard';
 import type { StudentInsights } from '@/types/insights';
 
@@ -43,17 +43,6 @@ export function AiRecommendations({ insights }: Props) {
       to: '/user/questions/wrong',
     });
   }
-  insights.recommended_exams.slice(0, 2).forEach((exam) => {
-    recs.push({
-      key: `exam-${exam.id}`,
-      icon: FileText,
-      color: 'bg-primary/10 text-primary',
-      title: exam.title,
-      desc: [exam.category, exam.duration_minutes ? `${exam.duration_minutes} min` : null].filter(Boolean).join(' · ')
-        || t('dashboard.aiRecommendations.recommendedExam'),
-      to: `/exams/${exam.id}`,
-    });
-  });
   const untouched = insights.topics.untouched[0];
   if (untouched) {
     recs.push({

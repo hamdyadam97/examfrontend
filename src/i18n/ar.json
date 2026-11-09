@@ -160,7 +160,9 @@
       "noExamInProgress": "لا يوجد امتحان قيد التنفيذ",
       "noExamInProgressDesc": "أنشئ امتحاناً مخصصاً من بنك أسئلتك.",
       "browseExamsDesc": "اختر امتحاناً جاهزاً لتبدأه",
-      "practiceDesc": "قوِّ نقاط ضعفك"
+      "practiceDesc": "قوِّ نقاط ضعفك",
+      "browsePackages": "تصفح الباقات",
+      "browsePackagesDesc": "اشترك في باقة عشان تفتح أسئلة أكتر لامتحاناتك"
     },
     "recentExams": {
       "title": "أحدث الامتحانات",
@@ -258,7 +260,8 @@
       "continueLastExam": "استكمال آخر امتحان",
       "performanceReport": "تقرير الأداء",
       "subscriptionDetails": "تفاصيل الاشتراك",
-      "browseExams": "تصفح الامتحانات"
+      "browseExams": "تصفح الامتحانات",
+      "browsePackages": "تصفح الباقات"
     },
     "sidebar": {
       "dashboard": "لوحة التحكم",
@@ -295,7 +298,8 @@
     "browseExams": "تصفح الامتحانات",
     "examReadiness": "الجاهزية للامتحان",
     "noActivePackage": "لا توجد باقة فعّالة",
-    "correctAnswers": "إجابات صحيحة"
+    "correctAnswers": "إجابات صحيحة",
+    "browsePackages": "تصفح الباقات"
   },
   "hero": {
     "badge": "منصة الامتحانات الطبية",
@@ -811,7 +815,8 @@
       "reviewSaved": "مراجعة الأسئلة المحفوظة",
       "performanceReport": "تقرير الأداء",
       "browseExams": "تصفح الامتحانات",
-      "reviewFlagged": "مراجعة الأسئلة المعلّمة"
+      "reviewFlagged": "مراجعة الأسئلة المعلّمة",
+      "browsePackages": "تصفح الباقات"
     },
     "alerts": {
       "selectCategory": "يرجى اختيار تصنيف واحد على الأقل.",
@@ -1005,7 +1010,8 @@
     "title": "الصفحة غير موجودة",
     "subtitle": "الصفحة اللي بتدور عليها مش موجودة أو اتنقلت.",
     "home": "العودة للرئيسية",
-    "exams": "تصفح الامتحانات"
+    "exams": "تصفح الامتحانات",
+    "packages": "تصفح الباقات"
   },
   "legal": {
     "lastUpdated": "آخر تحديث: أكتوبر 2026",
@@ -1130,7 +1136,7 @@
     },
     "popular": {
       "title": "الامتحانات الأكثر طلباً",
-      "viewAll": "عرض جميع الامتحانات",
+      "viewAll": "عرض كل الباقات",
       "start": "ابدأ التدريب",
       "questions": "{{count}} سؤال",
       "fallback": {

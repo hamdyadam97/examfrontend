@@ -15,8 +15,8 @@ export function NotFoundPage() {
         <Link to="/" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-primary/90">
           <Home size={18} /> {t('notFound.home', 'Back to Home')}
         </Link>
-        <Link to="/exams" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-secondary hover:border-primary hover:text-primary">
-          <ClipboardList size={18} /> {t('notFound.exams', 'Browse Exams')}
+        <Link to="/packages" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-secondary hover:border-primary hover:text-primary">
+          <ClipboardList size={18} /> {t('notFound.packages', 'Browse packages')}
         </Link>
       </div>
     </section>

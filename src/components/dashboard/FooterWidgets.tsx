@@ -8,7 +8,7 @@ export function FooterWidgets() {
   const items = [
     { to: '/user/exam/create', icon: PlusCircle, label: t('dashboard.footer.createExam'), color: 'bg-rose-500' },
     { to: '/user/exam', icon: PlayCircle, label: t('dashboard.footer.continueLastExam'), color: 'bg-primary' },
-    { to: '/exams', icon: BookOpen, label: t('dashboard.footer.browseExams'), color: 'bg-blue-500' },
+    { to: '/packages', icon: BookOpen, label: t('dashboard.footer.browsePackages', 'Browse packages'), color: 'bg-blue-500' },
     { to: '/user/dashboard?tab=analytics', icon: BarChart2, label: t('dashboard.footer.performanceReport'), color: 'bg-purple-500' },
     { to: '/user/subscriptions', icon: CreditCard, label: t('dashboard.footer.subscriptionDetails'), color: 'bg-amber-500' },
   ];

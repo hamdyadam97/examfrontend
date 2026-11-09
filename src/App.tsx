@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '@/router/ProtectedRoute';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -13,8 +13,6 @@ import { PackagesPage } from '@/pages/public/PackagesPage';
 import { PackagesCategoryPage } from '@/pages/public/PackagesCategoryPage';
 import { BlogsPage } from '@/pages/public/BlogsPage';
 import { BlogDetailPage } from '@/pages/public/BlogDetailPage';
-import { ExamsPage } from '@/pages/public/ExamsPage';
-import { ExamDetailPage } from '@/pages/public/ExamDetailPage';
 import { ContactPage } from '@/pages/public/ContactPage';
 import { TestimonialsPage } from '@/pages/public/TestimonialsPage';
 import { LegalPage } from '@/pages/public/LegalPage';
@@ -79,8 +77,8 @@ export default function App() {
           <Route path="/packages/category/:id" element={<PackagesCategoryPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogs/:id" element={<BlogDetailPage />} />
-          <Route path="/exams" element={<ExamsPage />} />
-          <Route path="/exams/:id" element={<ExamDetailPage />} />
+          {/* Exams are built by the student from the question bank; old links go to the builder. */}
+          <Route path="/exams/*" element={<Navigate to="/user/exam/create" replace />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/privacy" element={<LegalPage page="privacy" />} />

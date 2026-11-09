@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search,
   User,
   UserPlus,
   Menu,
@@ -59,20 +58,9 @@ export function Header() {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
-
-  const submitSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = query.trim();
-    if (!q) return;
-    setSearchOpen(false);
-    navigate(`/exams?q=${encodeURIComponent(q)}`);
-  };
 
   // Close the mobile drawer when the route changes (state adjusted during render, not in an effect).
   const [menuPath, setMenuPath] = useState(location.pathname);
@@ -95,7 +83,6 @@ export function Header() {
 
   const navLinks: NavItem[] = [
     { label: t('header.nav.home', 'Home'), to: '/' },
-    { label: t('common.exams', 'Exams'), to: '/exams' },
     { label: t('header.nav.packages', 'Packages'), to: '/packages' },
     { label: t('header.nav.about', 'About Us'), to: '/about' },
     { label: t('header.nav.news', 'News'), to: '/blogs' },
@@ -126,15 +113,6 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <button
-              type="button"
-              onClick={() => setSearchOpen((s) => !s)}
-              aria-label={t('header.search', 'Search')}
-              className="rounded-full p-2.5 text-secondary transition-colors hover:bg-sky-soft hover:text-primary"
-            >
-              <Search size={20} />
-            </button>
-
             {auth.authenticated ? (
               <>
                 <Link
@@ -182,35 +160,6 @@ export function Header() {
           </button>
         </div>
       </div>
-
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-slate-100 bg-white"
-          >
-            <div className="mx-auto max-w-3xl px-4 py-3">
-              <form role="search" onSubmit={submitSearch} className="flex items-center gap-3 rounded-xl bg-sky-soft px-4 py-2.5">
-                <Search size={18} className="text-slate-400" />
-                <input
-                  type="search"
-                  autoFocus
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  aria-label={t('header.search', 'Search')}
-                  placeholder={t('header.searchPlaceholder', 'Search exams, specialties...')}
-                  className="w-full bg-transparent text-sm text-secondary outline-none placeholder:text-slate-400"
-                />
-                <button type="button" onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-secondary" aria-label={t('common.cancel', 'Cancel')}>
-                  <X size={18} />
-                </button>
-              </form>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {mobileOpen && (

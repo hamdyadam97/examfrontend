@@ -54,7 +54,7 @@ export function HomeHero({ stats }: Props) {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/exams"
+                to="/user/exam/create"
                 className="inline-flex items-center gap-3 rounded-full bg-secondary px-8 py-4 text-base font-bold text-white shadow-lg shadow-secondary/20 transition hover:-translate-y-0.5 hover:bg-secondary/90"
               >
                 <Play size={18} className="fill-white rtl:rotate-180" /> {t('home.hero.cta', 'Start now')}

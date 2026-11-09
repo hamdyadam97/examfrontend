@@ -63,7 +63,6 @@ interface Props {
 export function ContinueLearning({ insights }: Props) {
   const { t } = useTranslation();
   const current = insights.in_progress;
-  const nextExam = insights.recommended_exams[0];
 
   return (
     <div className="grid gap-5 md:grid-cols-3">
@@ -91,10 +90,10 @@ export function ContinueLearning({ insights }: Props) {
       )}
       <ContinueCard
         icon={BookOpen}
-        title={nextExam ? nextExam.title : t('dashboard.continueLearning.browseExams')}
-        subtitle={nextExam?.category || t('dashboard.continueLearning.browseExamsDesc')}
-        to={nextExam ? `/exams/${nextExam.id}` : '/exams'}
-        action={nextExam ? t('exams.startExam') : t('dashboard.browseExams')}
+        title={t('dashboard.continueLearning.browsePackages', 'Browse packages')}
+        subtitle={t('dashboard.continueLearning.browsePackagesDesc', 'Subscribe to unlock more questions for your exams')}
+        to="/packages"
+        action={t('dashboard.browsePackages', 'Browse packages')}
         color="bg-blue-100 text-blue-600"
         delay={0.2}
       />
