@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Handshake } from 'lucide-react';
 import type { Partner } from '../PartnersSection';
 
 interface Props {
@@ -11,7 +12,37 @@ interface Props {
 export function PartnersStrip({ partners }: Props) {
   const { t, i18n } = useTranslation();
   const rowRef = useRef<HTMLDivElement>(null);
-  if (partners.length === 0) return null;
+
+  if (partners.length === 0) {
+    return (
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-8 text-center text-2xl font-extrabold text-secondary sm:text-3xl">
+            {t('home.partners.title', 'Our partners and accredited bodies')}
+          </h2>
+          <div className="flex flex-col items-center justify-between gap-5 rounded-3xl border border-slate-100 bg-sky-soft/60 p-8 text-center md:flex-row md:text-start">
+            <div className="flex items-center gap-4">
+              <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm sm:flex">
+                <Handshake size={28} />
+              </div>
+              <div>
+                <p className="text-lg font-extrabold text-secondary">{t('home.partners.emptyTitle', 'Become a partner')}</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {t('home.partners.emptyText', 'Hospitals, universities and training centers: partner with us to train your teams.')}
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/contact"
+              className="inline-flex shrink-0 items-center rounded-full bg-secondary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary"
+            >
+              {t('home.partners.emptyCta', 'Contact us')}
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const isRtl = i18n.language === 'ar';
   const scroll = (direction: 1 | -1) => {

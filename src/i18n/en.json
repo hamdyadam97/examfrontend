@@ -1132,7 +1132,25 @@
       "title": "Most requested exams",
       "viewAll": "View all exams",
       "start": "Start practicing",
-      "questions": "{{count}} questions"
+      "questions": "{{count}} questions",
+      "fallback": {
+        "nclex": {
+          "name": "NCLEX",
+          "desc": "US nursing licensure exam"
+        },
+        "dha": {
+          "name": "DHA",
+          "desc": "Dubai Health Authority exam"
+        },
+        "prometric": {
+          "name": "Prometric",
+          "desc": "Gulf health licensing exams"
+        },
+        "dcpd": {
+          "name": "DCPD",
+          "desc": "Question bank and mock exams"
+        }
+      }
     },
     "about": {
       "title": "About RootsExams",
@@ -1181,22 +1199,60 @@
     "packages": {
       "title": "Featured packages",
       "subtitle": "Packages selected to help you prepare",
-      "viewAll": "All packages"
+      "viewAll": "All packages",
+      "emptyTitle": "Packages are on the way",
+      "emptyText": "We are preparing training packages for each exam. Contact us to know the details and prices.",
+      "emptyCta": "Contact us"
     },
     "partners": {
       "title": "Our partners and accredited bodies",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "emptyTitle": "Become a partner",
+      "emptyText": "Hospitals, universities and training centers: partner with us to train your teams.",
+      "emptyCta": "Contact us"
     },
     "news": {
       "title": "Latest news and updates",
-      "viewAll": "View all"
+      "viewAll": "View all",
+      "emptyText": "Exam news, dates and preparation tips will be published here soon.",
+      "emptyCta": "Visit the news page"
     },
     "testimonials": {
-      "title": "What our students say"
+      "title": "What our students say",
+      "emptyText": "Practiced with us? Tell us about your experience and help other candidates prepare.",
+      "emptyCta": "Share your experience"
     },
     "faq": {
-      "title": "Frequently asked questions"
+      "title": "Frequently asked questions",
+      "default": {
+        "what": {
+          "q": "What is RootsExams?",
+          "a": "An online platform for practicing medical licensing exams with question banks, timed mock exams and performance reports."
+        },
+        "modes": {
+          "q": "What is the difference between exam mode and study mode?",
+          "a": "Exam mode simulates the real exam and shows your result at the end. Study mode shows the correct answer and its explanation after each question."
+        },
+        "timer": {
+          "q": "What happens when the exam time runs out?",
+          "a": "The exam is submitted automatically and your answers so far are graded."
+        },
+        "review": {
+          "q": "Can I review the questions I got wrong?",
+          "a": "Yes. You can save and flag questions, review each attempt, and practice again on your mistakes."
+        },
+        "payment": {
+          "q": "How do I pay for a package?",
+          "a": "By card through the secure HyperPay gateway; your card details never reach our servers."
+        }
+      }
+    },
+    "highlights": {
+      "timed": "Timed mock exams",
+      "study": "Study mode with explanations",
+      "reports": "Instant performance reports",
+      "anytime": "Available 24/7"
     }
   }
 }

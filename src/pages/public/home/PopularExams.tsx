@@ -17,11 +17,33 @@ interface Props {
   categories: Specialty[];
 }
 
+interface Card {
+  id: string | number;
+  name: string;
+  description?: string | null;
+  icon?: string | null;
+  questions?: number;
+  to: string;
+}
+
+// Shown until specialties are added in the admin panel.
+const FALLBACK = ['nclex', 'dha', 'prometric', 'dcpd'] as const;
+
 /** The specialties with the most questions, as big exam cards. */
 export function PopularExams({ categories }: Props) {
   const { t } = useTranslation();
-  const top = [...categories].sort((a, b) => (b.questions_count || 0) - (a.questions_count || 0)).slice(0, 4);
-  if (top.length === 0) return null;
+  const top: Card[] = [...categories]
+    .sort((a, b) => (b.questions_count || 0) - (a.questions_count || 0))
+    .slice(0, 4)
+    .map((c) => ({ id: c.id, name: c.name, description: c.description, icon: c.icon, questions: c.questions_count || 0, to: `/packages/category/${c.id}` }));
+  const cards: Card[] = top.length
+    ? top
+    : FALLBACK.map((key) => ({
+        id: key,
+        name: t(`home.popular.fallback.${key}.name`),
+        description: t(`home.popular.fallback.${key}.desc`),
+        to: '/exams',
+      }));
 
   return (
     <section className="py-16 sm:py-20">
@@ -31,7 +53,7 @@ export function PopularExams({ categories }: Props) {
           link={{ to: '/exams', label: t('home.popular.viewAll', 'View all exams') }}
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {top.map((category, idx) => {
+          {cards.map((category, idx) => {
             const { gradient, icon: Icon } = looks[idx % looks.length];
             return (
               <motion.article
@@ -50,11 +72,13 @@ export function PopularExams({ categories }: Props) {
                 {category.description && (
                   <p className="relative mt-2 line-clamp-2 text-sm font-medium text-slate-600" dir="auto">{category.description}</p>
                 )}
-                <p className="relative mt-2 text-xs text-slate-500">
-                  {t('home.popular.questions', { count: category.questions_count || 0, defaultValue: '{{count}} questions' })}
-                </p>
+                {category.questions !== undefined && (
+                  <p className="relative mt-2 text-xs text-slate-500">
+                    {t('home.popular.questions', { count: category.questions, defaultValue: '{{count}} questions' })}
+                  </p>
+                )}
                 <Link
-                  to={`/packages/category/${category.id}`}
+                  to={category.to}
                   className="relative mx-auto mt-auto inline-flex items-center gap-2 rounded-full bg-secondary px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-primary"
                 >
                   <Play size={14} className="fill-white rtl:rotate-180" /> {t('home.popular.start', 'Start practicing')}

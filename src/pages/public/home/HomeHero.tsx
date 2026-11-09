@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Play, Users, CircleCheck, Trophy, Landmark, type LucideIcon } from 'lucide-react';
+import { Play, Users, CircleCheck, Trophy, Landmark, Timer, BookOpen, ChartColumn, Clock, type LucideIcon } from 'lucide-react';
 import { AnimatedCounter } from '@/components/dashboard/AnimatedCounter';
 import { HeroArt } from './HeroArt';
 import type { LandingStats } from './types';
@@ -21,6 +21,13 @@ export function HomeHero({ stats }: Props) {
         { icon: Landmark, value: stats.partners, prefix: '+', label: t('home.stats.partners', 'Accredited partners') },
       ].filter((item) => item.value > 0)
     : [];
+
+  const highlights: { icon: LucideIcon; label: string }[] = [
+    { icon: Timer, label: t('home.highlights.timed', 'Timed mock exams') },
+    { icon: BookOpen, label: t('home.highlights.study', 'Study mode with explanations') },
+    { icon: ChartColumn, label: t('home.highlights.reports', 'Instant performance reports') },
+    { icon: Clock, label: t('home.highlights.anytime', 'Available 24/7') },
+  ];
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-sky-soft via-white to-white pb-10">
@@ -70,6 +77,25 @@ export function HomeHero({ stats }: Props) {
             <HeroArt />
           </motion.div>
         </div>
+
+        {items.length === 0 && (
+          // No real numbers yet: show what the platform offers instead of invented figures.
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-10 grid divide-slate-100 rounded-3xl border border-slate-100 bg-white shadow-xl shadow-secondary/5 sm:grid-cols-2 sm:divide-x lg:grid-cols-4 rtl:sm:divide-x-reverse"
+          >
+            {highlights.map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center justify-center gap-4 px-6 py-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <Icon size={26} />
+                </div>
+                <p className="font-bold text-secondary">{label}</p>
+              </div>
+            ))}
+          </motion.div>
+        )}
 
         {items.length > 0 && (
           <motion.div

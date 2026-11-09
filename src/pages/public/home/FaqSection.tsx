@@ -4,10 +4,15 @@ import { ChevronDown } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import type { LandingFaq } from './types';
 
-export function FaqSection({ faqs }: { faqs: LandingFaq[] }) {
+// General questions about the platform, shown until FAQs are added in the admin panel.
+const DEFAULT_KEYS = ['what', 'modes', 'timer', 'review', 'payment'] as const;
+
+export function FaqSection({ faqs: given }: { faqs: LandingFaq[] }) {
   const { t } = useTranslation();
+  const faqs: LandingFaq[] = given.length
+    ? given
+    : DEFAULT_KEYS.map((key, i) => ({ id: -(i + 1), question: t(`home.faq.default.${key}.q`), answer: t(`home.faq.default.${key}.a`) }));
   const [open, setOpen] = useState<number | null>(faqs[0]?.id ?? null);
-  if (faqs.length === 0) return null;
 
   return (
     <section className="bg-sky-soft/60 py-16 sm:py-20">

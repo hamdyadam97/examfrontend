@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MessageSquareQuote, Newspaper, Quote, Star, type LucideIcon } from 'lucide-react';
 import type { Testimonial } from '../TestimonialsSection';
 import type { LandingBlog } from './types';
 
@@ -112,16 +112,53 @@ interface Props {
   testimonials: Testimonial[];
 }
 
+/** Placeholder card used while a column has no content yet. */
+function EmptyCard({ icon: Icon, title, text, cta, to }: { icon: LucideIcon; title: string; text: string; cta: string; to: string }) {
+  return (
+    <div className="flex flex-col rounded-3xl border border-slate-100 bg-gradient-to-br from-sky-soft to-white p-6 shadow-sm">
+      <h2 className="mb-4 text-xl font-extrabold text-secondary">{title}</h2>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 py-6 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-primary shadow-md">
+          <Icon size={30} />
+        </div>
+        <p className="max-w-sm leading-relaxed text-slate-600">{text}</p>
+        <Link to={to} className="inline-flex items-center rounded-full bg-secondary px-6 py-2.5 text-sm font-bold text-white transition hover:bg-primary">
+          {cta}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export function NewsAndTestimonials({ blogs, testimonials }: Props) {
+  const { t } = useTranslation();
   const reviews = testimonials.filter((item) => item.content);
-  if (blogs.length === 0 && reviews.length === 0) return null;
-  const both = blogs.length > 0 && reviews.length > 0;
 
   return (
     <section className="pb-16 sm:pb-20">
-      <div className={`mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:px-8 ${both ? 'lg:grid-cols-2' : ''}`}>
-        {reviews.length > 0 && <TestimonialCard testimonials={reviews} />}
-        {blogs.length > 0 && <NewsList blogs={blogs} />}
+      <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+        {reviews.length > 0 ? (
+          <TestimonialCard testimonials={reviews} />
+        ) : (
+          <EmptyCard
+            icon={MessageSquareQuote}
+            title={t('home.testimonials.title', 'What our students say')}
+            text={t('home.testimonials.emptyText', 'Practiced with us? Tell us about your experience and help other candidates prepare.')}
+            cta={t('home.testimonials.emptyCta', 'Share your experience')}
+            to="/contact"
+          />
+        )}
+        {blogs.length > 0 ? (
+          <NewsList blogs={blogs} />
+        ) : (
+          <EmptyCard
+            icon={Newspaper}
+            title={t('home.news.title', 'Latest news and updates')}
+            text={t('home.news.emptyText', 'Exam news, dates and preparation tips will be published here soon.')}
+            cta={t('home.news.emptyCta', 'Visit the news page')}
+            to="/blogs"
+          />
+        )}
       </div>
     </section>
   );
