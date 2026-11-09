@@ -1280,5 +1280,13 @@
       "reports": "Instant performance reports",
       "anytime": "Available 24/7"
     }
+  },
+  "landmarks": {
+    "label": "Landmarks of Jordan",
+    "petra": "Al-Khazneh, Petra",
+    "citadel": "Temple of Hercules, Amman Citadel",
+    "wadirum": "Wadi Rum",
+    "jerash": "Oval Plaza, Jerash",
+    "theatre": "Roman Theatre, Amman"
   }
 }

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ChartNoAxesColumnIncreasing, Headphones, ShieldCheck, type LucideIcon } from 'lucide-react';
-import { HeroArt } from '@/pages/public/home/HeroArt';
+import { JordanLandmarks } from '@/components/JordanLandmarks';
 
 // Exams the platform prepares for, shown as word marks (no third-party logos).
 const EXAMS = [
@@ -57,8 +57,8 @@ export function AuthShowcase({ children }: { children: React.ReactNode }) {
                 {t('home.hero.subtitle', 'Prepare with confidence and achieve your best result in your medical exams.')}
               </p>
             </div>
-            <div className="hidden md:col-span-2 md:block">
-              <HeroArt />
+            <div className="md:col-span-2">
+              <JordanLandmarks start="petra" aspect="aspect-[4/3] md:aspect-[4/5]" />
             </div>
           </div>
 

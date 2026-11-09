@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Play, Users, CircleCheck, Trophy, Landmark, Timer, BookOpen, ChartColumn, Clock, type LucideIcon } from 'lucide-react';
 import { AnimatedCounter } from '@/components/dashboard/AnimatedCounter';
-import { HeroArt } from './HeroArt';
+import { JordanLandmarks } from '@/components/JordanLandmarks';
 import type { LandingStats } from './types';
 
 interface Props {
@@ -74,7 +74,7 @@ export function HomeHero({ stats }: Props) {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mx-auto w-full max-w-xl lg:max-w-none"
           >
-            <HeroArt />
+            <JordanLandmarks start="citadel" />
           </motion.div>
         </div>
 
