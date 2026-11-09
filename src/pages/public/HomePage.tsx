@@ -1,30 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Award, BookOpen, Users, Layers, Package, FileText,
-  ArrowLeft, TrendingUp, ScrollText,
-} from 'lucide-react';
 import { api } from '@/lib/api';
-import { HeroSection } from './HeroSection';
-import { SpecialtyCard, type Specialty } from '@/components/SpecialtyCard';
 import { PackageCard } from '@/components/packages/PackageCard';
-import type { Package as PackageData } from '@/types/package';
-import { StatisticsSection } from './StatisticsSection';
 import { HowItWorksSection } from './HowItWorksSection';
-import { TestimonialsSection, type Testimonial } from './TestimonialsSection';
-import { PartnersSection, type Partner } from './PartnersSection';
-import { LocationContactSection, type AppInfo } from './LocationContactSection';
-import { CTASection } from './CTASection';
-
-/** Response of GET /landing/index. */
-interface LandingData {
-  categories?: Specialty[];
-  testimonials?: Testimonial[];
-  packages?: PackageData[];
-  partners?: Partner[];
-  app_info?: AppInfo | null;
-}
+import { HomeHero } from './home/HomeHero';
+import { PopularExams } from './home/PopularExams';
+import { AboutAndMap } from './home/AboutAndMap';
+import { FeaturesSection } from './home/FeaturesSection';
+import { PartnersStrip } from './home/PartnersStrip';
+import { NewsAndTestimonials } from './home/NewsAndTestimonials';
+import { FaqSection } from './home/FaqSection';
+import { SectionHeading } from './home/SectionHeading';
+import type { LandingData } from './home/types';
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -34,98 +21,37 @@ export function HomePage() {
     api.get('/landing/index').then((res) => setData(res.data?.data || {}));
   }, []);
 
-  const categories = data.categories || [];
-  const testimonials = data.testimonials || [];
-  const packages = data.packages || [];
-  const featured = packages.slice(0, 3);
-
-  const totalQuestions = categories.reduce((acc, c) => acc + (c.questions_count || 0), 0);
-  const totalStudents = packages.reduce((acc, p) => acc + (p.students_count || 0), 0) || testimonials.length * 120;
-  const totalMockExams = packages.reduce((acc, p) => acc + (p.exam_count || 0), 0);
-
-  const specialties = categories.slice(0, 4);
-
-  const stats = [
-    { value: totalStudents, label: t('statistics.totalStudents', 'Total Students'), icon: Users, suffix: '+' },
-    { value: categories.length, label: t('statistics.specialties', 'Medical Specialties'), icon: Layers, suffix: '+' },
-    { value: packages.length, label: t('statistics.packages', 'Exam Packages'), icon: Package, suffix: '+' },
-    { value: totalQuestions, label: t('statistics.questions', 'Practice Questions'), icon: BookOpen, suffix: '+' },
-    { value: totalMockExams, label: t('statistics.mockExams', 'Mock Exams'), icon: FileText, suffix: '+' },
-    { value: 25000, label: t('statistics.examAttempts', 'Exam Attempts'), icon: Award, suffix: '+' },
-    { value: 96, label: t('statistics.successRate', 'Success Rate'), icon: TrendingUp, suffix: '%' },
-    { value: 8500, label: t('statistics.passedStudents', 'Students Passed'), icon: ScrollText, suffix: '+' },
-  ];
+  const packages = (data.packages || []).slice(0, 3);
 
   return (
     <div className="overflow-hidden">
-      <HeroSection />
-
-      {/* Specialties */}
-      <section className="relative overflow-hidden bg-slate-50 py-20">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-60"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 10% 10%, rgba(6,191,176,0.06), transparent 30%), radial-gradient(circle at 90% 90%, rgba(0,39,112,0.04), transparent 30%)',
-          }}
-        />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
-            <span className="mb-3 inline-block rounded-full bg-primary/10 px-4 py-1 text-sm font-bold text-primary">
-              {t('specialties.badge', 'Medical Specialties')}
-            </span>
-            <h2 className="text-3xl font-bold text-secondary sm:text-4xl">
-              {t('specialties.title', 'Choose Your Medical Specialty')}
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-slate-600">
-              {t('specialties.subtitle', 'Premium exam packages tailored for every healthcare professional.')}
-            </p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {specialties.map((cat, idx) => (
-              <SpecialtyCard key={cat.id} specialty={cat} index={idx} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Exams / Packages */}
-      <section className="bg-gray-50 py-20">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-12 flex items-end justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-secondary">الباقات المميزة</h2>
-              <p className="mt-2 text-gray-600">باقات مختارة لمساعدتك في التحضير</p>
-            </div>
-            <Link to="/packages" className="hidden items-center gap-1 text-primary hover:underline md:inline-flex">
-              كل الباقات
-              <ArrowLeft size={16} />
-            </Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {featured.map((pkg, idx) => (
-              <PackageCard key={pkg.id} pkg={pkg} index={idx} showPreview={false} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <StatisticsSection stats={stats} />
-
+      <HomeHero stats={data.stats} />
+      <PopularExams categories={data.categories || []} />
+      <AboutAndMap cities={data.map_cities} />
+      <FeaturesSection />
       <HowItWorksSection />
 
-      <TestimonialsSection testimonials={testimonials} />
+      {packages.length > 0 && (
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading
+              title={t('home.packages.title', 'Featured packages')}
+              subtitle={t('home.packages.subtitle', 'Packages selected to help you prepare')}
+              link={{ to: '/packages', label: t('home.packages.viewAll', 'All packages') }}
+            />
+            <div className="grid gap-6 md:grid-cols-3">
+              {packages.map((pkg, idx) => (
+                <PackageCard key={pkg.id} pkg={pkg} index={idx} showPreview={false} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      <PartnersSection partners={data.partners || []} />
-
-      <LocationContactSection appInfo={data.app_info || null} />
-
-      <CTASection
-        students={totalStudents}
-        packages={packages.length}
-        successRate={96}
-      />
+      <PartnersStrip partners={data.partners || []} />
+      <NewsAndTestimonials blogs={data.blogs || []} testimonials={data.testimonials || []} />
+      {/* Mounted only once loaded so the first question starts open. */}
+      {(data.faqs?.length ?? 0) > 0 && <FaqSection faqs={data.faqs!} />}
     </div>
   );
 }

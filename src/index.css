@@ -4,10 +4,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #06bfb0;
-  --color-secondary: #002770;
+  /* Medical blue brand: bright accent + deep navy. */
+  --color-primary: #1d63d8;
+  --color-secondary: #0b2a6f;
   --color-background: #ffffff;
-  --color-foreground: #002770;
+  --color-foreground: #0b2a6f;
+  --color-sky-soft: #eef4ff;
 }
 
 /* Article content custom components */

@@ -1,24 +1,57 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  GraduationCap,
   Search,
   User,
+  UserPlus,
   Menu,
   X,
   LogOut,
   LayoutDashboard,
+  Mail,
+  Phone,
+  Headphones,
+  Globe,
 } from 'lucide-react';
 import type { RootState, AppDispatch } from '@/store';
 import { logoutUser } from '@/store/authSlice';
 import { openLoginModal, openSignupModal } from '@/store/uiSlice';
+import { site } from '@/config/site';
+import { Logo } from './Logo';
 
 interface NavItem {
   label: string;
   to: string;
+}
+
+/** Thin navy strip above the header with contact details and the language switch. */
+function TopBar({ onToggleLang }: { onToggleLang: () => void }) {
+  const { t, i18n } = useTranslation();
+  return (
+    <div className="hidden bg-secondary text-xs text-white/85 md:block">
+      <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-6">
+          <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-white" dir="ltr">
+            <Phone size={13} /> {site.phone}
+          </a>
+          <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 hover:text-white">
+            <Mail size={13} /> {site.email}
+          </a>
+        </div>
+        <div className="flex items-center gap-6">
+          <Link to="/contact" className="flex items-center gap-1.5 hover:text-white">
+            <Headphones size={13} /> {t('header.support', 'Technical Support')}
+          </Link>
+          <button type="button" onClick={onToggleLang} className="flex items-center gap-1.5 hover:text-white">
+            <Globe size={13} /> {i18n.language === 'ar' ? 'English' : 'العربية'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function Header() {
@@ -26,12 +59,12 @@ export function Header() {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
 
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,107 +95,87 @@ export function Header() {
 
   const navLinks: NavItem[] = [
     { label: t('header.nav.home', 'Home'), to: '/' },
-    { label: t('header.nav.about', 'About Us'), to: '/about' },
     { label: t('common.exams', 'Exams'), to: '/exams' },
     { label: t('header.nav.packages', 'Packages'), to: '/packages' },
-    { label: t('header.nav.blog', 'Blog'), to: '/blogs' },
+    { label: t('header.nav.about', 'About Us'), to: '/about' },
+    { label: t('header.nav.news', 'News'), to: '/blogs' },
     { label: t('header.nav.contact', 'Contact Us'), to: '/contact' },
   ];
 
+  const navClass = ({ isActive }: { isActive: boolean }) =>
+    `relative px-3 py-2 text-sm font-semibold transition-colors ${
+      isActive
+        ? 'text-primary after:absolute after:inset-x-3 after:-bottom-[22px] after:h-0.5 after:rounded-full after:bg-primary'
+        : 'text-secondary hover:text-primary'
+    }`;
+
   return (
-    <header
-      className={`sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md transition-shadow duration-300 ${
-        scrolled ? 'shadow-md' : 'shadow-sm'
-      }`}
-    >
+    <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <TopBar onToggleLang={toggleLang} />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 hover:scale-105">
-              <GraduationCap size={24} />
-            </div>
-            <span className="text-xl font-extrabold tracking-tight text-secondary">
-              {t('common.appName')}
-            </span>
-          </Link>
+          <Logo />
 
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={t('header.mainNav', 'Main navigation')}>
             {navLinks.map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                className="rounded-full px-4 py-2 text-sm font-medium text-secondary transition-all duration-300 hover:bg-slate-50 hover:text-primary"
-              >
+              <NavLink key={item.to} to={item.to} end={item.to === '/'} className={navClass}>
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
           </nav>
 
-          {/* Desktop Actions */}
           <div className="hidden items-center gap-2 lg:flex">
             <button
               type="button"
               onClick={() => setSearchOpen((s) => !s)}
               aria-label={t('header.search', 'Search')}
-              className="rounded-full p-2.5 text-secondary transition-colors hover:bg-slate-50 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="rounded-full p-2.5 text-secondary transition-colors hover:bg-sky-soft hover:text-primary"
             >
               <Search size={20} />
             </button>
 
             {auth.authenticated ? (
-              <Link
-                to="/user/dashboard"
-                className="rounded-full p-2.5 text-secondary transition-colors hover:bg-slate-50 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label={t('common.dashboard', 'Dashboard')}
-              >
-                <LayoutDashboard size={20} />
-              </Link>
+              <>
+                <Link
+                  to="/user/dashboard"
+                  className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-secondary/90"
+                >
+                  <LayoutDashboard size={16} /> {t('common.dashboard', 'Dashboard')}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => dispatch(logoutUser())}
+                  aria-label={t('common.logout', 'Logout')}
+                  className="rounded-full border border-red-100 p-2.5 text-red-600 transition-colors hover:bg-red-50"
+                >
+                  <LogOut size={18} />
+                </button>
+              </>
             ) : (
-              <button
-                type="button"
-                onClick={() => dispatch(openLoginModal())}
-                className="rounded-full p-2.5 text-secondary transition-colors hover:bg-slate-50 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label={t('common.login', 'Login')}
-              >
-                <User size={20} />
-              </button>
-            )}
-
-            <button
-              type="button"
-              onClick={toggleLang}
-              className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-secondary transition-colors hover:border-primary hover:text-primary"
-            >
-              {i18n.language === 'ar' ? 'EN' : 'AR'}
-            </button>
-
-            {auth.authenticated ? (
-              <button
-                type="button"
-                onClick={() => dispatch(logoutUser())}
-                className="flex items-center gap-2 rounded-full border border-red-100 px-5 py-2.5 text-sm font-bold text-red-600 transition-colors hover:bg-red-50"
-              >
-                <LogOut size={16} />
-                {t('common.logout', 'Logout')}
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => dispatch(openSignupModal())}
-                className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              >
-                {t('header.enrollNow', 'Enroll Now')}
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => dispatch(openSignupModal())}
+                  className="flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-bold text-secondary transition hover:border-primary hover:text-primary"
+                >
+                  <UserPlus size={16} /> {t('header.createAccount', 'Create Account')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => dispatch(openLoginModal())}
+                  className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-secondary/90"
+                >
+                  <User size={16} /> {t('common.login', 'Login')}
+                </button>
+              </>
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="rounded-lg p-2 text-secondary hover:bg-slate-50 lg:hidden"
+            className="rounded-lg p-2 text-secondary hover:bg-sky-soft lg:hidden"
             aria-label={t('header.menu', 'Open menu')}
           >
             <Menu size={24} />
@@ -170,7 +183,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Search Bar */}
       <AnimatePresence>
         {searchOpen && (
           <motion.div
@@ -180,7 +192,7 @@ export function Header() {
             className="overflow-hidden border-t border-slate-100 bg-white"
           >
             <div className="mx-auto max-w-3xl px-4 py-3">
-              <form role="search" onSubmit={submitSearch} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-2.5">
+              <form role="search" onSubmit={submitSearch} className="flex items-center gap-3 rounded-xl bg-sky-soft px-4 py-2.5">
                 <Search size={18} className="text-slate-400" />
                 <input
                   type="search"
@@ -191,12 +203,7 @@ export function Header() {
                   placeholder={t('header.searchPlaceholder', 'Search exams, specialties...')}
                   className="w-full bg-transparent text-sm text-secondary outline-none placeholder:text-slate-400"
                 />
-                <button
-                  type="button"
-                  onClick={() => setSearchOpen(false)}
-                  className="text-slate-400 hover:text-secondary"
-                  aria-label={t('common.cancel', 'Cancel')}
-                >
+                <button type="button" onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-secondary" aria-label={t('common.cancel', 'Cancel')}>
                   <X size={18} />
                 </button>
               </form>
@@ -205,7 +212,6 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -225,78 +231,49 @@ export function Header() {
             >
               <div className="flex h-full flex-col p-6">
                 <div className="mb-8 flex items-center justify-between">
-                  <Link to="/" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <GraduationCap size={20} />
-                    </div>
-                    <span className="text-lg font-bold text-secondary">{t('common.appName')}</span>
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setMobileOpen(false)}
-                    className="rounded-lg p-2 text-secondary hover:bg-slate-50"
-                    aria-label={t('common.close', 'Close')}
-                  >
+                  <Logo onClick={() => setMobileOpen(false)} />
+                  <button type="button" onClick={() => setMobileOpen(false)} className="rounded-lg p-2 text-secondary hover:bg-sky-soft" aria-label={t('common.close', 'Close')}>
                     <X size={22} />
                   </button>
                 </div>
 
-                <nav className="flex-1 space-y-2">
+                <nav className="flex-1 space-y-1">
                   {navLinks.map((item) => (
-                    <Link
-                      key={item.label}
+                    <NavLink
+                      key={item.to}
                       to={item.to}
-                      onClick={() => setMobileOpen(false)}
-                      className="block rounded-xl px-4 py-3 text-base font-medium text-secondary transition-colors hover:bg-slate-50 hover:text-primary"
+                      end={item.to === '/'}
+                      className={({ isActive }) =>
+                        `block rounded-xl px-4 py-3 text-base font-semibold transition-colors ${
+                          isActive ? 'bg-sky-soft text-primary' : 'text-secondary hover:bg-sky-soft hover:text-primary'
+                        }`
+                      }
                     >
                       {item.label}
-                    </Link>
+                    </NavLink>
                   ))}
                 </nav>
 
                 <div className="space-y-3 border-t border-slate-100 pt-6">
-                  <button
-                    type="button"
-                    onClick={toggleLang}
-                    className="w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:border-primary hover:text-primary"
-                  >
+                  <button type="button" onClick={toggleLang} className="w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:border-primary hover:text-primary">
                     {i18n.language === 'ar' ? 'English' : 'العربية'}
                   </button>
-
                   {auth.authenticated ? (
                     <>
-                      <Link
-                        to="/user/dashboard"
-                        onClick={() => setMobileOpen(false)}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary py-3 text-sm font-bold text-white"
-                      >
-                        <LayoutDashboard size={18} />
-                        {t('common.dashboard', 'Dashboard')}
+                      <Link to="/user/dashboard" className="flex w-full items-center justify-center gap-2 rounded-xl bg-secondary py-3 text-sm font-bold text-white">
+                        <LayoutDashboard size={18} /> {t('common.dashboard', 'Dashboard')}
                       </Link>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(logoutUser())}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-100 py-3 text-sm font-bold text-red-600 hover:bg-red-50"
-                      >
-                        <LogOut size={18} />
-                        {t('common.logout', 'Logout')}
+                      <button type="button" onClick={() => dispatch(logoutUser())} className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-100 py-3 text-sm font-bold text-red-600 hover:bg-red-50">
+                        <LogOut size={18} /> {t('common.logout', 'Logout')}
                       </button>
                     </>
                   ) : (
                     <>
-                      <button
-                        type="button"
-                        onClick={() => { setMobileOpen(false); dispatch(openLoginModal()); }}
-                        className="w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:bg-slate-50"
-                      >
-                        {t('common.login', 'Login')}
+                      <button type="button" onClick={() => { setMobileOpen(false); dispatch(openSignupModal()); }} className="w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:bg-sky-soft">
+                        {t('header.createAccount', 'Create Account')}
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => { setMobileOpen(false); dispatch(openSignupModal()); }}
-                        className="w-full rounded-xl bg-primary py-3 text-sm font-bold text-white shadow hover:bg-primary/90"
-                      >
-                        {t('header.enrollNow', 'Enroll Now')}
+                      <button type="button" onClick={() => { setMobileOpen(false); dispatch(openLoginModal()); }} className="w-full rounded-xl bg-secondary py-3 text-sm font-bold text-white shadow hover:bg-secondary/90">
+                        {t('common.login', 'Login')}
                       </button>
                     </>
                   )}

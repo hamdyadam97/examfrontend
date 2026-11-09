@@ -100,12 +100,16 @@
       "about": "About Us",
       "blog": "Blog",
       "contact": "Contact Us",
-      "packages": "Packages"
+      "packages": "Packages",
+      "news": "News"
     },
     "enrollNow": "Enroll Now",
     "search": "Search",
     "searchPlaceholder": "Search exams, specialties...",
-    "menu": "Open menu"
+    "menu": "Open menu",
+    "support": "Technical Support",
+    "mainNav": "Main navigation",
+    "createAccount": "Create Account"
   },
   "dashboard": {
     "welcomeBack": "Welcome back",
@@ -573,13 +577,16 @@
       "placeholder": "Enter your email",
       "button": "Subscribe",
       "success": "Thank you for subscribing!",
-      "invalid": "Please enter a valid email address."
+      "invalid": "Please enter a valid email address.",
+      "failed": "Could not subscribe. Please try again."
     },
     "bottom": {
       "copyright": "© {{year}} RootsExams. All rights reserved.",
       "privacy": "Privacy Policy",
       "terms": "Terms & Conditions"
-    }
+    },
+    "rights": "All rights reserved",
+    "tagline2": "Together toward a better medical future"
   },
   "examPlayer": {
     "questionNavigator": "Question Navigator",
@@ -1105,5 +1112,91 @@
     "startExam": "Start an Exam",
     "failed": "The payment was not completed.",
     "failedHint": "No money was taken for this attempt. You can try again."
+  },
+  "home": {
+    "hero": {
+      "badge": "Medical exams platform",
+      "titleLine1": "RootsExams",
+      "titleLine2": "for medical exams and training",
+      "subtitle": "Prepare with confidence and achieve your best result in your medical exams.",
+      "cta": "Start now",
+      "secondaryCta": "View packages"
+    },
+    "stats": {
+      "students": "Registered users",
+      "attempts": "Practice attempts",
+      "passRate": "Success rate",
+      "partners": "Accredited partners"
+    },
+    "popular": {
+      "title": "Most requested exams",
+      "viewAll": "View all exams",
+      "start": "Start practicing",
+      "questions": "{{count}} questions"
+    },
+    "about": {
+      "title": "About RootsExams",
+      "text": "A platform dedicated to training for the most important medical exams accredited internationally, with smart tools and a professional training experience.",
+      "more": "Learn more"
+    },
+    "map": {
+      "title": "Our students across the Kingdom",
+      "subtitle": "Proud to serve trainees in every region of Jordan",
+      "everywhere": "And all other regions",
+      "cities": {
+        "amman": "Amman",
+        "irbid": "Irbid",
+        "zarqa": "Zarqa",
+        "aqaba": "Aqaba"
+      }
+    },
+    "features": {
+      "title": "Why RootsExams?",
+      "subtitle": "Everything you need to prepare for your exam in one place.",
+      "timed": {
+        "title": "Real exam conditions",
+        "text": "Timed mock exams that submit automatically when the time is up."
+      },
+      "bank": {
+        "title": "Comprehensive question bank",
+        "text": "Choose by specialty, section, topic and difficulty."
+      },
+      "study": {
+        "title": "Study mode with explanations",
+        "text": "See the correct answer and its explanation right after each question."
+      },
+      "analytics": {
+        "title": "Detailed performance reports",
+        "text": "Your strong and weak topics, score progress and daily activity."
+      },
+      "review": {
+        "title": "Review what matters",
+        "text": "Save, flag and re-practice the questions you got wrong."
+      },
+      "secure": {
+        "title": "Secure payment",
+        "text": "Card payments go through HyperPay; card details never reach our servers."
+      }
+    },
+    "packages": {
+      "title": "Featured packages",
+      "subtitle": "Packages selected to help you prepare",
+      "viewAll": "All packages"
+    },
+    "partners": {
+      "title": "Our partners and accredited bodies",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "news": {
+      "title": "Latest news and updates",
+      "viewAll": "View all"
+    },
+    "testimonials": {
+      "title": "What our students say"
+    },
+    "faq": {
+      "title": "Frequently asked questions"
+    }
   }
 }
