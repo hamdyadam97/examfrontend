@@ -17,7 +17,7 @@ export function SubscriptionsPage() {
     <div>
       <h1 className="mb-6 text-2xl font-bold text-secondary">{t('common.subscriptions')}</h1>
       <div className="space-y-4">
-        {(subscriptions || []).map((sub: any) => (
+        {(subscriptions || []).map((sub) => (
           <div key={sub.id} className="rounded-2xl bg-white p-6 shadow-sm">
             <h3 className="font-semibold text-secondary">{sub.package?.name}</h3>
             <p className="text-sm text-gray-600">{sub.start_date} → {sub.end_date}</p>

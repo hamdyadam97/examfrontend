@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Loader2, Calculator, HelpCircle, Hash } from 'lucide-react';
+import { isAxiosError } from 'axios';
 import { api } from '@/lib/api';
 import type { Package } from '@/types/package';
 
@@ -15,25 +16,26 @@ export function CustomPackageCard({ pkg, onSubscribe, subscribingId }: CustomPac
   const { t } = useTranslation();
   const [days, setDays] = useState<number>(7);
   const [calculated, setCalculated] = useState<{ price: number; period_days: number } | null>(null);
-  const [loading, setLoading] = useState(false);
+  // Starts true: the price for the default number of days is fetched on mount.
+  const [loading, setLoading] = useState(true);
 
-  const calculate = async () => {
+  const requestPrice = (customDays: number) =>
+    api.post('/packages/calculate-price', { package_id: pkg.id, custom_days: customDays })
+      .then((res) => setCalculated(res.data?.data))
+      .catch((err) => {
+        const message = isAxiosError<{ message?: string }>(err) ? err.response?.data?.message : undefined;
+        toast.error(message || 'Failed to calculate price');
+      })
+      .finally(() => setLoading(false));
+
+  const calculate = () => {
     setLoading(true);
-    try {
-      const res = await api.post('/packages/calculate-price', {
-        package_id: pkg.id,
-        custom_days: days,
-      });
-      setCalculated(res.data?.data);
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Failed to calculate price');
-    } finally {
-      setLoading(false);
-    }
+    return requestPrice(days);
   };
 
   useEffect(() => {
-    calculate();
+    requestPrice(days);
+    // Only the initial price is fetched automatically; later changes wait for the Calculate button.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

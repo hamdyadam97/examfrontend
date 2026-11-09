@@ -119,6 +119,17 @@ function parseTags(tags?: string | null) {
     .filter(Boolean);
 }
 
+/** Give every h2–h4 of the article an id and list them for the table of contents. */
+function buildArticle(html: string): { html: string; toc: TocItem[] } {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const toc: TocItem[] = [];
+  doc.body.querySelectorAll('h2, h3, h4').forEach((h, idx) => {
+    if (!h.id) h.id = slugify(h.textContent || `section-${idx}`) || `section-${idx}`;
+    toc.push({ id: h.id, text: h.textContent || '', level: parseInt(h.tagName[1], 10) });
+  });
+  return { html: doc.body.innerHTML, toc };
+}
+
 function slugify(text: string) {
   return text
     .toLowerCase()
@@ -426,9 +437,10 @@ export function BlogDetailPage() {
 
   const [blog, setBlog] = useState<Blog | null>(null);
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+  // The blog id whose request has finished; while it differs from the route id the page is loading.
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  const loading = loadedId !== id;
   const [isDark, setIsDark] = useState(false);
-  const [toc, setToc] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [comments, setComments] = useState<BlogComment[]>([]);
   const [commentForm, setCommentForm] = useState({ name: '', email: '', content: '' });
@@ -443,7 +455,6 @@ export function BlogDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
     api
       .get(`/blogs/${id}`)
       .then((res) => {
@@ -451,7 +462,7 @@ export function BlogDetailPage() {
         if (data) setBlog(data);
       })
       .catch(() => toast.error(t('blogPost.notFound')))
-      .finally(() => setLoading(false));
+      .finally(() => setLoadedId(id));
   }, [id, t]);
 
   useEffect(() => {
@@ -466,23 +477,10 @@ export function BlogDetailPage() {
       .catch(() => setComments(blog.comments || []));
   }, [blog]);
 
-  useEffect(() => {
-    if (!contentRef.current || !blog) return;
-    const headings = contentRef.current.querySelectorAll('h2, h3, h4');
-    const items: TocItem[] = [];
-    headings.forEach((h, idx) => {
-      if (!h.id) {
-        h.id = slugify(h.textContent || `section-${idx}`) || `section-${idx}`;
-      }
-      items.push({
-        id: h.id,
-        text: h.textContent || '',
-        level: parseInt(h.tagName[1], 10),
-      });
-    });
-    setToc(items);
-    if (items[0]) setActiveId(items[0].id);
-  }, [blog]);
+  const article = useMemo(() => (blog ? buildArticle(blog.description) : { html: '', toc: [] }), [blog]);
+  const toc = article.toc;
+  // Until the reader scrolls (or after switching articles) the first heading is the active one.
+  const shownActiveId = toc.some((item) => item.id === activeId) ? activeId : toc[0]?.id;
 
   useEffect(() => {
     if (!contentRef.current || toc.length === 0) return;
@@ -692,7 +690,7 @@ export function BlogDetailPage() {
                               onClick={() => scrollToHeading(item.id)}
                               className={cn(
                                 'block w-full text-start text-sm transition hover:text-primary',
-                                activeId === item.id
+                                shownActiveId === item.id
                                   ? 'border-primary font-semibold text-primary'
                                   : 'border-transparent text-slate-600 dark:text-slate-300'
                               )}
@@ -735,7 +733,7 @@ export function BlogDetailPage() {
                 <div
                   ref={contentRef}
                   className="article-content prose prose-lg prose-slate max-w-none dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: blog.description }}
+                  dangerouslySetInnerHTML={{ __html: article.html }}
                 />
 
                 {/* Tags mobile */}

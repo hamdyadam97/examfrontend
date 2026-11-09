@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { motion } from 'framer-motion';
 import {
   HelpCircle,
@@ -33,7 +34,7 @@ function formatPrice(value: string | number | undefined | null) {
   return Number.isNaN(num) ? '0' : num.toFixed(2);
 }
 
-function getAccessPeriod(days: number | null | undefined, t: any) {
+function getAccessPeriod(days: number | null | undefined, t: TFunction) {
   if (!days) return t('packageCard.lifetime', 'Lifetime');
   if (days >= 365) {
     const years = Math.round(days / 365);

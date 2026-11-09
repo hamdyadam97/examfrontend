@@ -1,28 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
-import {
-  BookOpen,
-  ClipboardCheck,
-  GraduationCap,
-  Shuffle,
-  BrainCircuit,
-  XCircle,
-  Bookmark,
-  Heart,
-  Timer,
-} from 'lucide-react';
-
-const modes = [
-  { key: 'practice', icon: BookOpen },
-  { key: 'mock', icon: ClipboardCheck },
-  { key: 'final', icon: GraduationCap },
-  { key: 'random', icon: Shuffle },
-  { key: 'adaptive', icon: BrainCircuit },
-  { key: 'wrongOnly', icon: XCircle },
-  { key: 'savedOnly', icon: Bookmark },
-  { key: 'favoritesOnly', icon: Heart },
-  { key: 'timedPractice', icon: Timer },
-];
+import { examModes as modes } from './examModes';
 
 interface Props {
   value: string;

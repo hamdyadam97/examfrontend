@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { isAxiosError } from 'axios';
 import { api } from '@/lib/api';
 import { saveExamSingle, finishExam, advanceStage } from '@/store/examSlice';
 import type { AppDispatch, RootState } from '@/store';
@@ -16,10 +17,12 @@ import { ExamToolbar } from '@/components/exam/ExamToolbar';
 import { FinishDialog } from '@/components/exam/FinishDialog';
 
 interface Detail {
+  question_id: number;
   answer_id?: number | null;
   answer_ids?: number[];
   is_correct?: boolean | null;
   is_marked?: boolean;
+  is_review?: boolean;
 }
 
 interface QuestionData {
@@ -31,6 +34,24 @@ interface QuestionData {
   notes?: string;
   references?: string;
   question_type?: string;
+}
+
+/** Response of GET /exams/get-questions. */
+interface ExamData {
+  exam: {
+    id: number;
+    title: string;
+    mode: string;
+    status: string;
+    duration?: number | null;
+    remaining_seconds?: number | null;
+  };
+  questions: number[];
+  details: Detail[];
+  saved_question_ids?: number[];
+  current_stage: number;
+  total_stages: number;
+  stage_offset?: number;
 }
 
 /** Client-clock deadline for a countdown the server reported in seconds. */
@@ -47,7 +68,7 @@ export function ExamShowPage() {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ExamData | null>(null);
   const [questions, setQuestions] = useState<Record<number, QuestionData>>({});
   const [detailsMap, setDetailsMap] = useState<Record<number, Detail>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -65,11 +86,6 @@ export function ExamShowPage() {
   const autoSaveRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const closingRef = useRef(false);
   const warnedRef = useRef<Set<number>>(new Set());
-
-  useEffect(() => {
-    loadExam();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [examId]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -98,46 +114,36 @@ export function ExamShowPage() {
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [t]);
 
-  useEffect(() => {
-    if (autoSaveRef.current) clearInterval(autoSaveRef.current);
-    autoSaveRef.current = setInterval(() => {
-      const currentQid = data?.questions?.[currentIndex];
-      const selected = selectedAnswers[currentQid];
-      if (currentQid && selected?.length) {
-        persistAnswer(currentQid, selected);
-      }
-    }, 10000);
-    return () => {
-      if (autoSaveRef.current) clearInterval(autoSaveRef.current);
-    };
-  }, [currentIndex, data, selectedAnswers]);
-
-  const loadExam = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/exams/get-questions?exam_id=${examId}`);
-      const d = res.data?.data;
-      if (d?.exam?.status === 'completed') {
-        closeExam(t('examPlayer.alerts.alreadyFinished'));
-        return;
-      }
-      const remaining = d?.exam?.remaining_seconds;
-      setDeadlineMs(typeof remaining === 'number' ? deadlineFromNow(remaining) : null);
-      setData(d);
-      const map: Record<number, Detail> = {};
-      d.details?.forEach((det: any) => {
-        map[det.question_id] = det;
-      });
-      setDetailsMap(map);
-      if (d.questions?.length) {
-        await loadQuestion(d.questions[0]);
-      }
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Failed to load exam');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Callers that reload show the spinner themselves; the first load starts with loading=true.
+  // State is only set once the response arrives, so this is safe to start from an effect.
+  const loadExam = () =>
+    api.get(`/exams/get-questions?exam_id=${examId}`)
+      .then(async (res) => {
+        const d: ExamData = res.data?.data;
+        if (d?.exam?.status === 'completed') {
+          closeExam(t('examPlayer.alerts.alreadyFinished'));
+          return;
+        }
+        const remaining = d?.exam?.remaining_seconds;
+        setDeadlineMs(typeof remaining === 'number' ? deadlineFromNow(remaining) : null);
+        setData(d);
+        const map: Record<number, Detail> = {};
+        d.details?.forEach((det) => {
+          map[det.question_id] = det;
+        });
+        setDetailsMap(map);
+        setSaved(new Set<number>(d.saved_question_ids || []));
+        setFlagged(new Set(Object.values(map).filter((det) => det.is_marked).map((det) => det.question_id)));
+        setReview(new Set(Object.values(map).filter((det) => det.is_review).map((det) => det.question_id)));
+        if (d.questions?.length) {
+          await loadQuestion(d.questions[0]);
+        }
+      })
+      .catch((err) => {
+        const message = isAxiosError<{ message?: string }>(err) ? err.response?.data?.message : undefined;
+        toast.error(message || 'Failed to load exam');
+      })
+      .finally(() => setLoading(false));
 
   const loadQuestion = async (qid: number) => {
     if (questions[qid]) return;
@@ -149,7 +155,8 @@ export function ExamShowPage() {
     }
   };
 
-  const currentQid = data?.questions?.[currentIndex];
+  // 0 is never a real id, so lookups simply miss before the exam has loaded.
+  const currentQid: number = data?.questions[currentIndex] ?? 0;
   const currentQuestion = questions[currentQid];
   const currentDetail = detailsMap[currentQid];
   const reviewMode = data?.exam?.mode === 'tatur' || data?.exam?.mode === 'review';
@@ -197,6 +204,28 @@ export function ExamShowPage() {
     }
   };
 
+  useEffect(() => {
+    loadExam();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [examId]);
+
+  // Retry saving the current selection every 10s, but only while the server does not have it yet.
+  useEffect(() => {
+    if (autoSaveRef.current) clearInterval(autoSaveRef.current);
+    autoSaveRef.current = setInterval(() => {
+      const qid = data?.questions?.[currentIndex];
+      const selected = qid ? selectedAnswers[qid] : undefined;
+      if (qid && selected?.length && detailsMap[qid]?.answer_id !== selected[0]) {
+        persistAnswer(qid, selected);
+      }
+    }, 10000);
+    return () => {
+      if (autoSaveRef.current) clearInterval(autoSaveRef.current);
+    };
+    // persistAnswer is recreated every render; the values it reads are the deps listed here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, data, selectedAnswers, detailsMap]);
+
   const handleTimeUp = async () => {
     if (closingRef.current) return;
     const qid = data?.questions?.[currentIndex];
@@ -210,12 +239,19 @@ export function ExamShowPage() {
     closeExam(t('examPlayer.alerts.timeUp'));
   };
 
+  // The deadline timer fires once; it calls the latest handleTimeUp so it sees the current answer.
+  const timeUpRef = useRef(handleTimeUp);
+  useEffect(() => {
+    timeUpRef.current = handleTimeUp;
+  });
+  useEffect(() => {
+    if (deadlineMs === null) return;
+    const timer = setTimeout(() => timeUpRef.current(), Math.max(0, deadlineMs - Date.now()));
+    return () => clearTimeout(timer);
+  }, [deadlineMs]);
+
   useEffect(() => {
     if (remainingSeconds === null) return;
-    if (remainingSeconds === 0) {
-      handleTimeUp();
-      return;
-    }
     for (const mark of [300, 60]) {
       if (remainingSeconds <= mark && !warnedRef.current.has(mark)) {
         warnedRef.current.add(mark);
@@ -258,32 +294,56 @@ export function ExamShowPage() {
     toast.info(t('examPlayer.alerts.answerCleared'));
   };
 
-  const toggleSet = (setter: React.Dispatch<React.SetStateAction<Set<number>>>, addMsg: string, removeMsg: string) => {
-    setter((prev) => {
+  /** Toggle the current question in a set, persist it, and roll back if the server refuses. */
+  const toggleSet = async (
+    current: Set<number>,
+    setter: React.Dispatch<React.SetStateAction<Set<number>>>,
+    persist: (on: boolean) => Promise<unknown>,
+    addMsg: string,
+    removeMsg: string,
+  ) => {
+    const qid = currentQid;
+    const on = !current.has(qid);
+    const apply = (value: boolean) => setter((prev) => {
       const next = new Set(prev);
-      if (next.has(currentQid)) {
-        next.delete(currentQid);
-        toast.info(removeMsg);
-      } else {
-        next.add(currentQid);
-        toast.success(addMsg);
-      }
+      if (value) next.add(qid); else next.delete(qid);
       return next;
     });
+    apply(on);
+    try {
+      await persist(on);
+      if (on) toast.success(addMsg); else toast.info(removeMsg);
+    } catch {
+      apply(!on);
+      toast.error(t('examPlayer.alerts.saveFailed'));
+    }
   };
 
-  const handleSave = () => toggleSet(setSaved, t('examPlayer.alerts.savedQuestion'), t('examPlayer.alerts.unsavedQuestion'));
-  const handleFlag = () => toggleSet(setFlagged, t('examPlayer.alerts.flagged'), t('examPlayer.alerts.unflagged'));
-  const handleReview = () => toggleSet(setReview, t('examPlayer.alerts.reviewLaterAdded'), t('examPlayer.alerts.reviewLaterRemoved'));
+  const saveQuestionState = (field: 'is_marked' | 'is_review') => (on: boolean) =>
+    api.post(`/exams/${examId}/question-state`, { question_id: currentQid, [field]: on });
+
+  const handleSave = () => toggleSet(
+    saved, setSaved,
+    (on) => (on ? api.post(`/questions/${currentQid}/save`) : api.delete(`/questions/${currentQid}/save`)),
+    t('examPlayer.alerts.savedQuestion'), t('examPlayer.alerts.unsavedQuestion'),
+  );
+  const handleFlag = () => toggleSet(
+    flagged, setFlagged, saveQuestionState('is_marked'),
+    t('examPlayer.alerts.flagged'), t('examPlayer.alerts.unflagged'),
+  );
+  const handleReview = () => toggleSet(
+    review, setReview, saveQuestionState('is_review'),
+    t('examPlayer.alerts.reviewLaterAdded'), t('examPlayer.alerts.reviewLaterRemoved'),
+  );
 
   const handleNavigate = (index: number) => {
     setCurrentIndex(index);
-    const qid = data.questions[index];
+    const qid = data?.questions[index];
     if (qid) loadQuestion(qid);
   };
 
   const handleNext = () => {
-    if (currentIndex < data.questions.length - 1) handleNavigate(currentIndex + 1);
+    if (data && currentIndex < data.questions.length - 1) handleNavigate(currentIndex + 1);
   };
 
   const handlePrevious = () => {
@@ -298,15 +358,17 @@ export function ExamShowPage() {
     try {
       await dispatch(finishExam(examId)).unwrap();
       navigate(`/user/exam/${examId}/result`, { replace: true });
-    } catch (err: any) {
+    } catch (err) {
       closingRef.current = false;
-      toast.error(((err?.statusCode || err?.code) && err?.message) || 'Failed to finish exam');
+      const apiErr = err as { statusCode?: number; code?: number; message?: string };
+      toast.error(((apiErr?.statusCode || apiErr?.code) && apiErr?.message) || 'Failed to finish exam');
     }
   };
 
   const handleAdvance = async () => {
     await dispatch(advanceStage(examId)).unwrap();
     setStageCompleted(false);
+    setLoading(true);
     await loadExam();
     setCurrentIndex(0);
   };

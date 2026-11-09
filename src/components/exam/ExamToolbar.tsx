@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ChevronRight, Save, Flag, Eye, Trash2, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Save, Flag, Eye, Trash2, CheckCircle2, type LucideIcon } from 'lucide-react';
 
 interface Props {
   canPrevious: boolean;
@@ -36,10 +36,13 @@ export function ExamToolbar({
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Typing in a field must not trigger shortcuts (Backspace would otherwise clear the answer).
+      const target = e.target as HTMLElement | null;
+      if (target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
       if (e.key === 'ArrowLeft') {
-        canPrevious && onPrevious();
+        if (canPrevious) onPrevious();
       } else if (e.key === 'ArrowRight') {
-        canNext && onNext();
+        if (canNext) onNext();
       } else if (e.key.toLowerCase() === 's') {
         onSave();
       } else if (e.key.toLowerCase() === 'f') {
@@ -56,7 +59,7 @@ export function ExamToolbar({
     return () => window.removeEventListener('keydown', handler);
   }, [canPrevious, canNext, onPrevious, onNext, onSave, onFlag, onReview, onClear, onFinish]);
 
-  const btn = (label: string, icon: any, onClick: () => void, active?: boolean, disabled?: boolean, variant: 'default' | 'primary' | 'danger' = 'default') => {
+  const btn = (label: string, icon: LucideIcon, onClick: () => void, active?: boolean, disabled?: boolean, variant: 'default' | 'primary' | 'danger' = 'default') => {
     const Icon = icon;
     return (
       <button

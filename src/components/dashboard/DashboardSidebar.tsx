@@ -9,7 +9,6 @@ import {
   History,
   Bookmark,
   XCircle,
-  Heart,
   GraduationCap,
   BarChart3,
   CreditCard,
@@ -25,7 +24,6 @@ import {
   ChevronRight,
   X,
 } from 'lucide-react';
-import { toast } from 'sonner';
 
 interface Props {
   collapsed: boolean;
@@ -48,16 +46,16 @@ export function DashboardSidebar({ collapsed, setCollapsed, mobileOpen, setMobil
           { to: '/user/dashboard', icon: LayoutDashboard, label: t('dashboard.sidebar.dashboard') },
           { to: '/user/exam/create', icon: PlusCircle, label: t('dashboard.sidebar.createExam') },
           { to: '/user/exam', icon: BookOpen, label: t('dashboard.sidebar.myExams') },
-          { to: '/user/dashboard?tab=history', icon: History, label: t('dashboard.sidebar.examHistory'), comingSoon: true },
-          { to: '/user/dashboard?tab=saved', icon: Bookmark, label: t('dashboard.sidebar.savedExams'), comingSoon: true },
-          { to: '/user/dashboard?tab=wrong', icon: XCircle, label: t('dashboard.sidebar.wrongQuestions'), comingSoon: true },
-          { to: '/user/dashboard?tab=favorite', icon: Heart, label: t('dashboard.sidebar.favoriteQuestions'), comingSoon: true },
+          { to: '/user/exam?status=completed', icon: History, label: t('dashboard.sidebar.examHistory') },
+          { to: '/user/questions/saved', icon: Bookmark, label: t('dashboard.sidebar.savedQuestions') },
+          { to: '/user/questions/wrong', icon: XCircle, label: t('dashboard.sidebar.wrongQuestions') },
+          { to: '/user/questions/flagged', icon: Flag, label: t('dashboard.sidebar.flaggedQuestions') },
         ],
       },
       {
         title: t('dashboard.sidebar.progress', 'Progress'),
         items: [
-          { to: '/user/dashboard?tab=grades', icon: GraduationCap, label: t('dashboard.sidebar.myGrades'), comingSoon: true },
+          { to: '/user/grades', icon: GraduationCap, label: t('dashboard.sidebar.myGrades') },
           { to: '/user/dashboard?tab=analytics', icon: BarChart3, label: t('dashboard.sidebar.performanceAnalytics') },
         ],
       },
@@ -83,18 +81,16 @@ export function DashboardSidebar({ collapsed, setCollapsed, mobileOpen, setMobil
     [t]
   );
 
-  const isActive = (to: string) => {
+  const matches = (to: string) => {
     if (to.includes('?')) return location.pathname + location.search === to;
     return location.pathname === to || location.pathname.startsWith(`${to}/`);
   };
-
-  const handleClick = (e: React.MouseEvent, item: any) => {
-    setMobileOpen(false);
-    if (item.comingSoon) {
-      e.preventDefault();
-      toast.info(t('common.comingSoon', 'Coming soon'));
-    }
-  };
+  // Highlight only the most specific match, so "My Exams" is not lit up on "Exam History" or "Create Exam".
+  const activeTo = groups
+    .flatMap((g) => g.items.map((i) => i.to))
+    .filter(matches)
+    .sort((a, b) => b.length - a.length)[0];
+  const isActive = (to: string) => to === activeTo;
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
@@ -159,7 +155,7 @@ export function DashboardSidebar({ collapsed, setCollapsed, mobileOpen, setMobil
                   <Link
                     key={item.label}
                     to={item.to}
-                    onClick={(e) => handleClick(e, item)}
+                    onClick={() => setMobileOpen(false)}
                     title={collapsed ? item.label : undefined}
                     className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 ${
                       active

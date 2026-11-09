@@ -7,18 +7,28 @@ import {
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { HeroSection } from './HeroSection';
-import { SpecialtyCard } from '@/components/SpecialtyCard';
+import { SpecialtyCard, type Specialty } from '@/components/SpecialtyCard';
 import { PackageCard } from '@/components/packages/PackageCard';
+import type { Package as PackageData } from '@/types/package';
 import { StatisticsSection } from './StatisticsSection';
 import { HowItWorksSection } from './HowItWorksSection';
-import { TestimonialsSection } from './TestimonialsSection';
-import { PartnersSection } from './PartnersSection';
-import { LocationContactSection } from './LocationContactSection';
+import { TestimonialsSection, type Testimonial } from './TestimonialsSection';
+import { PartnersSection, type Partner } from './PartnersSection';
+import { LocationContactSection, type AppInfo } from './LocationContactSection';
 import { CTASection } from './CTASection';
+
+/** Response of GET /landing/index. */
+interface LandingData {
+  categories?: Specialty[];
+  testimonials?: Testimonial[];
+  packages?: PackageData[];
+  partners?: Partner[];
+  app_info?: AppInfo | null;
+}
 
 export function HomePage() {
   const { t } = useTranslation();
-  const [data, setData] = useState<any>({ categories: [], blogs: [], testimonials: [], packages: [], partners: [], app_info: null });
+  const [data, setData] = useState<LandingData>({});
 
   useEffect(() => {
     api.get('/landing/index').then((res) => setData(res.data?.data || {}));
@@ -29,9 +39,9 @@ export function HomePage() {
   const packages = data.packages || [];
   const featured = packages.slice(0, 3);
 
-  const totalQuestions = categories.reduce((acc: number, c: any) => acc + (c.questions_count || 0), 0);
-  const totalStudents = packages.reduce((acc: number, p: any) => acc + (p.students_count || 0), 0) || testimonials.length * 120;
-  const totalMockExams = packages.reduce((acc: number, p: any) => acc + (p.exam_count || 0), 0);
+  const totalQuestions = categories.reduce((acc, c) => acc + (c.questions_count || 0), 0);
+  const totalStudents = packages.reduce((acc, p) => acc + (p.students_count || 0), 0) || testimonials.length * 120;
+  const totalMockExams = packages.reduce((acc, p) => acc + (p.exam_count || 0), 0);
 
   const specialties = categories.slice(0, 4);
 
@@ -73,7 +83,7 @@ export function HomePage() {
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {specialties.map((cat: any, idx: number) => (
+            {specialties.map((cat, idx) => (
               <SpecialtyCard key={cat.id} specialty={cat} index={idx} />
             ))}
           </div>
@@ -94,7 +104,7 @@ export function HomePage() {
             </Link>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {featured.map((pkg: any, idx: number) => (
+            {featured.map((pkg, idx) => (
               <PackageCard key={pkg.id} pkg={pkg} index={idx} showPreview={false} />
             ))}
           </div>

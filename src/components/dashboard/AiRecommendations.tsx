@@ -40,7 +40,7 @@ export function AiRecommendations({ insights }: Props) {
       color: 'bg-rose-100 text-rose-600',
       title: t('dashboard.aiRecommendations.wrongTitle', { count: insights.wrong_questions }),
       desc: t('dashboard.aiRecommendations.wrongDesc'),
-      to: '/user/exam/create',
+      to: '/user/questions/wrong',
     });
   }
   insights.recommended_exams.slice(0, 2).forEach((exam) => {
@@ -62,7 +62,7 @@ export function AiRecommendations({ insights }: Props) {
       color: 'bg-amber-100 text-amber-600',
       title: untouched.name,
       desc: t('dashboard.aiRecommendations.newTopicDesc'),
-      to: '/user/exam/create',
+      to: '/user/exam/create?mode=unusedOnly',
     });
   }
 

@@ -32,6 +32,28 @@ interface AuthState {
   isSendOtp: boolean;
 }
 
+// One-time ticket from /forget-verify-otp that /reset requires. Kept for this tab only.
+const RESET_TOKEN_KEY = 'reset_token';
+const readResetToken = () => {
+  try {
+    return sessionStorage.getItem(RESET_TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
+};
+const writeResetToken = (token: string | null) => {
+  try {
+    if (token) sessionStorage.setItem(RESET_TOKEN_KEY, token);
+    else sessionStorage.removeItem(RESET_TOKEN_KEY);
+  } catch {
+    // Storage unavailable (private mode); the reset page will ask for a new code.
+  }
+};
+
+/** The phone waiting for an OTP: the backend returns it as `phone`. */
+const pendingPhone = (state: AuthState) =>
+  String(state.user?.phone || state.user?.mobile || Cookies.get('otp_mobile') || '');
+
 const initialState: AuthState = {
   authenticated: !!Cookies.get('token'),
   user: {},
@@ -72,9 +94,8 @@ export const verifyOtp = createAsyncThunk(
   async ({ otp, isForget }: { otp: string; isForget: boolean }, { getState, rejectWithValue }) => {
     try {
       const state = getState() as { auth: AuthState };
-      const mobile = state.auth.user?.mobile || Cookies.get('otp_mobile');
       const endpoint = isForget ? '/forget-verify-otp' : '/verify-otp';
-      const response = await api.post(endpoint, { mobile, otp });
+      const response = await api.post(endpoint, { phone: pendingPhone(state.auth), otp });
       return { ...response.data?.data, isForget };
     } catch (error) {
       return rejectWithValue(apiError(error));
@@ -99,8 +120,11 @@ export const resetPassword = createAsyncThunk(
   async (payload: { password: string; password_confirmation: string }, { getState, rejectWithValue }) => {
     try {
       const state = getState() as { auth: AuthState };
-      const mobile = state.auth.user?.mobile || Cookies.get('otp_mobile');
-      const response = await api.post('/reset', { ...payload, mobile });
+      const response = await api.post('/reset', {
+        ...payload,
+        phone: pendingPhone(state.auth),
+        reset_token: readResetToken(),
+      });
       return response.data?.data;
     } catch (error) {
       return rejectWithValue(apiError(error));
@@ -149,8 +173,7 @@ export const resendOtp = createAsyncThunk(
   async (payload: { mobile?: string } = {}, { getState, rejectWithValue }) => {
     try {
       const state = getState() as { auth: AuthState };
-      const mobile = payload.mobile || state.auth.user?.mobile || Cookies.get('otp_mobile');
-      const response = await api.post('/resend-otp', { mobile });
+      const response = await api.post('/resend-otp', { phone: payload.mobile || pendingPhone(state.auth) });
       return response.data?.data;
     } catch (error) {
       return rejectWithValue(apiError(error));
@@ -200,8 +223,9 @@ const authSlice = createSlice({
         if (action.payload?.user) state.user = { ...state.user, ...action.payload.user };
       })
       .addCase(register.fulfilled, (state, action) => {
-        if (action.payload?.user?.mobile) {
-          Cookies.set('otp_mobile', String(action.payload.user.mobile), { sameSite: 'lax', path: '/' });
+        const phone = action.payload?.user?.phone;
+        if (phone) {
+          Cookies.set('otp_mobile', String(phone), { sameSite: 'lax', path: '/' });
           state.user = { ...state.user, ...action.payload.user };
         }
       })
@@ -209,11 +233,13 @@ const authSlice = createSlice({
         Cookies.set('is_forget', 'true', { sameSite: 'lax', path: '/' });
         state.isForget = true;
         state.isSendOtp = true;
+        writeResetToken(null);
         if (action.payload?.user) state.user = { ...state.user, ...action.payload.user };
-        const mobile = action.payload?.user?.mobile;
-        if (mobile) Cookies.set('otp_mobile', String(mobile), { sameSite: 'lax', path: '/' });
+        const phone = action.payload?.user?.phone;
+        if (phone) Cookies.set('otp_mobile', String(phone), { sameSite: 'lax', path: '/' });
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
+        if (action.payload?.reset_token) writeResetToken(action.payload.reset_token);
         if (action.payload?.token) {
           Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
           state.authenticated = true;
@@ -226,6 +252,7 @@ const authSlice = createSlice({
         if (action.payload?.user) state.user = { ...state.user, ...action.payload.user };
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
+        writeResetToken(null);
         if (action.payload?.token) {
           Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
           state.authenticated = true;

@@ -1,16 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
 
+/** Only options the backend honours; answers are always auto-saved and the mode decides when they are revealed. */
 interface Settings {
   randomizeQuestions: boolean;
   randomizeAnswers: boolean;
-  showExplanations: boolean;
-  showCorrect: boolean;
-  allowReview: boolean;
-  autoSave: boolean;
-  countdown: boolean;
-  fullscreen: boolean;
-  saveTemplate: boolean;
 }
 
 interface Props {
@@ -18,17 +12,7 @@ interface Props {
   onChange: (key: keyof Settings, value: boolean) => void;
 }
 
-const keys: (keyof Settings)[] = [
-  'randomizeQuestions',
-  'randomizeAnswers',
-  'showExplanations',
-  'showCorrect',
-  'allowReview',
-  'autoSave',
-  'countdown',
-  'fullscreen',
-  'saveTemplate',
-];
+const keys: (keyof Settings)[] = ['randomizeQuestions', 'randomizeAnswers'];
 
 export function AdvancedSettings({ settings, onChange }: Props) {
   const { t } = useTranslation();

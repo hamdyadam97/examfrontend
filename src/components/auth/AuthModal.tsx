@@ -8,6 +8,7 @@ import { login, register } from '@/store/authSlice';
 import { closeLoginModal, setAuthModalView } from '@/store/uiSlice';
 import type { AppDispatch, RootState } from '@/store';
 import { CountryCodeSelect } from '@/components/CountryCodeSelect';
+import { apiErrorMessage } from '@/lib/api';
 import {
   classifyLoginError,
   normalizeMobileInput,
@@ -267,8 +268,8 @@ function SignupForm({ onSwitchToLogin, t }: { onSwitchToLogin: () => void; t: (k
       })).unwrap();
       handleClose();
       navigate('/verify-otp');
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || t('auth.signupFailed'));
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || t('auth.signupFailed'));
     } finally {
       setLoading(false);
     }

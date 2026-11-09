@@ -19,6 +19,8 @@ import { ContactPage } from '@/pages/public/ContactPage';
 import { TestimonialsPage } from '@/pages/public/TestimonialsPage';
 import { LegalPage } from '@/pages/public/LegalPage';
 import { NotFoundPage } from '@/pages/public/NotFoundPage';
+import { PaymentCheckoutPage } from '@/pages/payment/PaymentCheckoutPage';
+import { PaymentResultPage } from '@/pages/payment/PaymentResultPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { ExamListPage } from '@/pages/dashboard/ExamListPage';
 import { ExamCreatePage } from '@/pages/dashboard/ExamCreatePage';
@@ -28,6 +30,8 @@ import { UserPackagesPage } from '@/pages/dashboard/UserPackagesPage';
 import { SubscriptionsPage } from '@/pages/dashboard/SubscriptionsPage';
 import { SettingsPage } from '@/pages/dashboard/SettingsPage';
 import { SupportPage } from '@/pages/dashboard/SupportPage';
+import { GradesPage } from '@/pages/dashboard/GradesPage';
+import { QuestionCollectionPage } from '@/pages/dashboard/QuestionCollectionPage';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
@@ -92,6 +96,10 @@ export default function App() {
         <Route path="/otp" element={<PublicRoute><OtpPage /></PublicRoute>} />
         <Route path="/reset" element={<PublicRoute><ResetPage /></PublicRoute>} />
 
+        {/* Payment (HyperPay checkout and its return page) */}
+        <Route path="/payment/checkout" element={<ProtectedRoute><PaymentCheckoutPage /></ProtectedRoute>} />
+        <Route path="/payment/result" element={<ProtectedRoute><PaymentResultPage /></ProtectedRoute>} />
+
         {/* Full-screen exam routes */}
         <Route path="/user/exam/:id/show" element={<ExamShowWrapper />} />
         <Route path="/user/exam/:id/result" element={<ExamResultWrapper />} />
@@ -105,6 +113,8 @@ export default function App() {
           <Route path="/user/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/user/settings" element={<SettingsPage />} />
           <Route path="/user/support" element={<SupportPage />} />
+          <Route path="/user/grades" element={<GradesPage />} />
+          <Route path="/user/questions/:kind" element={<QuestionCollectionPage />} />
         </Route>
 
       </Routes>

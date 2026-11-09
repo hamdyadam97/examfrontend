@@ -15,11 +15,12 @@ import {
   HelpCircle,
   FolderOpen,
 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, apiErrorMessage } from '@/lib/api';
 import { CustomPackageCard } from '@/components/packages/CustomPackageCard';
 import { PackageCard } from '@/components/packages/PackageCard';
 import { getIconForName } from '@/components/exam-builder/iconMap';
 import type { Package } from '@/types/package';
+import type { Specialty } from '@/components/SpecialtyCard';
 import type { RootState } from '@/store';
 
 export function PackagesCategoryPage() {
@@ -28,24 +29,25 @@ export function PackagesCategoryPage() {
   const navigate = useNavigate();
   const isRtl = i18n.language === 'ar';
   const authenticated = useSelector((state: RootState) => state.auth.authenticated);
-  const [category, setCategory] = useState<any>(null);
+  const [category, setCategory] = useState<Specialty | null>(null);
   const [subscribingId, setSubscribingId] = useState<number | null>(null);
-  const [subCategories, setSubCategories] = useState<any[]>([]);
+  const [subCategories, setSubCategories] = useState<Specialty[]>([]);
   const [selectedSub, setSelectedSub] = useState<number | null>(null);
   const [packages, setPackages] = useState<Package[]>([]);
-  const [loading, setLoading] = useState(true);
+  // The id whose data is shown; while it differs from the route id the page is loading.
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  const loading = loadedId !== id;
   const [packagesLoading, setPackagesLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
     Promise.all([api.get(`/categories/${id}/subcategories`), api.get('/categories')])
       .then(([subRes, catRes]) => {
         setSubCategories(subRes.data?.data?.sub_categories || []);
-        const cats = catRes.data?.data?.categories || [];
-        setCategory(cats.find((c: any) => String(c.id) === id));
+        const cats: Specialty[] = catRes.data?.data?.categories || [];
+        setCategory(cats.find((c) => String(c.id) === id) ?? null);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadedId(id));
   }, [id]);
 
   const loadPackages = (subId: number) => {
@@ -59,11 +61,11 @@ export function PackagesCategoryPage() {
   };
 
   const totalQuestions = useMemo(
-    () => subCategories.reduce((acc: number, s: any) => acc + (s.questions_count || 0), 0),
+    () => subCategories.reduce((acc, s) => acc + (s.questions_count || 0), 0),
     [subCategories],
   );
 
-  const selectedSubName = subCategories.find((s: any) => s.id === selectedSub)?.name;
+  const selectedSubName = subCategories.find((s) => s.id === selectedSub)?.name;
 
   const handleSubscribe = async (pkg: Package, customDays?: number) => {
     if (!authenticated) {
@@ -72,7 +74,7 @@ export function PackagesCategoryPage() {
     }
     setSubscribingId(pkg.id);
     try {
-      const payload: any = { package_id: pkg.id };
+      const payload: { package_id: number; custom_days?: number } = { package_id: pkg.id };
       if (pkg.is_custom && customDays) {
         payload.custom_days = customDays;
       }
@@ -81,12 +83,12 @@ export function PackagesCategoryPage() {
       if (data?.subscription) {
         toast.success(t('packages.subscribeSuccess', 'Subscribed successfully!'));
       } else if (data?.checkout?.url) {
-        window.open(data.checkout.url, '_blank');
+        navigate(data.checkout.url);
       } else {
         toast.info(t('packages.paymentNotConfigured', 'Redirect to payment (gateway not configured).'));
       }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || t('packages.subscribeError', 'Subscription failed.');
+    } catch (err) {
+      const msg = apiErrorMessage(err) || t('packages.subscribeError', 'Subscription failed.');
       toast.error(msg);
     } finally {
       setSubscribingId(null);

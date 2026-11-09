@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import { resetPassword } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
+import { apiErrorMessage } from '@/lib/api';
 
 export function ResetPage() {
   const { t } = useTranslation();
@@ -19,8 +20,8 @@ export function ResetPage() {
     try {
       await dispatch(resetPassword(form)).unwrap();
       navigate('/user/dashboard');
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || 'Reset failed');
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || 'Reset failed');
     } finally {
       setLoading(false);
     }

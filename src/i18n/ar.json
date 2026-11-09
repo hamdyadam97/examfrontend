@@ -100,7 +100,8 @@
     "subscribe": "اشتراك",
     "applyCoupon": "تطبيق الكوبون",
     "price": "السعر",
-    "period": "المدة"
+    "period": "المدة",
+    "days": "يوم"
   },
   "settings": {
     "profile": "الملف الشخصي",
@@ -260,9 +261,7 @@
       "createExam": "إنشاء امتحان جديد",
       "myExams": "امتحاناتي",
       "examHistory": "سجل الامتحانات",
-      "savedExams": "الامتحانات المحفوظة",
       "wrongQuestions": "الأسئلة الخاطئة",
-      "favoriteQuestions": "الأسئلة المفضلة",
       "myGrades": "درجاتي",
       "performanceAnalytics": "تحليلات الأداء",
       "subscription": "الاشتراك",
@@ -277,7 +276,9 @@
       "study": "الدراسة",
       "progress": "التقدم",
       "billing": "الفوترة",
-      "account": "الحساب"
+      "account": "الحساب",
+      "savedQuestions": "الأسئلة المحفوظة",
+      "flaggedQuestions": "الأسئلة المعلّمة"
     },
     "header": {
       "searchPlaceholder": "ابحث في الامتحانات والأسئلة...",
@@ -657,7 +658,8 @@
       "reviewLaterRemoved": "تمت الإزالة من المراجعة",
       "timeWarning": "باقي {{minutes}} دقيقة!",
       "timeUp": "انتهى الوقت وتم تسليم امتحانك.",
-      "alreadyFinished": "تم تسليم هذا الامتحان بالفعل."
+      "alreadyFinished": "تم تسليم هذا الامتحان بالفعل.",
+      "saveFailed": "تعذر الحفظ. حاول مرة أخرى."
     },
     "fullscreen": "ملء الشاشة",
     "exitFullscreen": "إخراج من ملء الشاشة",
@@ -687,7 +689,8 @@
     "backToExams": "العودة للامتحانات",
     "retakeExam": "إعادة الامتحان",
     "passedMessage": "تهانينا! لقد نجحت في الامتحان.",
-    "failedMessage": "واصل التمرّن. يمكنك إعادة الامتحان."
+    "failedMessage": "واصل التمرّن. يمكنك إعادة الامتحان.",
+    "loadError": "تعذر تحميل النتيجة. حاول مرة أخرى."
   },
   "examBuilder": {
     "title": "إنشاء امتحان",
@@ -728,11 +731,20 @@
       "mock": "امتحان تجريبي",
       "final": "امتحان نهائي",
       "random": "امتحان عشوائي",
-      "adaptive": "امتحان تكيفي",
       "wrongOnly": "الأسئلة الخاطئة فقط",
       "savedOnly": "الأسئلة المحفوظة فقط",
-      "favoritesOnly": "المفضلة فقط",
-      "timedPractice": "تمرين موقت"
+      "timedPractice": "تمرين موقت",
+      "unusedOnly": "أسئلة جديدة فقط",
+      "flaggedOnly": "الأسئلة المعلّمة فقط",
+      "practiceDesc": "تظهر الإجابة والشرح بعد كل سؤال",
+      "mockDesc": "النتيجة بعد التسليم فقط، زي الامتحان الحقيقي",
+      "finalDesc": "امتحان كامل والنتيجة بعد التسليم",
+      "randomDesc": "أسئلة عشوائية والنتيجة بعد التسليم",
+      "unusedOnlyDesc": "أسئلة لم تظهر لك من قبل فقط",
+      "wrongOnlyDesc": "الأسئلة التي أخطأت فيها من قبل فقط",
+      "savedOnlyDesc": "الأسئلة التي حفظتها فقط",
+      "flaggedOnlyDesc": "الأسئلة التي علّمتها فقط",
+      "timedPracticeDesc": "تدريب مع ظهور الإجابات ومع مؤقت"
     },
     "difficulty": {
       "title": "مستوى الصعوبة",
@@ -757,14 +769,7 @@
     "advanced": {
       "title": "إعدادات متقدمة",
       "randomizeQuestions": "عشوائية الأسئلة",
-      "randomizeAnswers": "عشوائية الإجابات",
-      "showExplanations": "عرض الشرح بعد الإجابة",
-      "showCorrect": "عرض الإجابة الصحيحة فوراً",
-      "allowReview": "السماح بمراجعة الامتحان",
-      "autoSave": "حفظ التقدم تلقائياً",
-      "countdown": "تفعيل العد التنازلي",
-      "fullscreen": "وضع ملء الشاشة",
-      "saveTemplate": "حفظ كقالب"
+      "randomizeAnswers": "عشوائية الإجابات"
     },
     "summary": {
       "title": "ملخص الامتحان",
@@ -797,9 +802,9 @@
       "continueLastExam": "استكمال آخر امتحان",
       "reviewWrong": "مراجعة الأسئلة الخاطئة",
       "reviewSaved": "مراجعة الأسئلة المحفوظة",
-      "reviewFavorites": "مراجعة المفضلة",
       "performanceReport": "تقرير الأداء",
-      "browseExams": "تصفح الامتحانات"
+      "browseExams": "تصفح الامتحانات",
+      "reviewFlagged": "مراجعة الأسئلة المعلّمة"
     },
     "alerts": {
       "selectCategory": "يرجى اختيار تصنيف واحد على الأقل.",
@@ -809,165 +814,6 @@
       "title": "ليس لديك اشتراك فعّال",
       "subtitle": "اشترك في باقة لفتح بنك الأسئلة الخاص بها والبدء في إنشاء الامتحانات.",
       "cta": "عرض الباقات"
-    }
-  },
-  "admin": {
-    "dashboard": "لوحة التحكم",
-    "modules": {
-      "dashboard": "لوحة التحكم",
-      "questionBanks": "بنوك الأسئلة",
-      "questions": "الأسئلة",
-      "specialties": "التخصصات الطبية",
-      "categories": "التصنيفات",
-      "subCategories": "التصنيفات الفرعية",
-      "topics": "المواضيع",
-      "exams": "الامتحانات",
-      "examTemplates": "قوالب الامتحانات",
-      "students": "الطلاب",
-      "subscriptions": "الاشتراكات",
-      "orders": "الطلبات",
-      "payments": "المدفوعات",
-      "offers": "العروض والكوبونات",
-      "blog": "المدونة",
-      "pages": "الصفحات",
-      "testimonials": "الآراء",
-      "notifications": "الإشعارات",
-      "supportTickets": "تذاكر الدعم",
-      "reports": "التقارير",
-      "analytics": "التحليلات",
-      "roles": "الأدوار والصلاحيات",
-      "users": "المستخدمون",
-      "settings": "إعدادات النظام",
-      "profile": "الملف الشخصي"
-    },
-    "actions": {
-      "create": "إنشاء",
-      "edit": "تعديل",
-      "delete": "حذف",
-      "archive": "أرشفة",
-      "restore": "استعادة",
-      "duplicate": "نسخ",
-      "search": "بحث",
-      "filter": "تصفية",
-      "import": "استيراد",
-      "export": "تصدير",
-      "save": "حفظ",
-      "cancel": "إلغاء",
-      "submit": "إرسال",
-      "next": "التالي",
-      "previous": "السابق",
-      "back": "رجوع",
-      "close": "إغلاق",
-      "view": "عرض",
-      "actions": "إجراءات",
-      "apply": "تطبيق",
-      "clear": "مسح",
-      "refresh": "تحديث",
-      "bulkActions": "إجراءات جماعية",
-      "confirmDelete": "هل أنت متأكد أنك تريد الحذف؟",
-      "confirmArchive": "هل أنت متأكد أنك تريد الأرشفة؟",
-      "yes": "نعم",
-      "no": "لا"
-    },
-    "table": {
-      "columns": "الأعمدة",
-      "noData": "لا توجد سجلات",
-      "loading": "جاري التحميل...",
-      "selected": "محدد",
-      "rowsPerPage": "صفوف لكل صفحة",
-      "of": "من",
-      "showing": "عرض",
-      "id": "الرقم"
-    },
-    "filters": {
-      "title": "التصفية",
-      "status": "الحالة",
-      "dateRange": "نطاق التاريخ",
-      "all": "الكل",
-      "active": "نشط",
-      "inactive": "غير نشط",
-      "archived": "مؤرشف"
-    },
-    "dashboardHome": {
-      "totalStudents": "إجمالي الطلاب",
-      "activeStudents": "الطلاب النشطون",
-      "totalQuestions": "إجمالي الأسئلة",
-      "totalExams": "إجمالي الامتحانات",
-      "activeSubscriptions": "الاشتراكات النشطة",
-      "revenue": "الإيرادات",
-      "recentActivity": "النشاط الأخير",
-      "latestStudents": "أحدث الطلاب",
-      "latestExams": "أحدث الامتحانات",
-      "latestOrders": "أحدث الطلبات",
-      "performanceCharts": "رسوم الأداء",
-      "questionUsage": "استخدام الأسئلة",
-      "passRate": "معدل النجاح",
-      "systemHealth": "صحة النظام",
-      "viewAll": "عرض الكل",
-      "examAttempts": "محاولات الامتحانات"
-    },
-    "entity": {
-      "create": "إنشاء {{entity}}",
-      "edit": "تعديل {{entity}}",
-      "details": "التفاصيل",
-      "settings": "الإعدادات",
-      "basicInfo": "المعلومات الأساسية",
-      "metadata": "البيانات الوصفية",
-      "status": "الحالة",
-      "createdAt": "تاريخ الإنشاء",
-      "updatedAt": "تاريخ التحديث",
-      "name": "الاسم",
-      "description": "الوصف",
-      "saveDraft": "حفظ مسودة",
-      "type": "النوع",
-      "difficulty": "الصعوبة",
-      "mode": "الوضع",
-      "mock": "تجريبي",
-      "final": "نهائي",
-      "package": "الباقة",
-      "endDate": "تاريخ الانتهاء",
-      "monthly": "شهري",
-      "expiring": "تنتهي قريباً",
-      "amount": "المبلغ",
-      "method": "الطريقة",
-      "date": "التاريخ",
-      "issueDate": "تاريخ الإصدار",
-      "thisMonth": "هذا الشهر",
-      "used": "مستخدم",
-      "author": "المؤلف",
-      "views": "المشاهدات",
-      "published": "منشور",
-      "draft": "مسودة",
-      "slug": "الرابط",
-      "role": "الدور",
-      "rating": "التقييم",
-      "avgRating": "متوسط التقييم",
-      "audience": "الجمهور",
-      "sent": "مرسل",
-      "scheduled": "مجدول",
-      "priority": "الأولوية",
-      "open": "مفتوح",
-      "resolved": "محلول",
-      "avgResponse": "متوسط الرد",
-      "metric": "المقياس",
-      "value": "القيمة",
-      "permissions": "الصلاحيات",
-      "admins": "المشرفون",
-      "newThisMonth": "جديد هذا الشهر",
-      "key": "المفتاح",
-      "group": "المجموعة",
-      "general": "عام",
-      "payment": "الدفع",
-      "singleChoice": "اختيار منفرد",
-      "multipleChoice": "اختيار متعدد",
-      "imageBased": "يعتمد على الصورة",
-      "generated": "تم إنشاؤه",
-      "downloads": "التنزيلات",
-      "successful": "ناجح",
-      "failed": "فاشل",
-      "pending": "معلق",
-      "completed": "مكتمل",
-      "email": "البريد الإلكتروني"
     }
   },
   "blog": {
@@ -1207,5 +1053,57 @@
         }
       ]
     }
+  },
+  "examList": {
+    "tabs": {
+      "all": "الكل",
+      "in_progress": "قيد التنفيذ",
+      "completed": "المكتملة"
+    },
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "grades": {
+    "bySpecialty": "نسبة الإجابات الصحيحة حسب التخصص",
+    "questionsAnswered": "{{count}} سؤال",
+    "examScores": "درجات الامتحانات",
+    "exam": "الامتحان",
+    "date": "التاريخ",
+    "correct": "الصحيحة",
+    "empty": "أنهِ امتحاناً لتظهر درجاتك هنا."
+  },
+  "questionCollection": {
+    "practice": "تدرّب على هذه الأسئلة",
+    "timesWrong": "أخطأت فيه {{count}} مرة",
+    "saved": {
+      "title": "الأسئلة المحفوظة",
+      "subtitle": "الأسئلة التي حفظتها أثناء امتحاناتك",
+      "empty": "لا توجد أسئلة محفوظة بعد. استخدم زر الحفظ أثناء الامتحان."
+    },
+    "wrong": {
+      "title": "الأسئلة الخاطئة",
+      "subtitle": "الأسئلة التي أخطأت فيها في الامتحانات المسلّمة أو التدريب",
+      "empty": "لا توجد أسئلة خاطئة. استمر!"
+    },
+    "flagged": {
+      "title": "الأسئلة المعلّمة",
+      "subtitle": "الأسئلة التي علّمتها أثناء امتحاناتك",
+      "empty": "لا توجد أسئلة معلّمة. استخدم زر التعليم أثناء الامتحان."
+    }
+  },
+  "payment": {
+    "title": "الدفع الآمن",
+    "package": "الباقة",
+    "secureNote": "بيانات الكارت بتتكتب في نموذج HyperPay الآمن وما بتوصلش لسيرفراتنا.",
+    "notFound": "لم يتم العثور على عملية الدفع.",
+    "alreadyPaid": "تم دفع هذه العملية بالفعل.",
+    "goToDashboard": "الذهاب للوحة التحكم",
+    "backToPackages": "العودة للباقات",
+    "verifying": "جاري التحقق من الدفع...",
+    "pending": "البنك لسه بيعالج عملية الدفع.",
+    "success": "تم الدفع بنجاح! اشتراكك مفعّل.",
+    "startExam": "ابدأ امتحاناً",
+    "failed": "لم تتم عملية الدفع.",
+    "failedHint": "لم يُخصم أي مبلغ في هذه المحاولة، ويمكنك المحاولة مرة أخرى."
   }
 }

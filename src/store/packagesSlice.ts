@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/lib/api';
+import type { Package } from '@/types/package';
+import type { StudentSubscription } from '@/types/insights';
 
 interface PackagesState {
-  packages: unknown[];
-  currentPackage: unknown;
-  subscriptions: unknown[];
+  packages: Package[];
+  currentPackage: Package | null;
+  subscriptions: StudentSubscription[];
   loading: boolean;
 }
 

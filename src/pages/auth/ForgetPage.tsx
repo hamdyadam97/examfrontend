@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import { forgetPassword } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
+import { apiErrorMessage } from '@/lib/api';
 
 export function ForgetPage() {
   const { t } = useTranslation();
@@ -22,8 +23,8 @@ export function ForgetPage() {
         mobile: form.mobile_number.replace(/^0/, ''),
       })).unwrap();
       navigate('/otp');
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || 'Request failed');
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || 'Request failed');
     } finally {
       setLoading(false);
     }

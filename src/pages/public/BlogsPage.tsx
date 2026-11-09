@@ -440,7 +440,13 @@ export function BlogsPage() {
     api.get('/blogs/index').then((res) => setBlogs(res.data?.data?.blogs || []));
   }, []);
 
-  useEffect(() => { setPage(1); }, [search, topic, sort]);
+  // Back to page 1 whenever the filters change (adjusted during render, not in an effect).
+  const filterKey = `${search}|${topic}|${sort}`;
+  const [pagedFilterKey, setPagedFilterKey] = useState(filterKey);
+  if (pagedFilterKey !== filterKey) {
+    setPagedFilterKey(filterKey);
+    setPage(1);
+  }
 
   const filtered = useMemo(() => {
     let list = [...blogs];

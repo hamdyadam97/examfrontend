@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,11 +29,24 @@ export function Header() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = query.trim();
+    if (!q) return;
+    setSearchOpen(false);
+    navigate(`/exams?q=${encodeURIComponent(q)}`);
+  };
+
+  // Close the mobile drawer when the route changes (state adjusted during render, not in an effect).
+  const [menuPath, setMenuPath] = useState(location.pathname);
+  if (menuPath !== location.pathname) {
+    setMenuPath(location.pathname);
     setMobileOpen(false);
-  }, [location.pathname]);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -167,11 +180,14 @@ export function Header() {
             className="overflow-hidden border-t border-slate-100 bg-white"
           >
             <div className="mx-auto max-w-3xl px-4 py-3">
-              <div className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-2.5">
+              <form role="search" onSubmit={submitSearch} className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-2.5">
                 <Search size={18} className="text-slate-400" />
                 <input
-                  type="text"
+                  type="search"
                   autoFocus
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  aria-label={t('header.search', 'Search')}
                   placeholder={t('header.searchPlaceholder', 'Search exams, specialties...')}
                   className="w-full bg-transparent text-sm text-secondary outline-none placeholder:text-slate-400"
                 />
@@ -183,7 +199,7 @@ export function Header() {
                 >
                   <X size={18} />
                 </button>
-              </div>
+              </form>
             </div>
           </motion.div>
         )}

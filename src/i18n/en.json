@@ -246,9 +246,7 @@
       "createExam": "Create New Exam",
       "myExams": "My Exams",
       "examHistory": "Exam History",
-      "savedExams": "Saved Exams",
       "wrongQuestions": "Wrong Questions",
-      "favoriteQuestions": "Favorite Questions",
       "myGrades": "My Grades",
       "performanceAnalytics": "Performance Analytics",
       "subscription": "Subscription",
@@ -263,7 +261,9 @@
       "study": "Study",
       "progress": "Progress",
       "billing": "Billing",
-      "account": "Account"
+      "account": "Account",
+      "savedQuestions": "Saved Questions",
+      "flaggedQuestions": "Flagged Questions"
     },
     "header": {
       "searchPlaceholder": "Search exams, questions...",
@@ -320,7 +320,8 @@
     "subscribe": "Subscribe",
     "applyCoupon": "Apply Coupon",
     "price": "Price",
-    "period": "Period"
+    "period": "Period",
+    "days": "days"
   },
   "specialtyCard": {
     "packages": "Exam Packages",
@@ -657,7 +658,8 @@
       "reviewLaterRemoved": "Review mark removed",
       "timeWarning": "{{minutes}} minute(s) left!",
       "timeUp": "Time is up. Your exam has been submitted.",
-      "alreadyFinished": "This exam has already been submitted."
+      "alreadyFinished": "This exam has already been submitted.",
+      "saveFailed": "Could not save. Please try again."
     },
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen",
@@ -687,7 +689,8 @@
     "backToExams": "Back to Exams",
     "retakeExam": "Retake Exam",
     "passedMessage": "Congratulations! You passed the exam.",
-    "failedMessage": "Keep practicing. You can retake the exam."
+    "failedMessage": "Keep practicing. You can retake the exam.",
+    "loadError": "Could not load the results. Please try again."
   },
   "examBuilder": {
     "title": "Create Exam",
@@ -728,11 +731,20 @@
       "mock": "Mock Exam",
       "final": "Final Exam",
       "random": "Random Exam",
-      "adaptive": "Adaptive Exam",
       "wrongOnly": "Wrong Questions Only",
       "savedOnly": "Saved Questions Only",
-      "favoritesOnly": "Favorites Only",
-      "timedPractice": "Timed Practice"
+      "timedPractice": "Timed Practice",
+      "unusedOnly": "New Questions Only",
+      "flaggedOnly": "Flagged Questions Only",
+      "practiceDesc": "See the answer and explanation after each question",
+      "mockDesc": "Results only after you submit, like the real exam",
+      "finalDesc": "A full exam; results after you submit",
+      "randomDesc": "Random questions; results after you submit",
+      "unusedOnlyDesc": "Only questions you have never seen",
+      "wrongOnlyDesc": "Only questions you answered wrong before",
+      "savedOnlyDesc": "Only questions you saved",
+      "flaggedOnlyDesc": "Only questions you flagged",
+      "timedPracticeDesc": "Practice with answers shown, against the clock"
     },
     "difficulty": {
       "title": "Difficulty Level",
@@ -757,14 +769,7 @@
     "advanced": {
       "title": "Advanced Settings",
       "randomizeQuestions": "Randomize Questions",
-      "randomizeAnswers": "Randomize Answers",
-      "showExplanations": "Show Explanations After Answering",
-      "showCorrect": "Show Correct Answers Immediately",
-      "allowReview": "Allow Exam Review",
-      "autoSave": "Auto Save Progress",
-      "countdown": "Enable Countdown Timer",
-      "fullscreen": "Fullscreen Mode",
-      "saveTemplate": "Save as Template"
+      "randomizeAnswers": "Randomize Answers"
     },
     "summary": {
       "title": "Exam Summary",
@@ -797,9 +802,9 @@
       "continueLastExam": "Continue Last Exam",
       "reviewWrong": "Review Wrong Questions",
       "reviewSaved": "Review Saved Questions",
-      "reviewFavorites": "Review Favorite Questions",
       "performanceReport": "Performance Report",
-      "browseExams": "Browse Exams"
+      "browseExams": "Browse Exams",
+      "reviewFlagged": "Review Flagged Questions"
     },
     "alerts": {
       "selectCategory": "Please select at least one category.",
@@ -809,165 +814,6 @@
       "title": "You have no active subscription",
       "subtitle": "Subscribe to a package to unlock its question bank and start building exams.",
       "cta": "View Packages"
-    }
-  },
-  "admin": {
-    "dashboard": "Dashboard",
-    "modules": {
-      "dashboard": "Dashboard",
-      "questionBanks": "Question Banks",
-      "questions": "Questions",
-      "specialties": "Medical Specialties",
-      "categories": "Categories",
-      "subCategories": "Sub Categories",
-      "topics": "Topics",
-      "exams": "Exams",
-      "examTemplates": "Exam Templates",
-      "students": "Students",
-      "subscriptions": "Subscriptions",
-      "orders": "Orders",
-      "payments": "Payments",
-      "offers": "Offers & Coupons",
-      "blog": "Blog",
-      "pages": "Pages",
-      "testimonials": "Testimonials",
-      "notifications": "Notifications",
-      "supportTickets": "Support Tickets",
-      "reports": "Reports",
-      "analytics": "Analytics",
-      "roles": "Roles & Permissions",
-      "users": "Users",
-      "settings": "System Settings",
-      "profile": "Profile"
-    },
-    "actions": {
-      "create": "Create",
-      "edit": "Edit",
-      "delete": "Delete",
-      "archive": "Archive",
-      "restore": "Restore",
-      "duplicate": "Duplicate",
-      "search": "Search",
-      "filter": "Filter",
-      "import": "Import",
-      "export": "Export",
-      "save": "Save",
-      "cancel": "Cancel",
-      "submit": "Submit",
-      "next": "Next",
-      "previous": "Previous",
-      "back": "Back",
-      "close": "Close",
-      "view": "View",
-      "actions": "Actions",
-      "apply": "Apply",
-      "clear": "Clear",
-      "refresh": "Refresh",
-      "bulkActions": "Bulk Actions",
-      "confirmDelete": "Are you sure you want to delete?",
-      "confirmArchive": "Are you sure you want to archive?",
-      "yes": "Yes",
-      "no": "No"
-    },
-    "table": {
-      "columns": "Columns",
-      "noData": "No records found",
-      "loading": "Loading...",
-      "selected": "selected",
-      "rowsPerPage": "Rows per page",
-      "of": "of",
-      "showing": "Showing",
-      "id": "ID"
-    },
-    "filters": {
-      "title": "Filters",
-      "status": "Status",
-      "dateRange": "Date Range",
-      "all": "All",
-      "active": "Active",
-      "inactive": "Inactive",
-      "archived": "Archived"
-    },
-    "dashboardHome": {
-      "totalStudents": "Total Students",
-      "activeStudents": "Active Students",
-      "totalQuestions": "Total Questions",
-      "totalExams": "Total Exams",
-      "activeSubscriptions": "Active Subscriptions",
-      "revenue": "Revenue",
-      "recentActivity": "Recent Activity",
-      "latestStudents": "Latest Students",
-      "latestExams": "Latest Exams",
-      "latestOrders": "Latest Orders",
-      "performanceCharts": "Performance Charts",
-      "questionUsage": "Question Usage",
-      "passRate": "Pass Rate",
-      "systemHealth": "System Health",
-      "viewAll": "View all",
-      "examAttempts": "Exam Attempts"
-    },
-    "entity": {
-      "create": "Create {{entity}}",
-      "edit": "Edit {{entity}}",
-      "details": "Details",
-      "settings": "Settings",
-      "basicInfo": "Basic Information",
-      "metadata": "Metadata",
-      "status": "Status",
-      "createdAt": "Created At",
-      "updatedAt": "Updated At",
-      "name": "Name",
-      "description": "Description",
-      "saveDraft": "Save Draft",
-      "type": "Type",
-      "difficulty": "Difficulty",
-      "mode": "Mode",
-      "mock": "Mock",
-      "final": "Final",
-      "package": "Package",
-      "endDate": "End Date",
-      "monthly": "Monthly",
-      "expiring": "Expiring Soon",
-      "amount": "Amount",
-      "method": "Method",
-      "date": "Date",
-      "issueDate": "Issue Date",
-      "thisMonth": "This Month",
-      "used": "Used",
-      "author": "Author",
-      "views": "Views",
-      "published": "Published",
-      "draft": "Draft",
-      "slug": "Slug",
-      "role": "Role",
-      "rating": "Rating",
-      "avgRating": "Avg Rating",
-      "audience": "Audience",
-      "sent": "Sent",
-      "scheduled": "Scheduled",
-      "priority": "Priority",
-      "open": "Open",
-      "resolved": "Resolved",
-      "avgResponse": "Avg Response",
-      "metric": "Metric",
-      "value": "Value",
-      "permissions": "Permissions",
-      "admins": "Admins",
-      "newThisMonth": "New This Month",
-      "key": "Key",
-      "group": "Group",
-      "general": "General",
-      "payment": "Payment",
-      "singleChoice": "Single Choice",
-      "multipleChoice": "Multiple Choice",
-      "imageBased": "Image Based",
-      "generated": "Generated",
-      "downloads": "Downloads",
-      "successful": "Successful",
-      "failed": "Failed",
-      "pending": "Pending",
-      "completed": "Completed",
-      "email": "Email"
     }
   },
   "blog": {
@@ -1207,5 +1053,57 @@
         }
       ]
     }
+  },
+  "examList": {
+    "tabs": {
+      "all": "All",
+      "in_progress": "In Progress",
+      "completed": "Completed"
+    },
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "grades": {
+    "bySpecialty": "Accuracy by Specialty",
+    "questionsAnswered": "{{count}} questions",
+    "examScores": "Exam Scores",
+    "exam": "Exam",
+    "date": "Date",
+    "correct": "Correct",
+    "empty": "Finish an exam to see your grades here."
+  },
+  "questionCollection": {
+    "practice": "Practice These Questions",
+    "timesWrong": "Wrong {{count}} time(s)",
+    "saved": {
+      "title": "Saved Questions",
+      "subtitle": "Questions you bookmarked during your exams",
+      "empty": "No saved questions yet. Use the bookmark button during an exam."
+    },
+    "wrong": {
+      "title": "Wrong Questions",
+      "subtitle": "Questions you answered wrong in submitted exams or practice",
+      "empty": "No wrong questions. Keep it up!"
+    },
+    "flagged": {
+      "title": "Flagged Questions",
+      "subtitle": "Questions you flagged during your exams",
+      "empty": "No flagged questions. Use the flag button during an exam."
+    }
+  },
+  "payment": {
+    "title": "Secure Payment",
+    "package": "Package",
+    "secureNote": "Card details are entered on HyperPay's secure form and never reach our servers.",
+    "notFound": "This payment could not be found.",
+    "alreadyPaid": "This payment is already complete.",
+    "goToDashboard": "Go to Dashboard",
+    "backToPackages": "Back to Packages",
+    "verifying": "Verifying your payment...",
+    "pending": "The bank is still processing the payment.",
+    "success": "Payment successful! Your subscription is active.",
+    "startExam": "Start an Exam",
+    "failed": "The payment was not completed.",
+    "failedHint": "No money was taken for this attempt. You can try again."
   }
 }

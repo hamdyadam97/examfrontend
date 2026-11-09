@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
@@ -434,7 +434,15 @@ export function ExamsPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
 
-  const [search, setSearch] = useState('');
+  // The header search lands here as ?q=; a new query replaces whatever was typed in the filter.
+  const [searchParams] = useSearchParams();
+  const urlQuery = searchParams.get('q') ?? '';
+  const [search, setSearch] = useState(urlQuery);
+  const [appliedQuery, setAppliedQuery] = useState(urlQuery);
+  if (urlQuery !== appliedQuery) {
+    setAppliedQuery(urlQuery);
+    setSearch(urlQuery);
+  }
   const [category, setCategory] = useState('all');
   const [difficulty, setDifficulty] = useState('all');
   const [duration, setDuration] = useState('all');
@@ -445,7 +453,7 @@ export function ExamsPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setLoading(true);
+    // loading starts true; a language change refetches in the background without the spinner.
     api
       .get('/exams')
       .then((res) => {

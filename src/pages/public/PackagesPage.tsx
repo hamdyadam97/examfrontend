@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, apiErrorMessage } from '@/lib/api';
 import { CustomPackageCard } from '@/components/packages/CustomPackageCard';
 import { PackageCard } from '@/components/packages/PackageCard';
 import type { Package } from '@/types/package';
@@ -28,7 +28,7 @@ export function PackagesPage() {
     }
     setSubscribingId(pkg.id);
     try {
-      const payload: any = { package_id: pkg.id };
+      const payload: { package_id: number; custom_days?: number } = { package_id: pkg.id };
       if (pkg.is_custom && customDays) {
         payload.custom_days = customDays;
       }
@@ -37,12 +37,12 @@ export function PackagesPage() {
       if (data?.subscription) {
         toast.success(t('packages.subscribeSuccess', 'Subscribed successfully!'));
       } else if (data?.checkout?.url) {
-        window.open(data.checkout.url, '_blank');
+        navigate(data.checkout.url);
       } else {
         toast.info(t('packages.paymentNotConfigured', 'Redirect to payment (gateway not configured).'));
       }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || t('packages.subscribeError', 'Subscription failed.');
+    } catch (err) {
+      const msg = apiErrorMessage(err) || t('packages.subscribeError', 'Subscription failed.');
       toast.error(msg);
     } finally {
       setSubscribingId(null);

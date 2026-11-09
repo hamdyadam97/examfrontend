@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { Loader2, CheckCircle2, XCircle, ArrowLeft, Phone, Mail, Pencil, RotateCw } from 'lucide-react';
 import { verifyOtp, resendOtp } from '@/store/authSlice';
 import type { AppDispatch, RootState } from '@/store';
+import type { ApiError } from '@/lib/api';
 
 const OTP_LENGTH = 6;
 const RESEND_SECONDS = 45;
@@ -25,7 +26,7 @@ export function VerifyOtpPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { isForget, user } = useSelector((state: RootState) => state.auth);
 
-  const storedMobile = user?.mobile || Cookies.get('otp_mobile') || '';
+  const storedMobile = String(user?.phone || user?.mobile || Cookies.get('otp_mobile') || '');
   const isEmail = storedMobile.includes('@');
   const [contact, setContact] = useState(storedMobile);
   const [isEditingContact, setIsEditingContact] = useState(false);
@@ -37,28 +38,17 @@ export function VerifyOtpPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [timer, setTimer] = useState(RESEND_SECONDS);
-  const [canResend, setCanResend] = useState(false);
+  const canResend = timer <= 0;
+  const counting = timer > 0;
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  // One interval per countdown; resending resets the timer, which starts a new one.
   useEffect(() => {
-    if (timer <= 0) {
-      setCanResend(true);
-      return;
-    }
-    setCanResend(false);
-    const id = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(id);
-          setCanResend(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    if (!counting) return;
+    const id = setInterval(() => setTimer((prev) => Math.max(0, prev - 1)), 1000);
     return () => clearInterval(id);
-  }, [timer]);
+  }, [counting]);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -134,8 +124,9 @@ export function VerifyOtpPage() {
       setTimeout(() => {
         navigate(isForget ? '/reset' : '/user/dashboard');
       }, 900);
-    } catch (err: any) {
-      const message = (err?.statusCode && err?.message) || t('auth.verificationFailed', 'Invalid verification code');
+    } catch (err) {
+      const apiErr = err as ApiError;
+      const message = (apiErr?.statusCode && apiErr?.message) || t('auth.verificationFailed', 'Invalid verification code');
       setError(message);
       setOtp(Array(OTP_LENGTH).fill(''));
       inputRefs.current[0]?.focus();
@@ -152,11 +143,11 @@ export function VerifyOtpPage() {
       await dispatch(resendOtp({ mobile: contact || undefined })).unwrap();
       setOtp(Array(OTP_LENGTH).fill(''));
       setTimer(RESEND_SECONDS);
-      setCanResend(false);
       inputRefs.current[0]?.focus();
       toast.success(t('auth.codeResent', 'Verification code resent'));
-    } catch (err: any) {
-      const message = (err?.statusCode && err?.message) || t('auth.resendFailed', 'Failed to resend code');
+    } catch (err) {
+      const apiErr = err as ApiError;
+      const message = (apiErr?.statusCode && apiErr?.message) || t('auth.resendFailed', 'Failed to resend code');
       setError(message);
     } finally {
       setResending(false);

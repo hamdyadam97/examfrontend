@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { PlayCircle, XCircle, Bookmark, Heart, BookOpen, BarChart2 } from 'lucide-react';
+import { PlayCircle, XCircle, Bookmark, Flag, BookOpen, BarChart2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const actions = [
-  { key: 'continueLastExam', icon: PlayCircle, to: '/user/exam', color: 'bg-primary/10 text-primary' },
-  { key: 'reviewWrong', icon: XCircle, to: '/user/dashboard?tab=wrong', color: 'bg-rose-100 text-rose-600' },
-  { key: 'reviewSaved', icon: Bookmark, to: '/user/dashboard?tab=saved', color: 'bg-amber-100 text-amber-600' },
-  { key: 'reviewFavorites', icon: Heart, to: '/user/dashboard?tab=favorite', color: 'bg-pink-100 text-pink-600' },
+  { key: 'continueLastExam', icon: PlayCircle, to: '/user/exam?status=in_progress', color: 'bg-primary/10 text-primary' },
+  { key: 'reviewWrong', icon: XCircle, to: '/user/questions/wrong', color: 'bg-rose-100 text-rose-600' },
+  { key: 'reviewSaved', icon: Bookmark, to: '/user/questions/saved', color: 'bg-amber-100 text-amber-600' },
+  { key: 'reviewFlagged', icon: Flag, to: '/user/questions/flagged', color: 'bg-pink-100 text-pink-600' },
   { key: 'browseExams', icon: BookOpen, to: '/exams', color: 'bg-blue-100 text-blue-600' },
   { key: 'performanceReport', icon: BarChart2, to: '/user/dashboard?tab=analytics', color: 'bg-purple-100 text-purple-600' },
 ];

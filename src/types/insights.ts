@@ -12,6 +12,7 @@ export interface StudentSubscription {
   package: { id: number; name: string; number_of_questions: number | null } | null;
   start_date: string | null;
   end_date: string | null;
+  subscription_status: number;
   is_active: boolean;
   questions_used: number;
 }

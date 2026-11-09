@@ -196,7 +196,9 @@ export function ExamDetailPage() {
   const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [isDark, setIsDark] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // The exam id whose data is shown; opening a related exam shows the spinner until it loads.
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  const loading = loadedId !== id;
   const [exam, setExam] = useState<ExamDetail | null>(null);
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [openFaqs, setOpenFaqs] = useState<Set<number>>(new Set());
@@ -205,7 +207,6 @@ export function ExamDetailPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (!id) return;
-    setLoading(true);
     api
       .get(`/exams/${id}`)
       .then((res) => {
@@ -217,7 +218,7 @@ export function ExamDetailPage() {
         }
       })
       .catch(() => toast.error(t('examDetail.notFound')))
-      .finally(() => setLoading(false));
+      .finally(() => setLoadedId(id));
   }, [id, t, i18n.language]);
 
   const toggleFaq = (faqId: number) => {

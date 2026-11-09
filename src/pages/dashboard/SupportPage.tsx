@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import { sendSupport } from '@/store/supportSlice';
 import type { AppDispatch } from '@/store';
+import { apiErrorMessage } from '@/lib/api';
 
 export function SupportPage() {
   const { t } = useTranslation();
@@ -18,8 +19,8 @@ export function SupportPage() {
       await dispatch(sendSupport(form)).unwrap();
       toast.success('Support request sent');
       setForm({ question_id: '', question_text: '', message: '' });
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || 'Failed to send');
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || 'Failed to send');
     } finally {
       setLoading(false);
     }

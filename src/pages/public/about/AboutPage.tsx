@@ -330,6 +330,26 @@ function WhyChooseUsSection() {
   );
 }
 
+/** One animated counter; a component of its own so each stat can call useCountUp. */
+function StatItem({ value, suffix, label, delay }: { value: number; suffix: string; label: string; delay: number }) {
+  const { count, ref } = useCountUp(value);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay }}
+      className="text-center"
+    >
+      <p className="text-4xl font-extrabold">
+        <span ref={ref}>{count.toLocaleString()}</span>
+        {suffix}
+      </p>
+      <p className="mt-2 text-sm text-white/80">{label}</p>
+    </motion.div>
+  );
+}
+
 function StatsSection() {
   const { t } = useTranslation();
 
@@ -346,25 +366,15 @@ function StatsSection() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          {stats.map((stat, idx) => {
-            const { count, ref } = useCountUp(stat.value);
-            return (
-              <motion.div
-                key={stat.labelKey}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="text-center"
-              >
-                <p className="text-4xl font-extrabold">
-                  <span ref={ref}>{count.toLocaleString()}</span>
-                  {stat.suffix}
-                </p>
-                <p className="mt-2 text-sm text-white/80">{t(stat.labelKey, stat.labelFallback)}</p>
-              </motion.div>
-            );
-          })}
+          {stats.map((stat, idx) => (
+            <StatItem
+              key={stat.labelKey}
+              value={stat.value}
+              suffix={stat.suffix}
+              label={t(stat.labelKey, stat.labelFallback)}
+              delay={idx * 0.08}
+            />
+          ))}
         </div>
       </div>
     </section>

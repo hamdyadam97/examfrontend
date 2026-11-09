@@ -4,36 +4,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { getProfileData, updateProfile, updatePassword } from '@/store/authSlice';
 import type { AppDispatch, RootState } from '@/store';
+import { apiErrorMessage } from '@/lib/api';
+
+const profileFields = ['first_name', 'last_name', 'email', 'specialization', 'governorate', 'birth_date'] as const;
+
+function profileFrom(user: Record<string, unknown>) {
+  return Object.fromEntries(profileFields.map((field) => [field, String(user[field] ?? '')]));
+}
 
 export function SettingsPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
-  const [profile, setProfile] = useState<Record<string, string>>({});
+  const [profile, setProfile] = useState<Record<string, string>>(() => profileFrom(user));
   const [passwords, setPasswords] = useState({ current_password: '', password: '', password_confirmation: '' });
+  // Refill the form when the profile arrives from the server (adjusted during render, not in an effect).
+  const [formUser, setFormUser] = useState(user);
+  if (formUser !== user) {
+    setFormUser(user);
+    setProfile(profileFrom(user));
+  }
 
   useEffect(() => {
     dispatch(getProfileData());
   }, [dispatch]);
 
-  useEffect(() => {
-    setProfile({
-      first_name: (user.first_name as string) || '',
-      last_name: (user.last_name as string) || '',
-      email: (user.email as string) || '',
-      specialization: (user.specialization as string) || '',
-      governorate: (user.governorate as string) || '',
-      birth_date: (user.birth_date as string) || '',
-    });
-  }, [user]);
 
   const handleProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await dispatch(updateProfile(profile)).unwrap();
       toast.success('Profile updated');
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || 'Update failed');
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || 'Update failed');
     }
   };
 
@@ -43,8 +46,8 @@ export function SettingsPage() {
       await dispatch(updatePassword(passwords)).unwrap();
       toast.success('Password updated');
       setPasswords({ current_password: '', password: '', password_confirmation: '' });
-    } catch (err: any) {
-      toast.error((err?.statusCode && err?.message) || 'Update failed');
+    } catch (err) {
+      toast.error(apiErrorMessage(err) || 'Update failed');
     }
   };
 

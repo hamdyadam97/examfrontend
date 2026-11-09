@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -10,11 +10,13 @@ import {
 } from '@/store/examSlice';
 import { subscription } from '@/store/packagesSlice';
 import type { AppDispatch, RootState } from '@/store';
+import { apiErrorMessage, type ApiError } from '@/lib/api';
 
 import { PackageOverview, NoSubscriptionNotice } from '@/components/exam-builder/PackageOverview';
 import { Stepper } from '@/components/exam-builder/Stepper';
 import { SelectionGrid } from '@/components/exam-builder/SelectionGrid';
 import { ExamModeSelector } from '@/components/exam-builder/ExamModeSelector';
+import { examModes } from '@/components/exam-builder/examModes';
 import { DifficultySelector } from '@/components/exam-builder/DifficultySelector';
 import { QuestionCountSlider } from '@/components/exam-builder/QuestionCountSlider';
 import { DurationSelector } from '@/components/exam-builder/DurationSelector';
@@ -34,13 +36,6 @@ interface Item {
 interface Advanced {
   randomizeQuestions: boolean;
   randomizeAnswers: boolean;
-  showExplanations: boolean;
-  showCorrect: boolean;
-  allowReview: boolean;
-  autoSave: boolean;
-  countdown: boolean;
-  fullscreen: boolean;
-  saveTemplate: boolean;
 }
 
 const stepsKeys = ['specialty', 'category', 'subcategory', 'section', 'topic', 'configure'] as const;
@@ -61,7 +56,7 @@ export function ExamCreatePage() {
     sections: state.exam.sections as Item[],
     topics: state.exam.topics as Item[],
     totalQuestionsFromSections: state.exam.totalQuestionsFromSections,
-    subscriptions: state.packages.subscriptions as any[],
+    subscriptions: state.packages.subscriptions,
   }));
 
   const [step, setStep] = useState(0);
@@ -73,20 +68,17 @@ export function ExamCreatePage() {
   const [selectedSections, setSelectedSections] = useState<number[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<number[]>([]);
 
-  const [mode, setMode] = useState('practice');
+  const [searchParams] = useSearchParams();
+  const [mode, setMode] = useState(() => {
+    const requested = searchParams.get('mode');
+    return examModes.some((m) => m.key === requested) ? (requested as string) : 'practice';
+  });
   const [difficulty, setDifficulty] = useState('mixed');
   const [questionCount, setQuestionCount] = useState(50);
   const [duration, setDuration] = useState('automatic');
   const [advanced, setAdvanced] = useState<Advanced>({
     randomizeQuestions: true,
     randomizeAnswers: true,
-    showExplanations: true,
-    showCorrect: false,
-    allowReview: true,
-    autoSave: true,
-    countdown: true,
-    fullscreen: false,
-    saveTemplate: false,
   });
 
   useEffect(() => {
@@ -95,19 +87,14 @@ export function ExamCreatePage() {
     return () => { dispatch(clearExamData()); };
   }, [dispatch]);
 
+  // These effects only fetch. Clearing the lower levels when a level changes is done in the
+  // click handlers (clearBelow), so a selection change does not render twice.
   useEffect(() => {
     dispatch(fetchSubCategories(selectedCategories));
-    setSelectedSubCategories([]);
-    setSelectedSubSubCategories([]);
-    setSelectedSections([]);
-    setSelectedTopics([]);
   }, [selectedCategories, dispatch]);
 
   useEffect(() => {
     dispatch(fetchSubSubCategories(selectedSubCategories));
-    setSelectedSubSubCategories([]);
-    setSelectedSections([]);
-    setSelectedTopics([]);
   }, [selectedSubCategories, dispatch]);
 
   useEffect(() => {
@@ -115,9 +102,10 @@ export function ExamCreatePage() {
       categoryIds: selectedCategories,
       subCategoryIds: selectedSubCategories,
       subSubCategoryIds: selectedSubSubCategories,
+      difficulty,
     }));
-    setSelectedSections([]);
-    setSelectedTopics([]);
+    // Difficulty changes are handled by the effect below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategories, selectedSubCategories, selectedSubSubCategories, dispatch]);
 
   useEffect(() => {
@@ -126,12 +114,24 @@ export function ExamCreatePage() {
       categoryIds: selectedCategories,
       subCategoryIds: selectedSubCategories,
       subSubCategoryIds: selectedSubSubCategories,
+      difficulty,
     }));
-    setSelectedTopics([]);
-    // Tree changes cascade through the sections effect (which resets
-    // selectedSections), so this refetches with the current tree then.
+    // Tree changes always clear the sections too, so this refetches with the current tree then.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSections, dispatch]);
+
+  // A new difficulty only refreshes the question counts; the student's selections stay.
+  useEffect(() => {
+    const tree = {
+      categoryIds: selectedCategories,
+      subCategoryIds: selectedSubCategories,
+      subSubCategoryIds: selectedSubSubCategories,
+      difficulty,
+    };
+    dispatch(fetchSections(tree));
+    if (selectedSections.length) dispatch(fetchTopics({ ...tree, sectionIds: selectedSections }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [difficulty]);
 
   const activeSubscription = subscriptions?.find((s) => s.is_active);
   const packageTotal: number | null = activeSubscription?.package?.number_of_questions ?? null;
@@ -183,15 +183,25 @@ export function ExamCreatePage() {
     topic: selectedNames(topics, selectedTopics),
   }), [categories, selectedCategories, subCategories, selectedSubCategories, subSubCategories, selectedSubSubCategories, sections, selectedSections, topics, selectedTopics]);
 
+  /** A change at one level invalidates every level below it. */
+  const clearBelow = (level: number) => {
+    for (let lower = level + 1; lower <= 4; lower++) {
+      const [, setter] = stepSelections[lower];
+      setter((prev) => (prev.length ? [] : prev));
+    }
+  };
+
   const handleToggle = (id: number) => {
     const [, setter] = stepSelections[step];
     setter((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+    clearBelow(step);
   };
 
   const handleSelectAll = () => {
     const [selected, setter] = stepSelections[step];
     const items = stepItems[step];
     setter(selected.length === items.length ? [] : items.map((i) => i.id));
+    clearBelow(step);
   };
 
   const canProceed = stepSelections[step]?.[0].length > 0;
@@ -218,11 +228,11 @@ export function ExamCreatePage() {
     }
     setLoading(true);
     try {
-      const backendMode = ['practice', 'wrongOnly', 'savedOnly', 'favoritesOnly', 'adaptive'].includes(mode) ? 'tatur' : 'exam';
+      const selectedMode = examModes.find((m) => m.key === mode) ?? examModes[0];
       const durationMap: Record<string, number> = { automatic: 0, min30: 30, min45: 45, min60: 60, min90: 90, unlimited: 0 };
-      const res: any = await dispatch(storeExam({
-        exam_mode: backendMode,
-        question_mode: 'all',
+      const res: { data: { exam_id: number } } = await dispatch(storeExam({
+        exam_mode: selectedMode.examMode,
+        question_mode: selectedMode.questionMode,
         is_timed_mode: duration !== 'unlimited',
         categories: selectedCategories,
         sub_categories: selectedSubCategories,
@@ -232,14 +242,15 @@ export function ExamCreatePage() {
         question_count: effectiveQuestionCount,
         duration_minutes: durationMap[duration] || 0,
         difficulty,
-        ...advanced,
+        randomize_questions: advanced.randomizeQuestions,
+        randomize_answers: advanced.randomizeAnswers,
       })).unwrap();
       toast.success(t('examBuilder.alerts.examCreated'));
       navigate(`/user/exam/${res.data.exam_id}/show`);
-    } catch (err: any) {
-      const details = err?.errors ? Object.values(err.errors).flat() : [];
-      const backendMessage = (err?.statusCode || err?.code) && err?.message;
-      toast.error(details[0] || backendMessage || 'Failed to create exam');
+    } catch (err) {
+      const apiErr = err as ApiError;
+      const details = apiErr?.errors ? Object.values(apiErr.errors).flat() : [];
+      toast.error(details[0] || apiErrorMessage(err) || 'Failed to create exam');
     } finally {
       setLoading(false);
     }
@@ -280,7 +291,7 @@ export function ExamCreatePage() {
                   className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800 md:p-8"
                 >
                   <SelectionGrid
-                    title={t(`examBuilder.step.choose${stepsKeys[step].charAt(0).toUpperCase() + stepsKeys[step].slice(1)}` as any)}
+                    title={t(`examBuilder.step.choose${stepsKeys[step].charAt(0).toUpperCase() + stepsKeys[step].slice(1)}`)}
                     items={stepItems[step]}
                     selected={stepSelections[step][0]}
                     onToggle={handleToggle}

@@ -106,7 +106,7 @@ export function ContinueLearning({ insights }: Props) {
             ? t('dashboard.aiRecommendations.wrongTitle', { count: insights.wrong_questions })
             : t('dashboard.continueLearning.practiceDesc')
         }
-        to="/user/exam/create"
+        to={insights.wrong_questions > 0 ? '/user/exam/create?mode=wrongOnly' : '/user/exam/create'}
         action={t('dashboard.createExam')}
         color="bg-emerald-100 text-emerald-600"
         delay={0.3}

@@ -201,10 +201,13 @@ export const fetchSections = createAsyncThunk(
       categoryIds,
       subCategoryIds,
       subSubCategoryIds,
+      difficulty,
     }: {
       categoryIds: number[];
       subCategoryIds?: number[];
       subSubCategoryIds?: number[];
+      /** easy | medium | hard; anything else counts every difficulty. */
+      difficulty?: string;
     },
     { rejectWithValue },
   ) => {
@@ -213,6 +216,7 @@ export const fetchSections = createAsyncThunk(
       categoryIds.forEach((id) => params.append('category_ids[]', String(id)));
       subCategoryIds?.forEach((id) => params.append('sub_category_ids[]', String(id)));
       subSubCategoryIds?.forEach((id) => params.append('sub_sub_category_ids[]', String(id)));
+      if (difficulty) params.set('difficulty', difficulty);
       const response = await api.get(`/exams/sections?${params.toString()}`);
       return response.data?.data;
     } catch (error) {
@@ -229,11 +233,13 @@ export const fetchTopics = createAsyncThunk(
       categoryIds = [],
       subCategoryIds = [],
       subSubCategoryIds = [],
+      difficulty,
     }: {
       sectionIds: number[];
       categoryIds?: number[];
       subCategoryIds?: number[];
       subSubCategoryIds?: number[];
+      difficulty?: string;
     },
     { rejectWithValue },
   ) => {
@@ -243,6 +249,7 @@ export const fetchTopics = createAsyncThunk(
       categoryIds.forEach((id) => params.append('category_ids[]', String(id)));
       subCategoryIds.forEach((id) => params.append('sub_category_ids[]', String(id)));
       subSubCategoryIds.forEach((id) => params.append('sub_sub_category_ids[]', String(id)));
+      if (difficulty) params.set('difficulty', difficulty);
       const response = await api.get(`/exams/topics?${params.toString()}`);
       return response.data?.data;
     } catch (error) {
