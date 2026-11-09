@@ -80,7 +80,12 @@
       "reports": "Detailed reports on your performance",
       "support": "Technical support around the clock",
       "tagline": "Together toward a better professional future"
-    }
+    },
+    "signupSubtitle": "Create your account and start practicing today",
+    "passwordMismatch": "Passwords do not match.",
+    "emailOptional": "Email (optional)",
+    "otpNote": "We will send a verification code to your mobile number.",
+    "haveAccount": "Already have an account?"
   },
   "exam": {
     "create": "Create Exam",

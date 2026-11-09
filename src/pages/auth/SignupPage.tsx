@@ -1,17 +1,12 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { openSignupModal } from '@/store/uiSlice';
-import type { AppDispatch } from '@/store';
+import { SignupForm } from '@/components/auth/SignupForm';
+import { AuthShowcase } from './AuthShowcase';
 
 export function SignupPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(openSignupModal());
-    navigate('/', { replace: true });
-  }, [dispatch, navigate]);
-
-  return null;
+  return (
+    <AuthShowcase>
+      <SignupForm onSwitchToLogin={() => navigate('/login')} />
+    </AuthShowcase>
+  );
 }

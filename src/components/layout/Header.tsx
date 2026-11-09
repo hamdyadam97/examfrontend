@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import type { RootState, AppDispatch } from '@/store';
 import { logoutUser } from '@/store/authSlice';
-import { openSignupModal } from '@/store/uiSlice';
 import { site } from '@/config/site';
 import { Logo } from './Logo';
 
@@ -132,13 +131,12 @@ export function Header() {
               </>
             ) : (
               <>
-                <button
-                  type="button"
-                  onClick={() => dispatch(openSignupModal())}
+                <Link
+                  to="/signup"
                   className="flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-bold text-secondary transition hover:border-primary hover:text-primary"
                 >
                   <UserPlus size={16} /> {t('header.createAccount', 'Create Account')}
-                </button>
+                </Link>
                 <Link
                   to="/login"
                   className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-secondary/90"
@@ -217,9 +215,9 @@ export function Header() {
                     </>
                   ) : (
                     <>
-                      <button type="button" onClick={() => { setMobileOpen(false); dispatch(openSignupModal()); }} className="w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:bg-sky-soft">
+                      <Link to="/signup" onClick={() => setMobileOpen(false)} className="block w-full rounded-xl border border-slate-200 py-3 text-sm font-bold text-secondary hover:bg-sky-soft">
                         {t('header.createAccount', 'Create Account')}
-                      </button>
+                      </Link>
                       <Link to="/login" onClick={() => setMobileOpen(false)} className="block w-full rounded-xl bg-secondary py-3 text-center text-sm font-bold text-white shadow hover:bg-secondary/90">
                         {t('common.login', 'Login')}
                       </Link>

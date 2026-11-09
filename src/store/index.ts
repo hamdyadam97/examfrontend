@@ -4,7 +4,6 @@ import examReducer from './examSlice';
 import packagesReducer from './packagesSlice';
 import supportReducer from './supportSlice';
 import chatReducer from './chatSlice';
-import uiReducer from './uiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +12,6 @@ export const store = configureStore({
     packages: packagesReducer,
     support: supportReducer,
     chat: chatReducer,
-    ui: uiReducer,
   },
 });
 

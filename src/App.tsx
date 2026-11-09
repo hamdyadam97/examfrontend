@@ -1,7 +1,6 @@
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '@/router/ProtectedRoute';
 import { LoginPage } from '@/pages/auth/LoginPage';
-import { AuthModal } from '@/components/auth/AuthModal';
 import { SignupPage } from '@/pages/auth/SignupPage';
 import { VerifyOtpPage } from '@/pages/auth/VerifyOtpPage';
 import { ForgetPage } from '@/pages/auth/ForgetPage';
@@ -73,6 +72,7 @@ export default function App() {
         <Route element={<MainLayoutWrapper />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/packages/category/:id" element={<PackagesCategoryPage />} />
@@ -88,7 +88,6 @@ export default function App() {
         </Route>
 
         {/* Auth routes */}
-        <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
         <Route path="/verify-otp" element={<PublicRoute><VerifyOtpPage /></PublicRoute>} />
         <Route path="/forget" element={<PublicRoute><ForgetPage /></PublicRoute>} />
         <Route path="/otp" element={<PublicRoute><OtpPage /></PublicRoute>} />
@@ -116,7 +115,6 @@ export default function App() {
         </Route>
 
       </Routes>
-      <AuthModal />
     </>
   );
 }
