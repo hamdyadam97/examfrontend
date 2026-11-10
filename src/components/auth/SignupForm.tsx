@@ -7,7 +7,7 @@ import { Cake, Eye, EyeOff, GraduationCap, Loader2, Lock, LogIn, Mail, MapPin, P
 import { register } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
 import { CountryCodeSelect } from '@/components/CountryCodeSelect';
-import { apiErrorMessage } from '@/lib/api';
+import { apiErrorMessage, type ApiError } from '@/lib/api';
 
 interface Props {
   onSwitchToLogin: () => void;
@@ -62,7 +62,10 @@ export function SignupForm({ onSwitchToLogin }: Props) {
       await dispatch(register({ ...form, mobile: form.mobile_number.replace(/^0/, '') })).unwrap();
       navigate('/verify-otp');
     } catch (err) {
-      toast.error(apiErrorMessage(err) || t('auth.signupFailed'));
+      const errors = (err as ApiError | undefined)?.errors;
+      if (errors?.phone) toast.error(t('auth.phoneTaken', 'This phone number is already registered. Please log in.'));
+      else if (errors?.email) toast.error(t('auth.emailTaken', 'This email is already registered.'));
+      else toast.error(Object.values(errors || {})[0]?.[0] || apiErrorMessage(err) || t('auth.signupFailed'));
     } finally {
       setLoading(false);
     }

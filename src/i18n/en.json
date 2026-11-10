@@ -85,7 +85,9 @@
     "passwordMismatch": "Passwords do not match.",
     "emailOptional": "Email (optional)",
     "otpNote": "We will send a verification code to your mobile number.",
-    "haveAccount": "Already have an account?"
+    "haveAccount": "Already have an account?",
+    "phoneTaken": "This phone number is already registered. Please log in.",
+    "emailTaken": "This email is already registered."
   },
   "exam": {
     "create": "Create Exam",

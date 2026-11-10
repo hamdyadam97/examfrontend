@@ -1,7 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+// Production is served with the API on the same origin, so '/api' needs no build variable. A value that
+// is not an http(s) URL or an absolute path (e.g. "C:/Program Files/Git/api", which Git Bash makes out of
+// "/api") is ignored instead of breaking every request.
+const envBase = import.meta.env.VITE_API_BASE_URL as string | undefined;
+const BASE_URL =
+  envBase && /^(https?:\/\/|\/)/.test(envBase) ? envBase : import.meta.env.PROD ? '/api' : 'http://localhost:8000/api';
 
 /** Error body the backend returns (and what the store's thunks reject with). */
 export interface ApiError {
