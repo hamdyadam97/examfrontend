@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { api } from '@/lib/api';
+import { api, hasSession, SESSION_FLAG } from '@/lib/api';
 
 interface UserData {
   id?: number;
@@ -55,7 +55,7 @@ const pendingPhone = (state: AuthState) =>
   String(state.user?.phone || state.user?.mobile || Cookies.get('otp_mobile') || '');
 
 const initialState: AuthState = {
-  authenticated: !!Cookies.get('token'),
+  authenticated: hasSession(),
   user: {},
   loading: false,
   isForget: Cookies.get('is_forget') === 'true',
@@ -187,7 +187,8 @@ export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
   } catch {
     // ignore
   }
-  Cookies.remove('token', { path: '/' });
+  // The server clears the session cookies; the flag is removed here too in case the call failed.
+  Cookies.remove(SESSION_FLAG, { path: '/' });
   Cookies.remove('user', { path: '/' });
   Cookies.remove('is_forget', { path: '/' });
   Cookies.remove('otp_mobile', { path: '/' });
@@ -200,12 +201,6 @@ const authSlice = createSlice({
     setUserData(state, action: PayloadAction<{ user?: UserData }>) {
       state.user = { ...state.user, ...(action.payload.user || {}) };
     },
-    setToken(state, action: PayloadAction<{ token?: string }>) {
-      if (action.payload.token) {
-        Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
-        state.authenticated = true;
-      }
-    },
     clearAuth(state) {
       state.authenticated = false;
       state.user = {};
@@ -216,10 +211,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        if (action.payload?.token) {
-          Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
-          state.authenticated = true;
-        }
+        if (action.payload?.authenticated) state.authenticated = true;
         if (action.payload?.user) state.user = { ...state.user, ...action.payload.user };
       })
       .addCase(register.fulfilled, (state, action) => {
@@ -240,8 +232,7 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         if (action.payload?.reset_token) writeResetToken(action.payload.reset_token);
-        if (action.payload?.token) {
-          Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
+        if (action.payload?.authenticated) {
           state.authenticated = true;
           state.isForget = false;
           Cookies.remove('otp_mobile', { path: '/' });
@@ -253,8 +244,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         writeResetToken(null);
-        if (action.payload?.token) {
-          Cookies.set('token', action.payload.token, { sameSite: 'lax', path: '/' });
+        if (action.payload?.authenticated) {
           state.authenticated = true;
           state.isForget = false;
           state.isSendOtp = false;
@@ -281,5 +271,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUserData, setToken, clearAuth } = authSlice.actions;
+export const { setUserData, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

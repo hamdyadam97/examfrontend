@@ -1,10 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { hasSession } from '@/lib/api';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const token = Cookies.get('token');
-  if (!token) {
+  if (!hasSession()) {
     // Remember the page so the login form can return there.
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
   }
@@ -12,8 +11,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 export function PublicRoute({ children }: { children: React.ReactNode }) {
-  const token = Cookies.get('token');
-  if (token) {
+  if (hasSession()) {
     return <Navigate to="/user/dashboard" replace />;
   }
   return <>{children}</>;

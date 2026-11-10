@@ -36,7 +36,6 @@ export interface StudentInsights {
   };
   wrong_questions: number;
   in_progress: { id: number; title: string; answered: number; total: number } | null;
-  recommended_exams: { id: number; title: string; duration_minutes: number | null; category: string | null }[];
   subscription: StudentSubscription | null;
   offers: { id: number; name: string; price: number; discount_percentage: number; category: string | null }[];
 }
@@ -49,7 +48,6 @@ export const emptyInsights: StudentInsights = {
   achievements: { passed_exams: 0, perfect_scores: 0, active_days: 0, current_streak: 0, topics_practiced: 0 },
   wrong_questions: 0,
   in_progress: null,
-  recommended_exams: [],
   subscription: null,
   offers: [],
 };
