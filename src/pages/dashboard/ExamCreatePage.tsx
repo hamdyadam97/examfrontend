@@ -31,6 +31,7 @@ interface Item {
   id: number;
   name: string;
   questions_count?: number;
+  section_id?: number | null;
 }
 
 interface Advanced {
@@ -38,7 +39,9 @@ interface Advanced {
   randomizeAnswers: boolean;
 }
 
-const stepsKeys = ['specialty', 'category', 'subcategory', 'section', 'topic', 'configure'] as const;
+// Topics are not a step: they are an optional filter shown inside the section step.
+const stepsKeys = ['specialty', 'category', 'subcategory', 'section', 'configure'] as const;
+const CONFIGURE_STEP = stepsKeys.length - 1;
 
 export function ExamCreatePage() {
   const { t, i18n } = useTranslation();
@@ -161,7 +164,6 @@ export function ExamCreatePage() {
     1: subCategories,
     2: subSubCategories,
     3: sections,
-    4: topics,
   };
 
   const stepSelections: Record<number, [number[], React.Dispatch<React.SetStateAction<number[]>>]> = {
@@ -169,7 +171,6 @@ export function ExamCreatePage() {
     1: [selectedSubCategories, setSelectedSubCategories],
     2: [selectedSubSubCategories, setSelectedSubSubCategories],
     3: [selectedSections, setSelectedSections],
-    4: [selectedTopics, setSelectedTopics],
   };
 
   const selectedNames = (items: Item[], ids: number[]) =>
@@ -183,13 +184,26 @@ export function ExamCreatePage() {
     topic: selectedNames(topics, selectedTopics),
   }), [categories, selectedCategories, subCategories, selectedSubCategories, subSubCategories, selectedSubSubCategories, sections, selectedSections, topics, selectedTopics]);
 
-  /** A change at one level invalidates every level below it. */
+  /** A change at one level invalidates every level below it, including the topic filter. */
   const clearBelow = (level: number) => {
-    for (let lower = level + 1; lower <= 4; lower++) {
+    for (let lower = level + 1; lower < CONFIGURE_STEP; lower++) {
       const [, setter] = stepSelections[lower];
       setter((prev) => (prev.length ? [] : prev));
     }
+    setSelectedTopics((prev) => (prev.length ? [] : prev));
   };
+
+  const toggleTopic = (id: number) =>
+    setSelectedTopics((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+
+  // Topics of the chosen sections, grouped under their section.
+  const topicGroups = useMemo(
+    () => sections
+      .filter((s) => selectedSections.includes(s.id))
+      .map((s) => ({ section: s, topics: topics.filter((tp) => tp.section_id === s.id) }))
+      .filter((g) => g.topics.length > 0),
+    [sections, selectedSections, topics],
+  );
 
   const handleToggle = (id: number) => {
     const [, setter] = stepSelections[step];
@@ -282,7 +296,7 @@ export function ExamCreatePage() {
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-8">
             <AnimatePresence mode="wait">
-              {step < 5 ? (
+              {step < CONFIGURE_STEP ? (
                 <motion.div
                   key={step}
                   initial={{ opacity: 0, x: 20 }}
@@ -299,6 +313,40 @@ export function ExamCreatePage() {
                     showAll
                     onSelectAll={handleSelectAll}
                   />
+
+                  {step === 3 && topicGroups.length > 0 && (
+                    <div className="mt-8 rounded-2xl border border-dashed border-slate-200 p-5 dark:border-slate-700">
+                      <h3 className="font-bold text-secondary dark:text-white">{t('examBuilder.topicFilter.title', 'Focus on specific topics (optional)')}</h3>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t('examBuilder.topicFilter.hint', 'Leave empty to include every topic in the chosen sections.')}</p>
+                      <div className="mt-4 space-y-4">
+                        {topicGroups.map(({ section, topics: sectionTopics }) => (
+                          <div key={section.id}>
+                            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">{section.name}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {sectionTopics.map((tp) => {
+                                const active = selectedTopics.includes(tp.id);
+                                return (
+                                  <button
+                                    key={tp.id}
+                                    type="button"
+                                    aria-pressed={active}
+                                    onClick={() => toggleTopic(tp.id)}
+                                    className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                                      active
+                                        ? 'border-primary bg-primary text-white'
+                                        : 'border-slate-200 bg-white text-slate-600 hover:border-primary hover:text-primary dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                                    }`}
+                                  >
+                                    {tp.name} <span className={active ? 'text-white/80' : 'text-slate-400'}>({tp.questions_count || 0})</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-8 flex items-center justify-between">
                     <button

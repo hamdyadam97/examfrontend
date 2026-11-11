@@ -853,6 +853,10 @@
       "title": "You have no active subscription",
       "subtitle": "Subscribe to a package to unlock its question bank and start building exams.",
       "cta": "View Packages"
+    },
+    "topicFilter": {
+      "title": "Focus on specific topics (optional)",
+      "hint": "Leave empty to include every topic in the chosen sections."
     }
   },
   "blog": {
