@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-import { Cake, Eye, EyeOff, GraduationCap, Loader2, Lock, LogIn, Mail, MapPin, Phone, User, UserPlus, type LucideIcon } from 'lucide-react';
+import { Cake, Eye, EyeOff, GraduationCap, Loader2, Lock, LogIn, Mail, MapPin, User, UserPlus, type LucideIcon } from 'lucide-react';
 import { register } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
-import { CountryCodeSelect } from '@/components/CountryCodeSelect';
 import { apiErrorMessage, type ApiError } from '@/lib/api';
+import { isJordanMobile, JORDAN_COUNTRY, JORDAN_DIAL, normalizeJordanMobile } from '@/lib/phone';
+import { JordanPhoneField } from './JordanPhoneField';
+import { OtpVerifyModal } from './OtpVerify';
 
 interface Props {
   onSwitchToLogin: () => void;
@@ -27,7 +29,7 @@ function Field({ id, icon: Icon, label, children }: { id: string; icon: LucideIc
   );
 }
 
-/** Account registration by mobile number; the code sent by SMS is verified on /verify-otp. */
+/** Account registration with a Jordanian mobile; the SMS code is entered in a modal on the same page. */
 export function SignupForm({ onSwitchToLogin }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
@@ -36,8 +38,8 @@ export function SignupForm({ onSwitchToLogin }: Props) {
     first_name: '',
     last_name: '',
     mobile_number: '',
-    dial_code: '+962',
-    mobile_country_code: 'JO',
+    dial_code: JORDAN_DIAL,
+    mobile_country_code: JORDAN_COUNTRY,
     password: '',
     password_confirmation: '',
     specialization: '',
@@ -47,23 +49,32 @@ export function SignupForm({ onSwitchToLogin }: Props) {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [phoneError, setPhoneError] = useState<string>();
+  const [otpOpen, setOtpOpen] = useState(false);
 
   const update = (key: keyof typeof form, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
+    if (!isJordanMobile(form.mobile_number)) {
+      setPhoneError(t('auth.invalidJordanMobile', 'Enter a Jordanian mobile number, e.g. 7X XXX XXXX'));
+      return;
+    }
     if (form.password !== form.password_confirmation) {
       toast.error(t('auth.passwordMismatch', 'Passwords do not match.'));
       return;
     }
     setLoading(true);
     try {
-      await dispatch(register({ ...form, mobile: form.mobile_number.replace(/^0/, '') })).unwrap();
-      navigate('/verify-otp');
+      const mobile = normalizeJordanMobile(form.mobile_number);
+      await dispatch(register({ ...form, mobile_number: mobile, mobile })).unwrap();
+      setOtpOpen(true);
     } catch (err) {
       const errors = (err as ApiError | undefined)?.errors;
-      if (errors?.phone) toast.error(t('auth.phoneTaken', 'This phone number is already registered. Please log in.'));
+      if (errors?.PhoneTaken) toast.error(t('auth.phoneTaken', 'This phone number is already registered. Please log in.'));
+      else if (errors?.PhoneNotJordanian) setPhoneError(t('auth.invalidJordanMobile', 'Enter a Jordanian mobile number, e.g. 7X XXX XXXX'));
+      else if (errors?.SmsFailed) toast.error(t('auth.smsFailed', 'We could not send the verification code right now. Please try again later.'));
       else if (errors?.email) toast.error(t('auth.emailTaken', 'This email is already registered.'));
       else toast.error(Object.values(errors || {})[0]?.[0] || apiErrorMessage(err) || t('auth.signupFailed'));
     } finally {
@@ -104,28 +115,15 @@ export function SignupForm({ onSwitchToLogin }: Props) {
           </Field>
         </div>
 
-        <div className="flex gap-2" dir="ltr">
-          <CountryCodeSelect
-            size="lg"
-            value={form.dial_code}
-            onChange={(dial, code) => setForm((f) => ({ ...f, dial_code: dial, mobile_country_code: code }))}
-          />
-          <div className="flex-1">
-            <Field id="su-mobile" icon={Phone} label={t('auth.mobile')}>
-              <input
-                id="su-mobile"
-                type="tel"
-                required
-                inputMode="tel"
-                value={form.mobile_number}
-                onChange={(e) => update('mobile_number', e.target.value)}
-                placeholder={t('auth.mobilePlaceholder', 'Mobile number')}
-                autoComplete="tel-national"
-                className={inputClass}
-              />
-            </Field>
-          </div>
-        </div>
+        <JordanPhoneField
+          id="su-mobile"
+          value={form.mobile_number}
+          error={phoneError}
+          onChange={(value) => {
+            update('mobile_number', value);
+            setPhoneError(undefined);
+          }}
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field id="su-pass" icon={Lock} label={t('auth.password')}>
@@ -181,6 +179,7 @@ export function SignupForm({ onSwitchToLogin }: Props) {
           <LogIn size={18} className="rtl:-scale-x-100" /> {t('common.login')}
         </button>
       </div>
+      <OtpVerifyModal open={otpOpen} onClose={() => setOtpOpen(false)} onVerified={() => navigate('/user/dashboard', { replace: true })} />
     </div>
   );
 }

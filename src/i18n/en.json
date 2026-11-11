@@ -87,7 +87,11 @@
     "otpNote": "We will send a verification code to your mobile number.",
     "haveAccount": "Already have an account?",
     "phoneTaken": "This phone number is already registered. Please log in.",
-    "emailTaken": "This email is already registered."
+    "emailTaken": "This email is already registered.",
+    "jordanOnly": "Jordanian mobile numbers only",
+    "invalidJordanMobile": "Enter a Jordanian mobile number, e.g. 7X XXX XXXX",
+    "smsFailed": "We could not send the verification code right now. Please try again later.",
+    "otpSentTo": "We sent a 6-digit code to"
   },
   "exam": {
     "create": "Create Exam",

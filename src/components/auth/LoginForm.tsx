@@ -3,10 +3,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Loader2, Lock, LogIn, Phone, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, LogIn, UserPlus } from 'lucide-react';
 import { login } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
-import { CountryCodeSelect } from '@/components/CountryCodeSelect';
+import { isJordanMobile, JORDAN_DIAL, normalizeJordanMobile } from '@/lib/phone';
+import { JordanPhoneField } from './JordanPhoneField';
+import { OtpVerifyModal } from './OtpVerify';
 import { classifyLoginError, normalizeMobileInput, validateLoginInput, type LoginFieldErrors } from '@/lib/authErrors';
 
 interface Props {
@@ -22,12 +24,12 @@ export function LoginForm({ onSwitchToSignup, onDone }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [dialCode, setDialCode] = useState('+962');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({});
+  const [otpOpen, setOtpOpen] = useState(false);
 
   // Page the user was sent away from by ProtectedRoute, to return there after login.
   const from = (location.state as { from?: string } | null)?.from;
@@ -44,6 +46,7 @@ export function LoginForm({ onSwitchToSignup, onDone }: Props) {
 
   const runValidation = (): boolean => {
     const errors = validateLoginInput(mobile, password);
+    if (!errors.mobile && !isJordanMobile(mobile)) errors.mobile = 'invalid';
     setFieldErrors({
       mobile: errors.mobile ? fieldMessage(errors.mobile) : undefined,
       password: errors.password ? t('auth.passwordRequired') : undefined,
@@ -56,12 +59,13 @@ export function LoginForm({ onSwitchToSignup, onDone }: Props) {
     if (loading || !runValidation()) return;
     setLoading(true);
     try {
-      const result = await dispatch(login({ mobile_number: normalizeMobileInput(mobile), dial_code: dialCode, password })).unwrap();
-      onDone?.();
+      const result = await dispatch(login({ mobile_number: normalizeJordanMobile(normalizeMobileInput(mobile)), dial_code: JORDAN_DIAL, password })).unwrap();
       if (result?.go_to_verify) {
+        // The phone is not verified yet: a new code was sent, so ask for it here.
         toast.success(t('auth.otpSent'));
-        navigate('/verify-otp');
+        setOtpOpen(true);
       } else {
+        onDone?.();
         toast.success(t('auth.loginSuccess'));
         navigate(from || '/user/dashboard', { replace: true });
       }
@@ -121,30 +125,15 @@ export function LoginForm({ onSwitchToSignup, onDone }: Props) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        <div>
-          <label htmlFor="login-mobile" className="sr-only">{t('auth.mobile')}</label>
-          <div className="flex gap-2" dir="ltr">
-            <CountryCodeSelect size="lg" value={dialCode} onChange={(dial) => setDialCode(dial)} />
-            <div className="relative flex-1">
-              <Phone size={20} className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-secondary" />
-              <input
-                id="login-mobile"
-                type="tel"
-                value={mobile}
-                onChange={(e) => {
-                  setMobile(e.target.value);
-                  if (fieldErrors.mobile) setFieldErrors((f) => ({ ...f, mobile: undefined }));
-                }}
-                className={inputClass(!!fieldErrors.mobile)}
-                placeholder={t('auth.mobilePlaceholder', 'Mobile number')}
-                autoComplete="tel-national"
-                inputMode="tel"
-                aria-invalid={!!fieldErrors.mobile}
-              />
-            </div>
-          </div>
-          {fieldErrors.mobile && <p role="alert" className="mt-1.5 text-xs text-red-500">{fieldErrors.mobile}</p>}
-        </div>
+        <JordanPhoneField
+          id="login-mobile"
+          value={mobile}
+          error={fieldErrors.mobile}
+          onChange={(value) => {
+            setMobile(value);
+            if (fieldErrors.mobile) setFieldErrors((f) => ({ ...f, mobile: undefined }));
+          }}
+        />
 
         <div>
           <label htmlFor="login-password" className="sr-only">{t('auth.password')}</label>
@@ -201,6 +190,14 @@ export function LoginForm({ onSwitchToSignup, onDone }: Props) {
           <UserPlus size={18} /> {t('auth.createNewAccount', 'Create a new account')}
         </button>
       </div>
+      <OtpVerifyModal
+        open={otpOpen}
+        onClose={() => setOtpOpen(false)}
+        onVerified={() => {
+          onDone?.();
+          navigate(from || '/user/dashboard', { replace: true });
+        }}
+      />
     </div>
   );
 }

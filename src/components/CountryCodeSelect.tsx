@@ -50,7 +50,7 @@ const FLAG_COMPONENTS: Record<string, React.FC<{ className?: string; title?: str
   JO, AE, SA, KW, QA, BH, OM, IQ, EG, LB, SY, PS, LY, TN, DZ, MA, SD, YE, TR, US, GB,
 };
 
-function CountryFlag({ code, className }: { code: string; className?: string }) {
+export function CountryFlag({ code, className }: { code: string; className?: string }) {
   const Flag = FLAG_COMPONENTS[code] || JO;
   return <Flag className={className} title={code} />;
 }
