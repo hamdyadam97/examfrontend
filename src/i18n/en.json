@@ -91,6 +91,7 @@
     "jordanOnly": "Jordanian mobile numbers only",
     "invalidJordanMobile": "Enter a Jordanian mobile number, e.g. 7X XXX XXXX",
     "smsFailed": "We could not send the verification code right now. Please try again later.",
+    "invalidBirthDate": "Please enter a valid birth date (age 15 or older).",
     "otpSentTo": "We sent a 6-digit code to"
   },
   "exam": {

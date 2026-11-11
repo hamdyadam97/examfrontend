@@ -15,6 +15,13 @@ interface Props {
   onSwitchToLogin: () => void;
 }
 
+// Latest accepted birth date: the student must be at least 15 (the server enforces the same rule).
+const MAX_BIRTH_DATE = (() => {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - 15);
+  return d.toISOString().slice(0, 10);
+})();
+
 const inputClass =
   'h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 ps-12 text-base text-secondary outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/10 dark:border-slate-700 dark:bg-slate-800 dark:text-white';
 
@@ -75,6 +82,7 @@ export function SignupForm({ onSwitchToLogin }: Props) {
       if (errors?.PhoneTaken) toast.error(t('auth.phoneTaken', 'This phone number is already registered. Please log in.'));
       else if (errors?.PhoneNotJordanian) setPhoneError(t('auth.invalidJordanMobile', 'Enter a Jordanian mobile number, e.g. 7X XXX XXXX'));
       else if (errors?.SmsFailed) toast.error(t('auth.smsFailed', 'We could not send the verification code right now. Please try again later.'));
+      else if (errors?.birth_date) toast.error(t('auth.invalidBirthDate', 'Please enter a valid birth date.'));
       else if (errors?.email) toast.error(t('auth.emailTaken', 'This email is already registered.'));
       else toast.error(Object.values(errors || {})[0]?.[0] || apiErrorMessage(err) || t('auth.signupFailed'));
     } finally {
@@ -148,7 +156,7 @@ export function SignupForm({ onSwitchToLogin }: Props) {
           <div>
             <label htmlFor="su-birth" className="mb-1 block text-xs font-semibold text-slate-500">{t('auth.birthDate')}</label>
             <Field id="su-birth" icon={Cake} label={t('auth.birthDate')}>
-              <input id="su-birth" type="date" required value={form.birth_date} onChange={(e) => update('birth_date', e.target.value)} className={inputClass} />
+              <input id="su-birth" type="date" required max={MAX_BIRTH_DATE} value={form.birth_date} onChange={(e) => update('birth_date', e.target.value)} className={inputClass} />
             </Field>
           </div>
           <div>
