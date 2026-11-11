@@ -5,15 +5,18 @@ import { toast } from 'sonner';
 import { getProfileData, updateProfile, updatePassword } from '@/store/authSlice';
 import type { AppDispatch, RootState } from '@/store';
 import { apiErrorMessage } from '@/lib/api';
+import { GOVERNORATES, optionLabel, SPECIALIZATIONS, type ProfileOption } from '@/config/profileOptions';
 
-const profileFields = ['first_name', 'last_name', 'email', 'specialization', 'governorate', 'birth_date'] as const;
+const SELECT_OPTIONS: Record<string, ProfileOption[]> = { specialization: SPECIALIZATIONS, governorate: GOVERNORATES };
+
+const profileFields =['first_name', 'last_name', 'email', 'specialization', 'governorate', 'birth_date'] as const;
 
 function profileFrom(user: Record<string, unknown>) {
   return Object.fromEntries(profileFields.map((field) => [field, String(user[field] ?? '')]));
 }
 
 export function SettingsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const [profile, setProfile] = useState<Record<string, string>>(() => profileFrom(user));
@@ -61,12 +64,27 @@ export function SettingsPage() {
           {Object.entries(profile).map(([key, value]) => (
             <div key={key}>
               <label className="mb-1 block text-sm font-medium capitalize">{key.replace('_', ' ')}</label>
-              <input
-                type={key === 'birth_date' ? 'date' : 'text'}
-                value={value}
-                onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
-                className="w-full rounded-lg border px-3 py-2"
-              />
+              {key in SELECT_OPTIONS ? (
+                <select
+                  value={value}
+                  onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
+                  className="w-full rounded-lg border bg-white px-3 py-2"
+                >
+                  <option value="" disabled>—</option>
+                  {/* Keep an older free-text value visible until the student picks a listed one. */}
+                  {value && !SELECT_OPTIONS[key].some((o) => o.value === value) && <option value={value}>{value}</option>}
+                  {SELECT_OPTIONS[key].map((o) => (
+                    <option key={o.value} value={o.value}>{optionLabel(o, i18n.language)}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={key === 'birth_date' ? 'date' : 'text'}
+                  value={value}
+                  onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
+                  className="w-full rounded-lg border px-3 py-2"
+                />
+              )}
             </div>
           ))}
         </div>

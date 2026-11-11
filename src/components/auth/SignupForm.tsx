@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-import { Cake, Eye, EyeOff, GraduationCap, Loader2, Lock, LogIn, Mail, MapPin, User, UserPlus, type LucideIcon } from 'lucide-react';
+import { GOVERNORATES, optionLabel, SPECIALIZATIONS, type ProfileOption } from '@/config/profileOptions';
+import { Cake, ChevronDown, Eye, EyeOff, GraduationCap, Loader2, Lock, LogIn, Mail, MapPin, User, UserPlus, type LucideIcon } from 'lucide-react';
 import { register } from '@/store/authSlice';
 import type { AppDispatch } from '@/store';
 import { apiErrorMessage, type ApiError } from '@/lib/api';
@@ -33,6 +34,22 @@ function Field({ id, icon: Icon, label, children }: { id: string; icon: LucideIc
       <Icon size={20} className="pointer-events-none absolute start-4 top-1/2 z-10 -translate-y-1/2 text-secondary" />
       {children}
     </div>
+  );
+}
+
+/** Dropdown styled like the text inputs; the empty first option acts as the placeholder. */
+function OptionSelect({ id, value, options, placeholder, onChange }: { id: string; value: string; options: ProfileOption[]; placeholder: string; onChange: (value: string) => void }) {
+  const { i18n } = useTranslation();
+  return (
+    <>
+      <select id={id} required value={value} onChange={(e) => onChange(e.target.value)} className={`${inputClass} appearance-none pe-10 ${value ? '' : 'text-slate-400'}`}>
+        <option value="" disabled>{placeholder}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value} className="text-secondary dark:text-white">{optionLabel(o, i18n.language)}</option>
+        ))}
+      </select>
+      <ChevronDown size={18} className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-slate-400" />
+    </>
   );
 }
 
@@ -145,10 +162,10 @@ export function SignupForm({ onSwitchToLogin }: Props) {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field id="su-spec" icon={GraduationCap} label={t('auth.specialization')}>
-            <input id="su-spec" required value={form.specialization} onChange={(e) => update('specialization', e.target.value)} placeholder={t('auth.specialization')} className={inputClass} />
+            <OptionSelect id="su-spec" value={form.specialization} options={SPECIALIZATIONS} placeholder={t('auth.specialization')} onChange={(v) => update('specialization', v)} />
           </Field>
           <Field id="su-gov" icon={MapPin} label={t('auth.governorate')}>
-            <input id="su-gov" required value={form.governorate} onChange={(e) => update('governorate', e.target.value)} placeholder={t('auth.governorate')} className={inputClass} />
+            <OptionSelect id="su-gov" value={form.governorate} options={GOVERNORATES} placeholder={t('auth.governorate')} onChange={(v) => update('governorate', v)} />
           </Field>
         </div>
 
