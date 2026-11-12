@@ -13,21 +13,25 @@ export function Recommendations() {
   const { t } = useTranslation();
   return (
     <div>
-      <h3 className="mb-4 text-lg font-bold text-secondary dark:text-white">{t('examBuilder.recommendations.title')}</h3>
+      <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-secondary dark:text-white">
+        {t('examBuilder.recommendations.title')}
+        <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-700">{t('common.comingSoon', 'Coming soon')}</span>
+      </h3>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {recs.map((rec) => {
           const Icon = rec.icon;
           return (
-            <button
+            // Not wired yet (smart suggestions are coming): shown, but not clickable.
+            <div
               key={rec.key}
-              type="button"
-              className="flex flex-col items-center gap-3 rounded-2xl border border-slate-100 bg-white p-5 text-center transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+              aria-disabled="true"
+              className="flex cursor-default flex-col items-center gap-3 rounded-2xl border border-dashed border-slate-200 bg-white/60 p-5 text-center opacity-70 dark:border-slate-700 dark:bg-slate-800/60"
             >
               <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${rec.color}`}>
                 <Icon size={24} />
               </div>
               <span className="text-sm font-bold text-secondary dark:text-white">{t(`examBuilder.recommendations.${rec.key}`)}</span>
-            </button>
+            </div>
           );
         })}
       </div>

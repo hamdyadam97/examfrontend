@@ -269,12 +269,11 @@ export function ResultsView({ exam, examReport, examId }: Props) {
         <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-primary">
             <Brain size={20} /> {t('examResult.aiRecommendations')}
+            <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-700">{t('common.comingSoon', 'Coming soon')}</span>
           </h3>
-          <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            <li className="rounded-xl bg-slate-50 p-3 dark:bg-slate-700/30">Review weak categories before retaking.</li>
-            <li className="rounded-xl bg-slate-50 p-3 dark:bg-slate-700/30">Practice 20 questions daily in {weaknesses[0]?.name || 'lowest topics'}.</li>
-            <li className="rounded-xl bg-slate-50 p-3 dark:bg-slate-700/30">Take a timed mock exam next week.</li>
-          </ul>
+          <p className="rounded-xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-600 dark:bg-slate-700/30 dark:text-slate-300">
+            {t('examResult.aiComingSoon', 'Personal AI study advice based on your answers is coming soon.')}
+          </p>
         </div>
       </div>
 

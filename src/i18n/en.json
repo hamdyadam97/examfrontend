@@ -738,7 +738,8 @@
     "retakeExam": "Retake Exam",
     "passedMessage": "Congratulations! You passed the exam.",
     "failedMessage": "Keep practicing. You can retake the exam.",
-    "loadError": "Could not load the results. Please try again."
+    "loadError": "Could not load the results. Please try again.",
+    "aiComingSoon": "Personal AI study advice based on your answers is coming soon."
   },
   "examBuilder": {
     "title": "Create Exam",
