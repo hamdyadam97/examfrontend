@@ -752,7 +752,29 @@
     "aiComingSoon": "Personal AI study advice based on your answers is coming soon.",
     "noStrengths": "Keep practicing to identify strengths.",
     "noWeaknesses": "Great job! No major weaknesses detected.",
-    "minutes": "min"
+    "minutes": "min",
+    "tier": {
+      "excellent": {
+        "badge": "Excellent",
+        "title": "Outstanding result!",
+        "message": "You mastered this exam. Keep the momentum and try a harder one."
+      },
+      "passed": {
+        "badge": "Passed",
+        "title": "Well done, you passed!",
+        "message": "A solid result. Review your wrong answers to make it even stronger."
+      },
+      "close": {
+        "badge": "Almost there",
+        "title": "You are very close!",
+        "message": "A little more practice on your weak topics and you will pass."
+      },
+      "keepGoing": {
+        "badge": "Keep going",
+        "title": "Every attempt counts",
+        "message": "This is your starting point. Review the explanations and try again — you will see the difference."
+      }
+    }
   },
   "examBuilder": {
     "title": "Create Exam",
