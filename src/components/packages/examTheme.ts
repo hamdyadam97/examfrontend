@@ -4,7 +4,24 @@ export interface ExamTheme {
   /** Tailwind gradient classes for the card cover. */
   gradient: string;
   icon: LucideIcon;
+  /** Cover photo (public/images/packages, CC0 photos from StockSnap and Rawpixel). */
+  image: string;
 }
+
+// Most specific first: the specialty decides, then the exam.
+const IMAGES: [RegExp, string][] = [
+  [/dent|أسنان|اسنان/i, 'dental'],
+  [/SMLE - Nursing/i, 'nursing-smle'],
+  [/nurs|تمريض/i, 'nursing'],
+  [/anesth|تخدير/i, 'anesthesia'],
+  [/pediat|أطفال|اطفال/i, 'pediatrics'],
+  [/obstet|gyn|نسائية/i, 'obgyn'],
+  [/urolog/i, 'urology'],
+  [/surg|جراح/i, 'surgery'],
+  [/internal|باطن/i, 'internal'],
+  [/Residency Entrance|إقامة/i, 'residency'],
+  [/JMC|SMLE|Prometric|امتياز|بروميترك/i, 'exam'],
+];
 
 const GRADIENTS = [
   'from-sky-500 via-blue-600 to-indigo-700',
@@ -41,5 +58,6 @@ export function examTheme(path: string[] = []): ExamTheme {
   return {
     gradient: GRADIENTS[hash(key) % GRADIENTS.length],
     icon: ICONS.find(([re]) => re.test(words))?.[1] ?? Stethoscope,
+    image: `/images/packages/${IMAGES.find(([re]) => re.test(words))?.[1] ?? 'doctor'}.jpg`,
   };
 }

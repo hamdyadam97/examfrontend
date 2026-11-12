@@ -50,7 +50,6 @@ export function PackagePreviewModal({ packageId, open, onClose, onSubscribe }: P
 
   const pkg = data?.package;
   const theme = examTheme(pkg?.category?.path ?? []);
-  const Icon = theme.icon;
 
   return createPortal(
     <AnimatePresence>
@@ -72,13 +71,14 @@ export function PackagePreviewModal({ packageId, open, onClose, onSubscribe }: P
             onClick={(e) => e.stopPropagation()}
             className="flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl dark:bg-slate-900 sm:rounded-3xl"
           >
-            <div className={`relative bg-gradient-to-br ${theme.gradient} px-6 pb-6 pt-5 text-white`}>
-              <button type="button" onClick={onClose} aria-label={t('common.close', 'Close')} className="absolute end-4 top-4 rounded-full bg-white/20 p-1.5 hover:bg-white/30">
+            <div className="relative overflow-hidden px-6 pb-6 pt-5 text-white">
+              <img src={pkg?.logo || theme.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary/95 via-secondary/70 to-secondary/40" />
+              <button type="button" onClick={onClose} aria-label={t('common.close', 'Close')} className="absolute end-4 top-4 z-10 rounded-full bg-white/20 p-1.5 hover:bg-white/30">
                 <X size={18} />
               </button>
-              <Icon size={72} strokeWidth={1.4} className="absolute bottom-3 end-6 opacity-20" />
-              {pkg ? (
-                <>
+                            {pkg ? (
+                <div className="relative">
                   <p className="text-sm font-semibold text-white/85">{pkg.category?.path?.join(' › ')}</p>
                   <h2 className="mt-1 pe-10 text-2xl font-extrabold">{pkg.name}</h2>
                   <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
@@ -94,7 +94,7 @@ export function PackagePreviewModal({ packageId, open, onClose, onSubscribe }: P
                       {formatPrice(pkg.price)} {t('packageCard.currency', 'JOD')}
                     </span>
                   </div>
-                </>
+                </div>
               ) : (
                 <div className="h-24" />
               )}

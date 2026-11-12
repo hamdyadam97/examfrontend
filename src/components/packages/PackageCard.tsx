@@ -25,7 +25,6 @@ export function PackageCard({ pkg, index = 0, showPreview = true, onSubscribe, s
   const coverUrl = pkg.logo || pkg.icon;
   const path = pkg.category?.path ?? (pkg.category?.name ? [pkg.category.name] : []);
   const theme = examTheme(path);
-  const Icon = theme.icon;
   const categoryName = pkg.category?.name || t('packageCard.medical', 'Medical');
   const hasDiscount = !!pkg.discount_percentage && pkg.discount_percentage > 0;
   const questions = pkg.number_of_questions || pkg.questions_count || 0;
@@ -43,22 +42,18 @@ export function PackageCard({ pkg, index = 0, showPreview = true, onSubscribe, s
       whileTap={{ scale: 0.98 }}
       className="group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
     >
-      {/* Cover: the package image, or the exam's colours and icon */}
-      <div className="relative h-48 overflow-hidden">
-        {coverUrl ? (
-          <img src={coverUrl} alt={pkg.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-        ) : (
-          <div className={`relative flex h-full w-full items-center justify-center bg-gradient-to-br ${theme.gradient} text-white`}>
-            <div className="absolute -end-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
-            <div className="absolute -bottom-12 -start-8 h-36 w-36 rounded-full bg-white/10" />
-            <Icon size={64} strokeWidth={1.5} className="absolute end-5 top-1/2 -translate-y-1/2 opacity-25 transition-transform duration-500 group-hover:scale-110" />
-            <div className="relative px-6 text-center">
-              <p className="text-4xl font-black drop-shadow-sm">{getAccessPeriod(pkg.period_days, t)}</p>
-              {path[0] && <p className="mt-2 line-clamp-1 text-sm font-semibold text-white/85">{path[0]}</p>}
-            </div>
-          </div>
-        )}
-
+      {/* Cover: the package's own image, otherwise the photo of its specialty / exam */}
+      <div className="relative h-48 overflow-hidden bg-slate-100">
+        <img
+          src={coverUrl || theme.image}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/0" />
+        <span className="absolute bottom-3 end-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-sm font-extrabold text-secondary shadow">
+          <Calendar size={14} className="text-primary" /> {getAccessPeriod(pkg.period_days, t)}
+        </span>
         <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         <div className="absolute start-4 top-4 flex flex-wrap gap-2">
