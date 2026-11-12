@@ -218,7 +218,9 @@ export function ExamCreatePage() {
     clearBelow(step);
   };
 
-  const canProceed = stepSelections[step]?.[0].length > 0;
+  // Questions not filed under a section yet: the section step is skipped and the exam uses the whole path.
+  const noSections = step === 3 && sections.length === 0 && totalQuestionsFromSections > 0;
+  const canProceed = stepSelections[step]?.[0].length > 0 || noSections;
 
   const handleNext = () => {
     if (step < stepsKeys.length - 1) {
@@ -313,6 +315,12 @@ export function ExamCreatePage() {
                     showAll
                     onSelectAll={handleSelectAll}
                   />
+
+                  {noSections && (
+                    <p className="mt-4 rounded-2xl bg-sky-soft/60 p-4 text-sm text-secondary dark:bg-slate-700 dark:text-white">
+                      {t('examBuilder.noSections', { count: totalQuestionsFromSections, defaultValue: 'These questions are not split into sections yet. Press Next to use all {{count}} questions.' })}
+                    </p>
+                  )}
 
                   {step === 3 && topicGroups.length > 0 && (
                     <div className="mt-8 rounded-2xl border border-dashed border-slate-200 p-5 dark:border-slate-700">

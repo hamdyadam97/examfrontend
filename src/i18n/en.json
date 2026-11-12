@@ -857,7 +857,8 @@
     "topicFilter": {
       "title": "Focus on specific topics (optional)",
       "hint": "Leave empty to include every topic in the chosen sections."
-    }
+    },
+    "noSections": "These questions are not split into sections yet. Press Next to use all {{count}} questions."
   },
   "blog": {
     "hero": {
