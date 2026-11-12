@@ -38,6 +38,16 @@ interface Props {
   showExplanation: boolean;
 }
 
+
+/** The API sends snake_case question types; the translation keys are camelCase. */
+const TYPE_KEYS: Record<string, string> = {
+  single_choice: 'singleChoice',
+  multiple_choice: 'multipleChoice',
+  true_false: 'trueFalse',
+  fill_blank: 'fillBlank',
+};
+const OPTION_LETTERS = 'ABCDEFGHIJ';
+
 export function QuestionPanel({
   question,
   detail,
@@ -111,7 +121,7 @@ export function QuestionPanel({
     <div className="flex h-full flex-col">
       <div className="mb-4 flex items-center justify-between">
         <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-          {t(`examPlayer.questionType.${qType}`) || t('examPlayer.questionType.singleChoice')}
+          {t(`examPlayer.questionType.${TYPE_KEYS[qType] || 'singleChoice'}`)}
         </span>
         {reviewMode && typeof detail?.is_correct === 'boolean' && (
           <span className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${detail?.is_correct ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
@@ -155,7 +165,7 @@ export function QuestionPanel({
             );
           })
         ) : question.answers && question.answers.length > 0 ? (
-          question.answers.map((ans) => (
+          question.answers.map((ans, index) => (
             <button
               key={ans.id}
               type="button"
@@ -164,6 +174,7 @@ export function QuestionPanel({
               className={getOptionClass(ans.id)}
             >
               {getIcon(ans.id)}
+              <span className="mt-0.5 shrink-0 text-sm font-extrabold text-slate-400">{OPTION_LETTERS[index]}.</span>
               <div className="min-w-0 flex-1">
                 <div
                   className="text-start text-secondary dark:text-slate-100"

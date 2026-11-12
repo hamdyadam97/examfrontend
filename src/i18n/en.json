@@ -668,7 +668,8 @@
       "flag": "Flag",
       "reviewLater": "Review Later",
       "clear": "Clear Answer",
-      "finish": "Finish Exam"
+      "finish": "Finish Exam",
+      "nextStage": "Next stage"
     },
     "summary": {
       "student": "Student",
@@ -713,7 +714,16 @@
     "exitFullscreen": "Exit Fullscreen",
     "darkMode": "Dark Mode",
     "lightMode": "Light Mode",
-    "timer": "Timer"
+    "timer": "Timer",
+    "stageDone": {
+      "title": "Stage {{n}} completed",
+      "progress": "Stage {{n}} of {{total}}",
+      "answered": "Answered",
+      "unanswered": "Not answered",
+      "warning": "Unanswered questions in this stage will stay unanswered once you move on.",
+      "start": "Start stage {{n}}",
+      "back": "Back to this stage"
+    }
   },
   "examResult": {
     "title": "Exam Result",

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, CheckCircle2 } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { api } from '@/lib/api';
 import { saveExamSingle, finishExam, advanceStage } from '@/store/examSlice';
@@ -52,6 +52,7 @@ interface ExamData {
   current_stage: number;
   total_stages: number;
   stage_offset?: number;
+  is_last_stage?: boolean;
 }
 
 /** Client-clock deadline for a countdown the server reported in seconds. */
@@ -342,8 +343,13 @@ export function ExamShowPage() {
     if (qid) loadQuestion(qid);
   };
 
+  // The last question of a stage leads to the stage summary, unless it is the final stage.
+  const atStageEnd = !!data && currentIndex === data.questions.length - 1;
+  const isLastStage = !data || (data.is_last_stage ?? data.current_stage >= data.total_stages);
   const handleNext = () => {
-    if (data && currentIndex < data.questions.length - 1) handleNavigate(currentIndex + 1);
+    if (!data) return;
+    if (currentIndex < data.questions.length - 1) handleNavigate(currentIndex + 1);
+    else if (!isLastStage) setStageCompleted(true);
   };
 
   const handlePrevious = () => {
@@ -390,12 +396,41 @@ export function ExamShowPage() {
   }
 
   if (stageCompleted) {
+    const answeredInStage = data.questions.filter((qid) => data.details.find((d) => d.question_id === qid)?.answer_id).length;
+    const unanswered = data.questions.length - answeredInStage;
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-slate-50 p-8 text-center dark:bg-slate-950">
-        <div className="rounded-3xl bg-white p-10 shadow-xl dark:bg-slate-800">
-          <h2 className="text-2xl font-bold text-secondary dark:text-white">Stage Completed</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">You have completed stage {data.current_stage} of {data.total_stages}.</p>
-          <button onClick={handleAdvance} className="mt-6 rounded-xl bg-primary px-8 py-3 font-bold text-white hover:bg-primary/90">Next Stage</button>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6 dark:bg-slate-950">
+        <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-xl dark:bg-slate-800">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <CheckCircle2 size={32} />
+          </div>
+          <h2 className="mt-4 text-2xl font-extrabold text-secondary dark:text-white">
+            {t('examPlayer.stageDone.title', { n: data.current_stage, defaultValue: 'Stage {{n}} completed' })}
+          </h2>
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
+            {t('examPlayer.stageDone.progress', { n: data.current_stage, total: data.total_stages, defaultValue: 'Stage {{n}} of {{total}}' })}
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-500/10">
+              <p className="text-2xl font-extrabold text-emerald-600">{answeredInStage}</p>
+              <p className="text-slate-600 dark:text-slate-300">{t('examPlayer.stageDone.answered', 'Answered')}</p>
+            </div>
+            <div className="rounded-2xl bg-amber-50 p-4 dark:bg-amber-500/10">
+              <p className="text-2xl font-extrabold text-amber-600">{unanswered}</p>
+              <p className="text-slate-600 dark:text-slate-300">{t('examPlayer.stageDone.unanswered', 'Not answered')}</p>
+            </div>
+          </div>
+          {unanswered > 0 && (
+            <p className="mt-4 text-sm text-amber-700 dark:text-amber-300">{t('examPlayer.stageDone.warning', 'You cannot come back to this stage after moving on.')}</p>
+          )}
+          <div className="mt-6 flex flex-col gap-3">
+            <button type="button" onClick={handleAdvance} className="rounded-xl bg-primary px-8 py-3 font-bold text-white hover:bg-primary/90">
+              {t('examPlayer.stageDone.start', { n: data.current_stage + 1, defaultValue: 'Start stage {{n}}' })}
+            </button>
+            <button type="button" onClick={() => setStageCompleted(false)} className="rounded-xl border border-slate-200 px-8 py-3 font-bold text-secondary hover:bg-slate-50 dark:border-slate-600 dark:text-white dark:hover:bg-slate-700">
+              {t('examPlayer.stageDone.back', 'Back to this stage')}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -459,7 +494,8 @@ export function ExamShowPage() {
           </div>
           <ExamToolbar
             canPrevious={currentIndex > 0}
-            canNext={currentIndex < data.questions.length - 1}
+            canNext={!atStageEnd || !isLastStage}
+            nextLabel={atStageEnd && !isLastStage ? t('examPlayer.toolbar.nextStage', 'Next stage') : undefined}
             isSaved={saved.has(currentQid)}
             isFlagged={flagged.has(currentQid)}
             isReview={review.has(currentQid)}

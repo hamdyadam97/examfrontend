@@ -15,6 +15,8 @@ interface Props {
   onReview: () => void;
   onClear: () => void;
   onFinish: () => void;
+  /** Replaces "Next" (e.g. "Next stage" on the last question of a stage). */
+  nextLabel?: string;
 }
 
 export function ExamToolbar({
@@ -30,6 +32,7 @@ export function ExamToolbar({
   onReview,
   onClear,
   onFinish,
+  nextLabel,
 }: Props) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
@@ -84,7 +87,7 @@ export function ExamToolbar({
     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
       <div className="flex flex-wrap gap-2">
         {btn(t('examPlayer.toolbar.previous'), isRTL ? ChevronRight : ChevronLeft, onPrevious, false, !canPrevious)}
-        {btn(t('examPlayer.toolbar.next'), isRTL ? ChevronLeft : ChevronRight, onNext, false, !canNext)}
+        {btn(nextLabel || t('examPlayer.toolbar.next'), isRTL ? ChevronLeft : ChevronRight, onNext, !!nextLabel, !canNext)}
       </div>
 
       <div className="flex flex-wrap gap-2">
