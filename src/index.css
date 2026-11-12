@@ -50,3 +50,11 @@ html[dir="rtl"] {
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+/* Result report printed / saved as PDF: A4, white paper, readable in black and white. */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body { background: #fff !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none !important; }
+  section, article { break-inside: avoid; }
+}

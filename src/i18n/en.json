@@ -1408,5 +1408,172 @@
       "timed": "Take a timed exam to practise under real exam conditions.",
       "harder": "You are ready for a harder challenge: try a longer timed exam."
     }
+  },
+  "results": {
+    "examResult": "Exam result",
+    "printTitle": "Exam performance report",
+    "backToExams": "Back to exams",
+    "student": "Student",
+    "specialty": "Specialty",
+    "date": "Date & time",
+    "attempt": "Attempt",
+    "questions": "Questions",
+    "timeSpent": "Time spent",
+    "level": {
+      "excellent": "Excellent",
+      "very_good": "Very good",
+      "good": "Good",
+      "needs_improvement": "Needs improvement"
+    },
+    "passed": "Passed",
+    "notPassed": "Below the pass mark",
+    "passMark": "pass mark {{mark}}%",
+    "status": {
+      "completed": "Submitted",
+      "in_progress": "In progress"
+    },
+    "reviewAnswers": "Review answers",
+    "downloadPdf": "Download PDF report",
+    "retake": "Retake",
+    "share": "Share result",
+    "retakeFailed": "Could not start a new attempt.",
+    "copied": "Copied",
+    "shareText": "I scored {{score}}% in {{exam}} on Roots Exams.",
+    "accuracy": "Accuracy",
+    "notAvailable": "N/A",
+    "q": "Q",
+    "distribution": "Answer distribution",
+    "units": {
+      "sec": "s",
+      "min": "min"
+    },
+    "cards": {
+      "correct": "Correct",
+      "wrong": "Incorrect",
+      "unanswered": "Unanswered",
+      "time": "Time spent",
+      "avg": "Avg. time per answer",
+      "completion": "Completion",
+      "ofLimit": "of {{limit}}",
+      "noLimit": "No time limit",
+      "perAnswered": "per answered question",
+      "notRecorded": "Not recorded for this attempt",
+      "answeredOf": "{{answered}} of {{total}} questions"
+    },
+    "time": {
+      "title": "Time & speed analytics",
+      "limit": "Time limit",
+      "untimed": "No time limit",
+      "elapsed": "Actual time",
+      "remaining": "Left at submission",
+      "avg": "Avg. per question",
+      "fastest": "Fastest",
+      "slowest": "Slowest",
+      "avgCorrect": "Avg. on correct",
+      "avgWrong": "Avg. on incorrect",
+      "perQuestion": "Time spent per question",
+      "seconds": "Time",
+      "target": "Target",
+      "legend": "Green: correct · Red: incorrect · Grey: unanswered · Dashed line: target time ({{target}})",
+      "noPerQuestion": "Per-question time was not recorded for this attempt (it predates the feature). Only the total time is shown; it will be recorded automatically in your next exams.",
+      "quad": {
+        "fast_correct": "Fast & correct",
+        "slow_correct": "Slow & correct",
+        "fast_wrong": "Fast & incorrect",
+        "slow_wrong": "Slow & incorrect"
+      }
+    },
+    "breakdown": {
+      "title": "Performance by subject & topic",
+      "subjects": "Subject",
+      "sections": "Section",
+      "topics": "Topic",
+      "sort": "Sort",
+      "sorts": {
+        "accuracy_asc": "Lowest accuracy",
+        "accuracy_desc": "Highest accuracy",
+        "wrong_desc": "Most mistakes",
+        "time_desc": "Most time"
+      },
+      "counts": "{{total}} questions · {{correct}} correct · {{wrong}} incorrect · {{unanswered}} unanswered",
+      "avgTime": "avg {{time}}",
+      "showQuestions": "Show questions",
+      "barLabel": "{{correct}} correct, {{wrong}} incorrect, {{unanswered}} unanswered"
+    },
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses",
+    "noStrengths": "No topic at 70% accuracy or above yet.",
+    "noWeaknesses": "No topic below 60%. Well done!",
+    "notEnoughData": "Not enough data to judge: at least {{min}} answers per topic are needed.",
+    "answeredN": "{{n}} answered",
+    "wrongN": "{{n}} mistakes",
+    "reviewThese": "Review questions",
+    "priority": {
+      "high": "High priority",
+      "medium": "Medium priority",
+      "low": "Low priority"
+    },
+    "tips": {
+      "title": "Study recommendations",
+      "aiSoon": "AI analysis coming soon",
+      "nothingAnswered": "You did not answer any question in this attempt. Start with a short exam (10–20 questions) and answer every question.",
+      "unanswered": "You left {{count}} questions unanswered. There is no penalty for wrong answers, so a guess beats a blank.",
+      "weakTopic": "Focus on {{name}}: your accuracy there is {{accuracy}}%. Build a short exam on it until you pass 60%.",
+      "repeatedMistakes": "Repeated mistakes in {{name}} ({{count}}): read those explanations before your next attempt.",
+      "slowQuestion": "Question {{n}} took you {{time}}: practise similar questions to build speed.",
+      "rushing": "You answered {{count}} questions quickly and incorrectly: read the whole question before choosing.",
+      "reviewWrong": "Go through the explanations of your {{count}} incorrect answers in the review below.",
+      "nextChallenge": "Excellent work! Try a longer, harder exam.",
+      "plan": "Suggested plan: a short daily exam on your two weakest topics, then retake this exam in a week to reach {{mark}}%.",
+      "timed": "Take a timed exam to practise under real exam conditions."
+    },
+    "attempts": {
+      "title": "Performance across attempts",
+      "improvement": "Improvement",
+      "score": "Score",
+      "mixed": "Note: the attempts were not all at the same difficulty, so the comparison is approximate.",
+      "cols": {
+        "attempt": "Attempt",
+        "date": "Date",
+        "score": "Score",
+        "accuracy": "Accuracy",
+        "wrong": "Mistakes",
+        "avgTime": "Avg. time"
+      }
+    },
+    "review": {
+      "title": "Question review",
+      "navigator": "Question map",
+      "bySubject": "By subject",
+      "allSubjects": "All subjects",
+      "filters": {
+        "all": "All",
+        "correct": "Correct",
+        "wrong": "Incorrect",
+        "unanswered": "Unanswered",
+        "marked": "Marked for review"
+      },
+      "status": {
+        "correct": "Correct",
+        "wrong": "Incorrect",
+        "unanswered": "Unanswered"
+      },
+      "filteredBy": "Showing: {{name}} questions",
+      "clear": "Clear",
+      "empty": "No questions match this filter.",
+      "correctAnswer": "Correct answer",
+      "yourAnswer": "Your answer",
+      "notAnswered": "You did not answer this question.",
+      "explanation": "Explanation",
+      "noExplanation": "No explanation for this question yet.",
+      "prev": "Previous",
+      "next": "Next",
+      "save": "Save",
+      "savedLabel": "Saved",
+      "saved": "Question saved",
+      "unsaved": "Removed from saved",
+      "loadError": "Could not load the question.",
+      "locked": "Answer review is not available for this exam."
+    }
   }
 }

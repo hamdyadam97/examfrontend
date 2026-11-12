@@ -7,6 +7,7 @@ import { Loader2, CheckCircle2 } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { api } from '@/lib/api';
 import { saveExamSingle, finishExam, advanceStage } from '@/store/examSlice';
+import { useQuestionTimer } from '@/hooks/useQuestionTimer';
 import type { AppDispatch, RootState } from '@/store';
 
 import { ExamHeader } from '@/components/exam/ExamHeader';
@@ -160,6 +161,8 @@ export function ExamShowPage() {
   const currentQid: number = data?.questions[currentIndex] ?? 0;
   const currentQuestion = questions[currentQid];
   const currentDetail = detailsMap[currentQid];
+  // Time on each question, for the result analytics (paused while the stage summary is shown).
+  const flushQuestionTime = useQuestionTimer(examId, currentQid, !!data && data.exam?.status !== 'completed' && !stageCompleted);
   const reviewMode = data?.exam?.mode === 'tatur' || data?.exam?.mode === 'review';
 
   const answeredCount = useMemo(
@@ -233,6 +236,7 @@ export function ExamShowPage() {
     const selected = qid ? selectedAnswers[qid] : undefined;
     if (qid && selected?.length) await persistAnswer(qid, selected);
     try {
+      await flushQuestionTime();
       await dispatch(finishExam(examId)).unwrap();
     } catch {
       // The server finishes timed-out exams on its own; the result page reads its state.
@@ -362,6 +366,7 @@ export function ExamShowPage() {
     if (closingRef.current) return;
     closingRef.current = true;
     try {
+      await flushQuestionTime();
       await dispatch(finishExam(examId)).unwrap();
       navigate(`/user/exam/${examId}/result`, { replace: true });
     } catch (err) {

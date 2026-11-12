@@ -1,19 +1,13 @@
-import { useEffect, useState, type ComponentProps } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Loader2 } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { api, type ApiError } from '@/lib/api';
-import { ResultsView } from '@/components/exam/ResultsView';
+import { ResultsDashboard, ResultsSkeleton } from '@/components/exam/results/ResultsDashboard';
+import type { Analytics } from '@/components/exam/results/types';
 
-type ResultsProps = ComponentProps<typeof ResultsView>;
-
-interface ResultData {
-  exam: ResultsProps['exam'];
-  exam_report: ResultsProps['examReport'];
-}
-
-type State = { status: 'loading' } | { status: 'ready'; data: ResultData } | { status: 'in_progress' } | { status: 'error' };
+type State = { status: 'loading' } | { status: 'ready'; data: Analytics } | { status: 'in_progress' } | { status: 'error' };
 
 export function ExamResultPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +15,7 @@ export function ExamResultPage() {
   const [state, setState] = useState<State>({ status: 'loading' });
 
   useEffect(() => {
-    api.get(`/exams/${id}/get`)
+    api.get(`/exams/${id}/analytics`)
       .then((res) => setState({ status: 'ready', data: res.data?.data }))
       .catch((err) => {
         // The server keeps results hidden until an exam-mode attempt is submitted.
@@ -32,22 +26,18 @@ export function ExamResultPage() {
 
   if (state.status === 'in_progress') return <Navigate to={`/user/exam/${id}/show`} replace />;
 
-  if (state.status !== 'ready') {
-    return (
-      <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
-        {state.status === 'error' ? (
-          <p className="text-slate-600 dark:text-slate-300">{t('examResult.loadError')}</p>
-        ) : (
-          <Loader2 className="animate-spin text-primary" size={40} />
-        )}
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-slate-50 p-4 dark:bg-slate-950 lg:p-8">
+    <div className="min-h-screen bg-slate-50 px-4 py-5 dark:bg-[#080D1D] sm:px-6 lg:py-8 print:bg-white print:p-0">
       <div className="mx-auto max-w-7xl">
-        <ResultsView exam={state.data.exam} examReport={state.data.exam_report} examId={Number(id)} />
+        {state.status === 'loading' && <ResultsSkeleton />}
+        {state.status === 'error' && (
+          <div className="mx-auto mt-20 max-w-md rounded-[20px] border border-slate-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-[#1E293B]">
+            <AlertTriangle className="mx-auto text-amber-500" size={36} />
+            <p className="mt-3 font-bold text-slate-800 dark:text-white">{t('examResult.loadError')}</p>
+            <Link to="/user/exam" className="mt-5 inline-block rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-bold text-white">{t('results.backToExams')}</Link>
+          </div>
+        )}
+        {state.status === 'ready' && <ResultsDashboard data={state.data} />}
       </div>
     </div>
   );
