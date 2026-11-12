@@ -36,7 +36,8 @@
     "exit": "Exit",
     "noData": "No options available",
     "subcategories": "Subcategories",
-    "questions": "Questions"
+    "questions": "Questions",
+    "retry": "Try again"
   },
   "auth": {
     "mobile": "Mobile Number",
@@ -356,7 +357,9 @@
     "applyCoupon": "Apply Coupon",
     "price": "Price",
     "period": "Period",
-    "days": "days"
+    "days": "days",
+    "empty": "New packages are coming soon. Contact us to know about the available offers.",
+    "loadError": "We could not load the packages. Please try again."
   },
   "specialtyCard": {
     "packages": "Exam Packages",
