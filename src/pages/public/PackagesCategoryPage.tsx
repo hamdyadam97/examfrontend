@@ -18,6 +18,7 @@ import {
 import { api, apiErrorMessage } from '@/lib/api';
 import { CustomPackageCard } from '@/components/packages/CustomPackageCard';
 import { PackageCard } from '@/components/packages/PackageCard';
+import { CheckoutModal } from '@/components/payment/CheckoutModal';
 import { getIconForName } from '@/components/exam-builder/iconMap';
 import type { Package } from '@/types/package';
 import type { Specialty } from '@/components/SpecialtyCard';
@@ -31,6 +32,7 @@ export function PackagesCategoryPage() {
   const authenticated = useSelector((state: RootState) => state.auth.authenticated);
   const [category, setCategory] = useState<Specialty | null>(null);
   const [subscribingId, setSubscribingId] = useState<number | null>(null);
+  const [checkoutPkg, setCheckoutPkg] = useState<Package | null>(null);
   const [subCategories, setSubCategories] = useState<Specialty[]>([]);
   const [selectedSub, setSelectedSub] = useState<number | null>(null);
   const [packages, setPackages] = useState<Package[]>([]);
@@ -268,7 +270,7 @@ export function PackagesCategoryPage() {
                     pkg.is_custom ? (
                       <CustomPackageCard key={pkg.id} pkg={pkg} onSubscribe={handleSubscribe} subscribingId={subscribingId} />
                     ) : (
-                      <PackageCard key={pkg.id} pkg={pkg} index={idx} onSubscribe={(p) => handleSubscribe(p)} subscribingId={subscribingId} />
+                      <PackageCard key={pkg.id} pkg={pkg} index={idx} onSubscribe={setCheckoutPkg} subscribingId={subscribingId} />
                     ),
                   )}
                 </div>
@@ -277,6 +279,7 @@ export function PackagesCategoryPage() {
           )}
         </AnimatePresence>
       </div>
+      <CheckoutModal pkg={checkoutPkg} onClose={() => setCheckoutPkg(null)} />
     </div>
   );
 }

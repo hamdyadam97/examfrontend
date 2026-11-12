@@ -360,7 +360,13 @@
     "days": "days",
     "empty": "New packages are coming soon. Contact us to know about the available offers.",
     "loadError": "We could not load the packages. Please try again.",
-    "allExams": "All exams"
+    "allExams": "All exams",
+    "searchPlaceholder": "Search packages...",
+    "filterExam": "Exam",
+    "allSpecialties": "All specialties",
+    "resultsCount": "{{count}} packages",
+    "noResults": "No packages match your search.",
+    "pagination": "Pages"
   },
   "specialtyCard": {
     "packages": "Exam Packages",
@@ -1310,5 +1316,30 @@
     "noSamples": "Sample questions will be available soon.",
     "question": "Question {{n}}",
     "answersHint": "Answers and explanations are available after subscribing."
+  },
+  "checkout": {
+    "title": "Subscribe",
+    "price": "Price",
+    "discount": "Discount",
+    "total": "Total",
+    "instant": "Access opens as soon as the payment is confirmed",
+    "stepReview": "Review",
+    "stepPay": "Payment",
+    "reviewTitle": "Review your subscription",
+    "reviewHint": "Have a discount code? Apply it before paying.",
+    "coupon": "Discount code",
+    "couponPlaceholder": "Enter the code",
+    "apply": "Apply",
+    "couponInvalid": "This discount code is not valid.",
+    "couponApplied": "Discount applied.",
+    "profileIncomplete": "Please complete your profile before subscribing.",
+    "completeProfile": "Complete profile",
+    "paymentUnavailable": "Online payment is not available right now. Please contact us to subscribe.",
+    "failed": "We could not start the payment. Please try again.",
+    "loginToContinue": "Log in to continue",
+    "continueToPay": "Continue to pay {{amount}}",
+    "activate": "Activate subscription",
+    "cardTitle": "Card details",
+    "cardHint": "Visa and Mastercard are accepted. Your card details go directly to the bank."
   }
 }

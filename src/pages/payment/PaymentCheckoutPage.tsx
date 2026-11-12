@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Loader2, Lock, ShieldCheck } from 'lucide-react';
 import { api } from '@/lib/api';
+import { HyperPayForm } from '@/components/payment/HyperPayForm';
 
 interface PaymentInfo {
   payment_id: string;
@@ -14,18 +15,12 @@ interface PaymentInfo {
   package: { name: string; period_days: number | null } | null;
 }
 
-declare global {
-  interface Window {
-    wpwlOptions?: Record<string, unknown>;
-  }
-}
-
 /**
  * Shows HyperPay's COPYandPAY card form. The card details go straight to HyperPay; when the
  * shopper submits, HyperPay redirects to /payment/result, where our server verifies the payment.
  */
 export function PaymentCheckoutPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const paymentId = searchParams.get('id') || '';
   const [info, setInfo] = useState<PaymentInfo | null>(null);
@@ -36,21 +31,6 @@ export function PaymentCheckoutPage() {
       .then((res) => setInfo(res.data?.data))
       .catch(() => setFailed(true));
   }, [paymentId]);
-
-  // Load HyperPay's widget script once the checkout is known.
-  useEffect(() => {
-    if (!info?.widget_url) return;
-    window.wpwlOptions = { locale: i18n.language === 'ar' ? 'ar' : 'en', style: 'card' };
-    const script = document.createElement('script');
-    script.src = info.widget_url;
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [info?.widget_url, i18n.language]);
-
-  const resultUrl = `${window.location.origin}/payment/result?id=${encodeURIComponent(paymentId)}`;
 
   if (failed) {
     return (
@@ -82,7 +62,7 @@ export function PaymentCheckoutPage() {
         <p className="mt-2 text-2xl font-extrabold text-primary">{info.amount} {info.currency}</p>
       </div>
       {info.widget_url ? (
-        <form action={resultUrl} className="paymentWidgets" data-brands={info.brands} />
+        <HyperPayForm widgetUrl={info.widget_url} brands={info.brands} paymentId={info.payment_id} />
       ) : (
         <p className="text-slate-600">{t('payment.notFound')}</p>
       )}
