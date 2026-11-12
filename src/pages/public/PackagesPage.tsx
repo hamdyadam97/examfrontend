@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
@@ -17,6 +17,23 @@ export function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [subscribingId, setSubscribingId] = useState<number | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [exam, setExam] = useState<string>('all');
+
+  // Packages grouped by the exam they open: level-1 category (filter chips), then the
+  // sub-category heading, each group sorted from the shortest to the longest access.
+  const groups = useMemo(() => {
+    const byKey = new Map<string, { root: string; title: string; items: Package[] }>();
+    for (const pkg of packages) {
+      const path = pkg.category?.path?.length ? pkg.category.path : [pkg.category?.name || ''];
+      const key = path.slice(0, 2).join(' › ');
+      if (!byKey.has(key)) byKey.set(key, { root: path[0], title: path.length > 1 ? path.slice(1, 2).join('') : path[0], items: [] });
+      byKey.get(key)!.items.push(pkg);
+    }
+    for (const g of byKey.values()) g.items.sort((a, b) => (a.period_days || 0) - (b.period_days || 0) || Number(a.price) - Number(b.price));
+    return [...byKey.values()];
+  }, [packages]);
+  const roots = useMemo(() => [...new Set(groups.map((g) => g.root))], [groups]);
+  const shown = exam === 'all' ? groups : groups.filter((g) => g.root === exam);
 
   useEffect(() => {
     api.get('/packages/index')
@@ -99,14 +116,43 @@ export function PackagesPage() {
             {t('packages.subtitle', 'Choose a premium package and start preparing for your medical exams.')}
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {packages.map((pkg, idx) =>
-            pkg.is_custom ? (
-              <CustomPackageCard key={pkg.id} pkg={pkg} onSubscribe={handleSubscribe} subscribingId={subscribingId} />
-            ) : (
-              <PackageCard key={pkg.id} pkg={pkg} index={idx} onSubscribe={(p) => handleSubscribe(p)} subscribingId={subscribingId} />
-            )
-          )}
+        <div className="mb-8 flex flex-wrap justify-center gap-2" role="tablist">
+          {['all', ...roots].map((key) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={exam === key}
+              onClick={() => setExam(key)}
+              className={`rounded-full border px-4 py-2 text-sm font-bold transition ${
+                exam === key
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-slate-200 bg-white text-secondary hover:border-primary hover:text-primary dark:border-slate-700 dark:bg-slate-800 dark:text-white'
+              }`}
+            >
+              {key === 'all' ? t('packages.allExams', 'All exams') : key}
+            </button>
+          ))}
+        </div>
+
+        <div className="space-y-12">
+          {shown.map((group) => (
+            <section key={`${group.root}-${group.title}`}>
+              <h2 className="mb-5 text-xl font-extrabold text-secondary dark:text-white">
+                {group.title}
+                {group.title !== group.root && <span className="ms-2 text-sm font-semibold text-slate-400">{group.root}</span>}
+              </h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {group.items.map((pkg, idx) =>
+                  pkg.is_custom ? (
+                    <CustomPackageCard key={pkg.id} pkg={pkg} onSubscribe={handleSubscribe} subscribingId={subscribingId} />
+                  ) : (
+                    <PackageCard key={pkg.id} pkg={pkg} index={idx} hideCategory onSubscribe={(p) => handleSubscribe(p)} subscribingId={subscribingId} />
+                  )
+                )}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
     </div>

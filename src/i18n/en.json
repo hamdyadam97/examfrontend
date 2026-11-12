@@ -330,19 +330,17 @@
     "bestSeller": "Best Seller",
     "popular": "Popular",
     "new": "New",
-    "fallbackDescription": "Comprehensive exam preparation package designed by medical experts.",
-    "mockExams": "Mock Exams",
-    "minutes": "Min",
     "lifetime": "Lifetime",
     "year": "Year",
     "years": "Years",
     "days": "days",
-    "intermediate": "Intermediate",
     "enrolled": "enrolled",
     "viewPackage": "View Package",
     "subscribe": "Subscribe",
-    "preview": "Preview",
-    "previewComingSoon": "Preview coming soon"
+    "currency": "JOD",
+    "questionsLimit": "Up to {{n}} questions",
+    "questionsBank": "{{n}} questions in the bank",
+    "accessFor": "Access for {{period}}"
   },
   "packages": {
     "subtitle": "Choose a premium package and start preparing for your medical exams.",
@@ -359,7 +357,8 @@
     "period": "Period",
     "days": "days",
     "empty": "New packages are coming soon. Contact us to know about the available offers.",
-    "loadError": "We could not load the packages. Please try again."
+    "loadError": "We could not load the packages. Please try again.",
+    "allExams": "All exams"
   },
   "specialtyCard": {
     "packages": "Exam Packages",

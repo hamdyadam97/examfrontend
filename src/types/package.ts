@@ -1,6 +1,9 @@
 export interface PackageCategory {
   id?: number;
   name: string;
+  level?: number;
+  /** Names from the level-1 category down to this one. */
+  path?: string[];
 }
 
 export interface Package {
@@ -16,6 +19,8 @@ export interface Package {
   period_days?: number | null;
   duration_minutes?: number | null;
   number_of_questions?: number | null;
+  /** Active questions the package opens. */
+  questions_count?: number;
   exam_count?: number;
   trial_count?: number;
   category?: PackageCategory | null;

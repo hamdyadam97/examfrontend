@@ -43,7 +43,7 @@ export function HomePage() {
           {packages.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-3">
               {packages.map((pkg, idx) => (
-                <PackageCard key={pkg.id} pkg={pkg} index={idx} showPreview={false} />
+                <PackageCard key={pkg.id} pkg={pkg} index={idx} />
               ))}
             </div>
           ) : (

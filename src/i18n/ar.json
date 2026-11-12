@@ -131,7 +131,8 @@
     "period": "المدة",
     "days": "يوم",
     "empty": "الباقات الجديدة قريباً. تواصل معنا لمعرفة العروض المتاحة.",
-    "loadError": "تعذر تحميل الباقات. حاول مرة أخرى."
+    "loadError": "تعذر تحميل الباقات. حاول مرة أخرى.",
+    "allExams": "كل الامتحانات"
   },
   "settings": {
     "profile": "الملف الشخصي",
@@ -347,19 +348,17 @@
     "bestSeller": "الأكثر مبيعاً",
     "popular": "رائج",
     "new": "جديد",
-    "fallbackDescription": "باقة تحضير شاملة للامتحانات أعدها خبراء طبيون.",
-    "mockExams": "امتحانات تجريبية",
-    "minutes": "دقيقة",
     "lifetime": "مدى الحياة",
     "year": "سنة",
     "years": "سنوات",
     "days": "يوم",
-    "intermediate": "متوسط",
     "enrolled": "مسجل",
     "viewPackage": "عرض الباقة",
     "subscribe": "اشترك الآن",
-    "preview": "معاينة",
-    "previewComingSoon": "المعاينة قريباً"
+    "currency": "دينار",
+    "questionsLimit": "حتى {{n}} سؤال",
+    "questionsBank": "{{n}} سؤال في البنك",
+    "accessFor": "اشتراك لمدة {{period}}"
   },
   "specialtyCard": {
     "packages": "باقة امتحانات",
