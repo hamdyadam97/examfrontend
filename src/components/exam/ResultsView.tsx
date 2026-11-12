@@ -34,6 +34,7 @@ interface ReportItem {
   name: string;
   correct_answers: number;
   total_questions: number;
+  wrong_answers?: number;
 }
 
 interface Report {
@@ -47,6 +48,7 @@ interface Exam {
   wrong_answers: number;
   score?: number;
   duration?: number;
+  time_spent_minutes?: number | null;
   title?: string;
 }
 
@@ -62,23 +64,26 @@ export function ResultsView({ exam, examReport, examId }: Props) {
 
   const totalAnswered = (exam.correct_answers || 0) + (exam.wrong_answers || 0);
   const skipped = (exam.total_questions || 0) - totalAnswered;
-  const percentage = exam.score ?? (totalAnswered ? Math.round((exam.correct_answers / totalAnswered) * 100) : 0);
+  // Score out of all the exam's questions: unanswered ones count as not earned.
+  const percentage = exam.score ?? (exam.total_questions ? Math.round(((exam.correct_answers || 0) / exam.total_questions) * 100) : 0);
   const passed = percentage >= 60;
 
   const categoryData = useMemo(() => {
-    const cat = examReport?.category || examReport?.Category;
+    // The server sends categories, sub_categories, sub_sub_categories (subjects), sections and topics:
+    // show the most detailed level that has data.
+    const cat = [examReport?.sub_sub_categories, examReport?.sub_categories, examReport?.categories].find((r) => r?.result?.length);
     if (!cat) return [];
     return cat.result.map((item) => ({
       name: item.name,
       correct: item.correct_answers,
-      wrong: item.total_questions - item.correct_answers,
+      wrong: item.wrong_answers ?? item.total_questions - item.correct_answers,
       total: item.total_questions,
       pct: item.total_questions ? Math.round((item.correct_answers / item.total_questions) * 100) : 0,
     }));
   }, [examReport]);
 
   const topicData = useMemo(() => {
-    const topic = examReport?.topic || examReport?.Topic;
+    const topic = [examReport?.topics, examReport?.sections].find((r) => r?.result?.length);
     if (!topic) return [];
     return topic.result.slice(0, 8).map((item) => ({
       name: item.name,
@@ -148,7 +153,7 @@ export function ResultsView({ exam, examReport, examId }: Props) {
           { icon: CheckCircle2, label: t('examResult.correctAnswers'), value: exam.correct_answers || 0, color: 'text-emerald-500 bg-emerald-100' },
           { icon: XCircle, label: t('examResult.wrongAnswers'), value: exam.wrong_answers || 0, color: 'text-rose-500 bg-rose-100' },
           { icon: SkipForward, label: t('examResult.skippedQuestions'), value: skipped, color: 'text-slate-500 bg-slate-100' },
-          { icon: Timer, label: t('examResult.timeSpent'), value: `${exam.duration || 45} min`, color: 'text-blue-500 bg-blue-100' },
+          { icon: Timer, label: t('examResult.timeSpent'), value: exam.time_spent_minutes ? `${exam.time_spent_minutes} ${t('examResult.minutes', 'min')}` : '-', color: 'text-blue-500 bg-blue-100' },
         ].map((s) => {
           const Icon = s.icon;
           return (
@@ -245,7 +250,7 @@ export function ResultsView({ exam, examReport, examId }: Props) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500 dark:text-slate-400">Keep practicing to identify strengths.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('examResult.noStrengths', 'Keep practicing to identify strengths.')}</p>
           )}
         </div>
 
@@ -262,7 +267,7 @@ export function ResultsView({ exam, examReport, examId }: Props) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-slate-500 dark:text-slate-400">Great job! No major weaknesses detected.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('examResult.noWeaknesses', 'Great job! No major weaknesses detected.')}</p>
           )}
         </div>
 

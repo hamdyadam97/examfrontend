@@ -749,7 +749,10 @@
     "passedMessage": "Congratulations! You passed the exam.",
     "failedMessage": "Keep practicing. You can retake the exam.",
     "loadError": "Could not load the results. Please try again.",
-    "aiComingSoon": "Personal AI study advice based on your answers is coming soon."
+    "aiComingSoon": "Personal AI study advice based on your answers is coming soon.",
+    "noStrengths": "Keep practicing to identify strengths.",
+    "noWeaknesses": "Great job! No major weaknesses detected.",
+    "minutes": "min"
   },
   "examBuilder": {
     "title": "Create Exam",
