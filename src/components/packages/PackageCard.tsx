@@ -1,44 +1,35 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
 import { motion } from 'framer-motion';
-import { HelpCircle, Calendar, Users, Award, Sparkles, ArrowRight, Stethoscope, Loader2 } from 'lucide-react';
+import { HelpCircle, Calendar, Star, Users, Award, Flame, Sparkles, Eye, ArrowRight, Loader2 } from 'lucide-react';
 import type { Package } from '@/types/package';
+import { examTheme } from './examTheme';
+import { formatPrice, getAccessPeriod } from './packageFormat';
+import { PackagePreviewModal } from './PackagePreviewModal';
 
 interface PackageCardProps {
   pkg: Package;
   index?: number;
+  showPreview?: boolean;
   onSubscribe?: (pkg: Package) => void;
   subscribingId?: number | null;
-  /** Hide the category badge when the card already sits under its category heading. */
-  hideCategory?: boolean;
 }
 
-/** 14 -> "14", 14.5 -> "14.50". */
-function formatPrice(value: string | number | undefined | null) {
-  const num = typeof value === 'string' ? parseFloat(value) : value ?? 0;
-  if (Number.isNaN(num)) return '0';
-  return Number.isInteger(num) ? String(num) : num.toFixed(2);
-}
-
-function getAccessPeriod(days: number | null | undefined, t: TFunction) {
-  if (!days) return t('packageCard.lifetime', 'Lifetime');
-  if (days >= 365 && days % 365 === 0) {
-    const years = days / 365;
-    return `${years} ${t(years === 1 ? 'packageCard.year' : 'packageCard.years', years === 1 ? 'Year' : 'Years')}`;
-  }
-  return `${days} ${t('packageCard.days', 'days')}`;
-}
-
-export function PackageCard({ pkg, index = 0, onSubscribe, subscribingId = null, hideCategory = false }: PackageCardProps) {
+export function PackageCard({ pkg, index = 0, showPreview = true, onSubscribe, subscribingId = null }: PackageCardProps) {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === 'ar';
   const subscribing = subscribingId === pkg.id;
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const coverUrl = pkg.logo || pkg.icon;
-  const categoryName = pkg.category?.name;
+  const path = pkg.category?.path ?? (pkg.category?.name ? [pkg.category.name] : []);
+  const theme = examTheme(path);
+  const Icon = theme.icon;
+  const categoryName = pkg.category?.name || t('packageCard.medical', 'Medical');
   const hasDiscount = !!pkg.discount_percentage && pkg.discount_percentage > 0;
   const questions = pkg.number_of_questions || pkg.questions_count || 0;
+  const rating = Number(pkg.rating || 0);
   const students = pkg.students_count ?? 0;
   const currency = t('packageCard.currency', 'JOD');
 
@@ -47,69 +38,88 @@ export function PackageCard({ pkg, index = 0, onSubscribe, subscribingId = null,
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.4, delay: Math.min(index, 6) * 0.06 }}
-      whileHover={{ y: -6 }}
+      transition={{ duration: 0.5, delay: Math.min(index, 6) * 0.08 }}
+      whileHover={{ y: -8 }}
+      whileTap={{ scale: 0.98 }}
       className="group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl dark:border-slate-700 dark:bg-slate-800"
     >
-      {coverUrl ? (
-        <div className="relative h-40 overflow-hidden bg-slate-100">
+      {/* Cover: the package image, or the exam's colours and icon */}
+      <div className="relative h-48 overflow-hidden">
+        {coverUrl ? (
           <img src={coverUrl} alt={pkg.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-        </div>
-      ) : (
-        <div className="relative flex h-20 items-center justify-between bg-gradient-to-l from-primary/15 to-secondary/10 px-5 text-primary">
-          <Stethoscope size={30} />
-          <span className="text-3xl font-black text-secondary/80 dark:text-white/80">
-            {getAccessPeriod(pkg.period_days, t)}
-          </span>
-        </div>
-      )}
+        ) : (
+          <div className={`relative flex h-full w-full items-center justify-center bg-gradient-to-br ${theme.gradient} text-white`}>
+            <div className="absolute -end-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
+            <div className="absolute -bottom-12 -start-8 h-36 w-36 rounded-full bg-white/10" />
+            <Icon size={64} strokeWidth={1.5} className="absolute end-5 top-1/2 -translate-y-1/2 opacity-25 transition-transform duration-500 group-hover:scale-110" />
+            <div className="relative px-6 text-center">
+              <p className="text-4xl font-black drop-shadow-sm">{getAccessPeriod(pkg.period_days, t)}</p>
+              {path[0] && <p className="mt-2 line-clamp-1 text-sm font-semibold text-white/85">{path[0]}</p>}
+            </div>
+          </div>
+        )}
 
-      <div className="relative flex flex-1 flex-col p-5 sm:p-6">
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          {!hideCategory && categoryName && (
-            <span className="w-fit rounded-full bg-secondary/5 px-3 py-1 text-xs font-bold text-secondary dark:bg-white/10 dark:text-white">
-              {categoryName}
-            </span>
-          )}
+        <div className="absolute inset-0 bg-gradient-to-t from-secondary/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+        <div className="absolute start-4 top-4 flex flex-wrap gap-2">
           {pkg.is_bestseller && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2.5 py-1 text-xs font-bold text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2.5 py-1 text-xs font-bold text-white shadow">
               <Award size={12} /> {t('packageCard.bestSeller', 'Best Seller')}
             </span>
           )}
           {pkg.is_new && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-bold text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-bold text-white shadow">
               <Sparkles size={12} /> {t('packageCard.new', 'New')}
             </span>
           )}
+          {!pkg.is_bestseller && !pkg.is_new && students > 2000 && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-rose-500 px-2.5 py-1 text-xs font-bold text-white shadow">
+              <Flame size={12} /> {t('packageCard.popular', 'Popular')}
+            </span>
+          )}
         </div>
+      </div>
 
-        <h3 className="text-lg font-extrabold leading-snug text-secondary transition-colors duration-300 group-hover:text-primary dark:text-white">
+      {/* Body */}
+      <div className="relative flex flex-1 flex-col p-5 sm:p-6">
+        <span className="mb-3 w-fit rounded-full bg-secondary/5 px-3 py-1 text-xs font-bold text-secondary dark:bg-white/10 dark:text-white">
+          {categoryName}
+        </span>
+
+        <h3 className="text-xl font-extrabold text-secondary transition-colors duration-300 group-hover:text-primary dark:text-white">
           {pkg.name}
         </h3>
-        {pkg.description && <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{pkg.description}</p>}
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          {pkg.description || t('packageCard.fallbackDescription', 'Comprehensive exam preparation package designed by medical experts.')}
+        </p>
 
-        <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+        <div className="mt-5 grid grid-cols-2 gap-3 text-xs text-slate-600 dark:text-slate-300">
           {questions > 0 && (
             <div className="flex items-center gap-2">
-              <HelpCircle size={15} className="text-primary" />
-              <span>
-                {pkg.number_of_questions
-                  ? t('packageCard.questionsLimit', { n: questions.toLocaleString(), defaultValue: 'Up to {{n}} questions' })
-                  : t('packageCard.questionsBank', { n: questions.toLocaleString(), defaultValue: '{{n}} questions in the bank' })}
-              </span>
+              <HelpCircle size={14} className="text-primary" />
+              <span>{questions.toLocaleString()} {t('common.questions', 'Questions')}</span>
             </div>
           )}
           <div className="flex items-center gap-2">
-            <Calendar size={15} className="text-primary" />
-            <span>{t('packageCard.accessFor', { period: getAccessPeriod(pkg.period_days, t), defaultValue: 'Access for {{period}}' })}</span>
+            <Calendar size={14} className="text-primary" />
+            <span>{getAccessPeriod(pkg.period_days, t)}</span>
           </div>
-          {students > 0 && (
-            <div className="flex items-center gap-2">
-              <Users size={15} className="text-primary" />
-              <span>{students.toLocaleString()} {t('packageCard.enrolled', 'enrolled')}</span>
-            </div>
-          )}
         </div>
+
+        {(rating > 0 || students > 0) && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {rating > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-600 ring-1 ring-inset ring-amber-200">
+                <Star size={12} fill="currentColor" /> {rating.toFixed(1)}
+              </span>
+            )}
+            {students > 0 && (
+              <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                <Users size={12} /> {students.toLocaleString()} {t('packageCard.enrolled', 'enrolled')}
+              </span>
+            )}
+          </div>
+        )}
 
         <div className="mt-auto pt-5">
           <div className="flex items-end gap-3">
@@ -124,13 +134,13 @@ export function PackageCard({ pkg, index = 0, onSubscribe, subscribingId = null,
             )}
           </div>
 
-          <div className="mt-4">
+          <div className="mt-5 flex items-center gap-3">
             {onSubscribe ? (
               <button
                 type="button"
                 disabled={subscribing}
                 onClick={() => onSubscribe(pkg)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg disabled:opacity-60"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg disabled:opacity-60"
               >
                 {subscribing && <Loader2 size={16} className="animate-spin" />}
                 {t('packageCard.subscribe', 'Subscribe')}
@@ -138,15 +148,33 @@ export function PackageCard({ pkg, index = 0, onSubscribe, subscribingId = null,
             ) : (
               <Link
                 to="/packages"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg"
               >
                 {t('packageCard.viewPackage', 'View Package')}
                 <ArrowRight size={16} className={isRtl ? 'rotate-180' : ''} />
               </Link>
             )}
+            {showPreview && (
+              <button
+                type="button"
+                onClick={() => setPreviewOpen(true)}
+                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-secondary transition-all duration-300 hover:border-primary hover:text-primary dark:border-slate-600 dark:text-white"
+              >
+                <Eye size={16} /> {t('packageCard.preview', 'Preview')}
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {showPreview && (
+        <PackagePreviewModal
+          packageId={pkg.id}
+          open={previewOpen}
+          onClose={() => setPreviewOpen(false)}
+          onSubscribe={onSubscribe ? () => { setPreviewOpen(false); onSubscribe(pkg); } : undefined}
+        />
+      )}
     </motion.div>
   );
 }

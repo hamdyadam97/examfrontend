@@ -358,7 +358,9 @@
     "currency": "دينار",
     "questionsLimit": "حتى {{n}} سؤال",
     "questionsBank": "{{n}} سؤال في البنك",
-    "accessFor": "اشتراك لمدة {{period}}"
+    "accessFor": "اشتراك لمدة {{period}}",
+    "preview": "معاينة",
+    "fallbackDescription": "باقة تحضير شاملة للامتحانات أعدها خبراء طبيون."
   },
   "specialtyCard": {
     "packages": "باقة امتحانات",
@@ -1302,5 +1304,11 @@
     "wadirum": "وادي رم",
     "jerash": "الساحة البيضاوية - جرش",
     "theatre": "المدرج الروماني - عمّان"
+  },
+  "packagePreview": {
+    "samples": "نماذج من أسئلة الباقة",
+    "noSamples": "نماذج الأسئلة ستتوفر قريباً.",
+    "question": "السؤال {{n}}",
+    "answersHint": "الإجابات والشرح متاحة بعد الاشتراك."
   }
 }

@@ -340,7 +340,9 @@
     "currency": "JOD",
     "questionsLimit": "Up to {{n}} questions",
     "questionsBank": "{{n}} questions in the bank",
-    "accessFor": "Access for {{period}}"
+    "accessFor": "Access for {{period}}",
+    "preview": "Preview",
+    "fallbackDescription": "Comprehensive exam preparation package designed by medical experts."
   },
   "packages": {
     "subtitle": "Choose a premium package and start preparing for your medical exams.",
@@ -1302,5 +1304,11 @@
     "wadirum": "Wadi Rum",
     "jerash": "Oval Plaza, Jerash",
     "theatre": "Roman Theatre, Amman"
+  },
+  "packagePreview": {
+    "samples": "Sample questions from this package",
+    "noSamples": "Sample questions will be available soon.",
+    "question": "Question {{n}}",
+    "answersHint": "Answers and explanations are available after subscribing."
   }
 }
