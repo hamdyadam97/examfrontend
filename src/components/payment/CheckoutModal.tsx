@@ -85,9 +85,11 @@ function CheckoutDialog({ pkg, onClose }: { pkg: Package; onClose: () => void })
       const res = await api.post('/packages/check-coupon', { coupon: coupon.trim(), package_id: pkg.id });
       const d = res.data?.data;
       setDiscount({ code: d.coupon, amount: Number(d.discount) || 0, total: Number(d.final_price) || 0 });
-    } catch {
+    } catch (err) {
       setDiscount(null);
-      setCouponError(t('checkout.couponInvalid', 'This discount code is not valid.'));
+      // The server says why: not_found, inactive, not_started, expired, used_up.
+      const reason = (err as ApiError | undefined)?.errors?.reason?.[0];
+      setCouponError(t(`checkout.couponReason.${reason}`, { defaultValue: t('checkout.couponInvalid', 'This discount code is not valid.') }));
     } finally {
       setCheckingCoupon(false);
     }

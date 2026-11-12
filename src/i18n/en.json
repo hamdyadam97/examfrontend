@@ -1340,6 +1340,13 @@
     "continueToPay": "Continue to pay {{amount}}",
     "activate": "Activate subscription",
     "cardTitle": "Card details",
-    "cardHint": "Visa and Mastercard are accepted. Your card details go directly to the bank."
+    "cardHint": "Visa and Mastercard are accepted. Your card details go directly to the bank.",
+    "couponReason": {
+      "not_found": "This discount code does not exist.",
+      "inactive": "This discount code is turned off.",
+      "not_started": "This discount code is not active yet.",
+      "expired": "This discount code has expired.",
+      "used_up": "This discount code has reached its usage limit."
+    }
   }
 }
