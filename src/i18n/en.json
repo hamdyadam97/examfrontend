@@ -1384,5 +1384,29 @@
       "expired": "This discount code has expired.",
       "used_up": "This discount code has reached its usage limit."
     }
+  },
+  "report": {
+    "title": "Exam performance report",
+    "number": "Report",
+    "student": "Student",
+    "exam": "Exam",
+    "date": "Date",
+    "duration": "Time spent",
+    "summaryTitle": "Summary",
+    "summary": "You answered {{answered}} of {{total}} questions and {{correct}} were correct — a score of {{percentage}}% ({{accuracy}}% of the questions you answered).",
+    "best": "Your strongest area was {{name}} ({{pct}}%).",
+    "worst": "The area that needs the most review is {{name}} ({{pct}}%).",
+    "bySubject": "Results by subject",
+    "adviceTitle": "Recommendations",
+    "specialty": "Specialty",
+    "reviewAnswers": "Review my answers",
+    "newExam": "New exam",
+    "advice": {
+      "skipped": "You left {{count}} questions unanswered: try to answer every question next time, a guess is better than nothing.",
+      "reviewWrong": "Go through the explanations of your {{count}} wrong answers before the next attempt.",
+      "practiceWeak": "Build a short exam on {{name}} only, until it passes 60%.",
+      "timed": "Take a timed exam to practise under real exam conditions.",
+      "harder": "You are ready for a harder challenge: try a longer timed exam."
+    }
   }
 }

@@ -24,6 +24,8 @@ import {
 } from 'recharts';
 import { motion } from 'framer-motion';
 import { ResultHero } from './ResultHero';
+import { ResultReport } from './ResultReport';
+import { examTheme } from '@/components/packages/examTheme';
 import { useCountUp } from '@/hooks/useCountUp';
 import { toast } from 'sonner';
 import { useDarkMode } from '@/hooks/useDarkMode';
@@ -49,6 +51,7 @@ interface Exam {
   duration?: number;
   time_spent_minutes?: number | null;
   title?: string;
+  created_at?: string;
 }
 
 interface Props {
@@ -89,6 +92,22 @@ export function ResultsView({ exam, examReport, examId }: Props) {
     }));
   }, [examReport]);
 
+  // The exam's place in the tree (one name per level when the exam covers a single one) and its photo.
+  const examPath = useMemo(() => {
+    const names = [examReport?.categories, examReport?.sub_categories, examReport?.sub_sub_categories]
+      .map((r) => (r?.result?.length === 1 ? r.result[0].name : null));
+    const path: string[] = [];
+    for (const n of names) {
+      if (!n) break;
+      path.push(n);
+    }
+    return path;
+  }, [examReport]);
+  const image = examTheme([
+    ...examPath,
+    ...(examReport?.sub_sub_categories?.result || []).map((r) => r.name),
+  ]).image;
+
   const strengths = categoryData.filter((d) => d.pct >= 70).slice(0, 3);
   const weaknesses = categoryData.filter((d) => d.pct < 60).slice(0, 3);
 
@@ -106,7 +125,22 @@ export function ResultsView({ exam, examReport, examId }: Props) {
   return (
     <div className="space-y-8">
       {/* Score hero */}
-      <ResultHero title={exam.title} percentage={percentage} onDownload={() => window.print()} onShare={handleShare} />
+      <ResultHero title={exam.title} percentage={percentage} image={image} onDownload={() => window.print()} onShare={handleShare} />
+
+      <ResultReport
+        examId={examId}
+        title={exam.title}
+        createdAt={exam.created_at}
+        path={examPath}
+        image={image}
+        total={exam.total_questions || 0}
+        correct={exam.correct_answers || 0}
+        wrong={exam.wrong_answers || 0}
+        skipped={skipped}
+        percentage={percentage}
+        minutes={exam.time_spent_minutes}
+        rows={categoryData}
+      />
 
       {/* Stats grid */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

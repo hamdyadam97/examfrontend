@@ -7,6 +7,8 @@ import { Award, Download, Rocket, Share2, Sparkles, Target, TrendingUp, type Luc
 interface Props {
   title?: string;
   percentage: number;
+  /** Photo of the exam's specialty, shown under the grade colour. */
+  image?: string;
   onDownload: () => void;
   onShare: () => void;
 }
@@ -90,7 +92,7 @@ function Confetti() {
   );
 }
 
-export function ResultHero({ title, percentage, onDownload, onShare }: Props) {
+export function ResultHero({ title, percentage, image, onDownload, onShare }: Props) {
   const { t } = useTranslation();
   const reduce = useReducedMotion();
   const tier = tierFor(percentage);
@@ -102,8 +104,10 @@ export function ResultHero({ title, percentage, onDownload, onShare }: Props) {
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`relative overflow-hidden rounded-[2rem] bg-gradient-to-br ${tier.gradient} p-8 text-white shadow-2xl md:p-10`}
+      className="relative overflow-hidden rounded-[2rem] p-8 text-white shadow-2xl md:p-10"
     >
+      {image && <img src={image} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />}
+      <div aria-hidden className={`absolute inset-0 bg-gradient-to-br ${tier.gradient} ${image ? 'opacity-90' : ''}`} />
       {/* Moving lights and a soft dotted texture */}
       <motion.div
         aria-hidden
