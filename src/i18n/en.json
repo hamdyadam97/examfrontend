@@ -1575,5 +1575,57 @@
       "loadError": "Could not load the question.",
       "locked": "Answer review is not available for this exam."
     }
+  },
+  "myExams": {
+    "title": "My exams",
+    "subtitle": "Follow your running exams, review past results and start a new exam from the question bank.",
+    "create": "Create new exam",
+    "stats": {
+      "total": "Total exams",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "average": "Average score"
+    },
+    "filterLabel": "Filter exams",
+    "filters": {
+      "all": "All",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "passed": "Passed",
+      "failed": "Failed"
+    },
+    "search": "Search by exam or specialty",
+    "sortLabel": "Sort",
+    "sort": {
+      "-date": "Newest first",
+      "date": "Oldest first",
+      "-score": "Highest score",
+      "score": "Lowest score"
+    },
+    "status": {
+      "inProgress": "In progress",
+      "passed": "Passed",
+      "failed": "Failed"
+    },
+    "card": {
+      "questions": "Questions",
+      "answered": "Answered",
+      "progress": "Progress",
+      "scoreLine": "{{correct}} correct out of {{total}}",
+      "viewResult": "View result",
+      "continue": "Continue exam"
+    },
+    "count": "{{count}} exams",
+    "pages": "Pages",
+    "loadError": "Could not load your exams.",
+    "clearFilters": "Clear filters",
+    "empty": {
+      "title": "No exams yet",
+      "text": "Start your first exam from the question bank and choose the specialty and number of questions yourself."
+    },
+    "emptyFiltered": {
+      "title": "No results",
+      "text": "No exams match the current search or filter."
+    }
   }
 }
