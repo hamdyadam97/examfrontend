@@ -1613,7 +1613,9 @@
       "progress": "Progress",
       "scoreLine": "{{correct}} correct out of {{total}}",
       "viewResult": "View result",
-      "continue": "Continue exam"
+      "continue": "Continue exam",
+      "questionsN": "{{count}} questions",
+      "percentDone": "{{percent}}% done"
     },
     "count": "{{count}} exams",
     "pages": "Pages",

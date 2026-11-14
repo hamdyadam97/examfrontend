@@ -1613,7 +1613,9 @@
       "progress": "التقدّم",
       "scoreLine": "{{correct}} إجابة صحيحة من {{total}}",
       "viewResult": "عرض النتيجة",
-      "continue": "متابعة الامتحان"
+      "continue": "متابعة الامتحان",
+      "questionsN": "{{count}} سؤال",
+      "percentDone": "تم إنجاز {{percent}}%"
     },
     "count": "{{count}} امتحان",
     "pages": "الصفحات",
