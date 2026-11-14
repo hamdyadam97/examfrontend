@@ -1615,7 +1615,13 @@
       "viewResult": "عرض النتيجة",
       "continue": "متابعة الامتحان",
       "questionsN": "{{count}} سؤال",
-      "percentDone": "تم إنجاز {{percent}}%"
+      "percentDone": "تم إنجاز {{percent}}%",
+      "score": "النتيجة",
+      "correct": "صحيحة",
+      "wrong": "خاطئة",
+      "skipped": "بدون إجابة",
+      "remaining": "متبقي",
+      "answeredOf": "أجبت على {{answered}} من {{total}}"
     },
     "count": "{{count}} امتحان",
     "pages": "الصفحات",

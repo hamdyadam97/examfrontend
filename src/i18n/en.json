@@ -1615,7 +1615,13 @@
       "viewResult": "View result",
       "continue": "Continue exam",
       "questionsN": "{{count}} questions",
-      "percentDone": "{{percent}}% done"
+      "percentDone": "{{percent}}% done",
+      "score": "Score",
+      "correct": "Correct",
+      "wrong": "Wrong",
+      "skipped": "Skipped",
+      "remaining": "Remaining",
+      "answeredOf": "{{answered}} of {{total}} answered"
     },
     "count": "{{count}} exams",
     "pages": "Pages",
